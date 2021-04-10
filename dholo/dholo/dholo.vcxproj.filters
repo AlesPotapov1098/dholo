@@ -25,6 +25,9 @@
     <Filter Include="scr\gpgpu\opengl">
       <UniqueIdentifier>{64b383b2-d51f-44d0-b517-dea2c588b06a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\app\holo">
+      <UniqueIdentifier>{9a14d040-b228-4bd8-817f-d74eeacb768b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -39,14 +42,14 @@
     <ClInclude Include="Resource.h">
       <Filter>resources</Filter>
     </ClInclude>
-    <ClInclude Include="dhWnd.h">
-      <Filter>scr\app</Filter>
-    </ClInclude>
-    <ClInclude Include="dhmainfrm.h">
-      <Filter>scr\app</Filter>
-    </ClInclude>
     <ClInclude Include="dhimgexpr.h">
       <Filter>scr\app\img</Filter>
+    </ClInclude>
+    <ClInclude Include="dhmainfrm.h">
+      <Filter>scr\app\holo</Filter>
+    </ClInclude>
+    <ClInclude Include="dhwnd.h">
+      <Filter>scr\app\holo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -56,14 +59,14 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>scr\etc</Filter>
     </ClCompile>
-    <ClCompile Include="dhWnd.cpp">
-      <Filter>scr\app</Filter>
-    </ClCompile>
-    <ClCompile Include="dhmainfrm.cpp">
-      <Filter>scr\app</Filter>
-    </ClCompile>
     <ClCompile Include="dhimgexpr.cpp">
       <Filter>scr\app\img</Filter>
+    </ClCompile>
+    <ClCompile Include="dhmainfrm.cpp">
+      <Filter>scr\app\holo</Filter>
+    </ClCompile>
+    <ClCompile Include="dhwnd.cpp">
+      <Filter>scr\app\holo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

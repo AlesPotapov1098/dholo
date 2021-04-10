@@ -187,7 +187,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="dhimgexpr.h" />
-    <ClInclude Include="dhWnd.h" />
+    <ClInclude Include="dhwnd.h" />
     <ClInclude Include="dholo.h" />
     <ClInclude Include="dhmainfrm.h" />
     <ClInclude Include="Resource.h" />
@@ -196,7 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dhimgexpr.cpp" />
-    <ClCompile Include="dhWnd.cpp" />
+    <ClCompile Include="dhwnd.cpp" />
     <ClCompile Include="dholo.cpp" />
     <ClCompile Include="dhmainfrm.cpp" />
     <ClCompile Include="stdafx.cpp">
