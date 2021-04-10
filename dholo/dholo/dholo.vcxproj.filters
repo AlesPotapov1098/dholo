@@ -19,6 +19,12 @@
     <Filter Include="scr\app\img">
       <UniqueIdentifier>{2b24be1e-1f13-4e4e-b0f4-46915eaebaca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\gpgpu\opencl">
+      <UniqueIdentifier>{fcac0bbc-bb2c-4824-8de8-8d49dd4cb7c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scr\gpgpu\opengl">
+      <UniqueIdentifier>{64b383b2-d51f-44d0-b517-dea2c588b06a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
