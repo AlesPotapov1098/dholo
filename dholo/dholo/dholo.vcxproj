@@ -186,6 +186,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dhimgexpr.h" />
     <ClInclude Include="dhWnd.h" />
     <ClInclude Include="dholo.h" />
     <ClInclude Include="dhmainfrm.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="dhimgexpr.cpp" />
     <ClCompile Include="dhWnd.cpp" />
     <ClCompile Include="dholo.cpp" />
     <ClCompile Include="dhmainfrm.cpp" />
@@ -210,6 +212,7 @@
   <ItemGroup>
     <Image Include="res\dholo.ico" />
     <Image Include="res\Toolbar.bmp" />
+    <Image Include="res\toolbar1.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\userimages.bmp" />
   </ItemGroup>

@@ -16,6 +16,9 @@
     <Filter Include="scr\etc">
       <UniqueIdentifier>{ee276a1b-594c-4a15-a09e-c186b02504e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\app\img">
+      <UniqueIdentifier>{2b24be1e-1f13-4e4e-b0f4-46915eaebaca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -36,6 +39,9 @@
     <ClInclude Include="dhmainfrm.h">
       <Filter>scr\app</Filter>
     </ClInclude>
+    <ClInclude Include="dhimgexpr.h">
+      <Filter>scr\app\img</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -49,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="dhmainfrm.cpp">
       <Filter>scr\app</Filter>
+    </ClCompile>
+    <ClCompile Include="dhimgexpr.cpp">
+      <Filter>scr\app\img</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +73,7 @@
     <Image Include="res\dholo.ico">
       <Filter>resources</Filter>
     </Image>
+    <Image Include="res\toolbar1.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\dholo.rc2">
