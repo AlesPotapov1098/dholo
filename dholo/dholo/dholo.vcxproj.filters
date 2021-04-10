@@ -54,6 +54,9 @@
     <ClInclude Include="dhimglist.h">
       <Filter>scr\app\img</Filter>
     </ClInclude>
+    <ClInclude Include="dhogl.h">
+      <Filter>scr\gpgpu\opengl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -73,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="dhimglist.cpp">
       <Filter>scr\app\img</Filter>
+    </ClCompile>
+    <ClCompile Include="dhogl.cpp">
+      <Filter>scr\gpgpu\opengl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

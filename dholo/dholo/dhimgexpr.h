@@ -34,9 +34,6 @@ protected:
 	afx_msg void OnFileOpen();
 	afx_msg void OnFileOpenWith();
 	afx_msg void OnCreateNew();
-	afx_msg void OnEditCut();
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditClear();
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 
@@ -51,7 +48,6 @@ private:
 	const int COLUMN_PATH_WIDTH = 90;
 public:
 	afx_msg void OnUpdateDummyCompile(CCmdUI* pCmdUI);
-	afx_msg void OnAddImage();
 	afx_msg void OnDeleteImage();
 	afx_msg void OnLoadImage();
 };

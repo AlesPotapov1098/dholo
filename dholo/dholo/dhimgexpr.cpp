@@ -22,12 +22,9 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
-	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnAddImage)
+	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 	ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 	ON_COMMAND(ID_LOAD_IMAGE, &DHImgExpr::OnLoadImage)
 	ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
@@ -105,38 +102,39 @@ void DHImgExpr::FillFileView()
 
 void DHImgExpr::AddImage(CStringW pathImage, CStringW imageName, CStringW imageExt)
 {
-	//if (!pathImage || !imageName || !imageExt)
-	//	return;
-	//HRESULT res;
-	//CImage m_LoaderImageObject;
-	//CBitmap m_BitmapImageObject;
-	//res = m_LoaderImageObject.Load(pathImage);
-	//
-	//m_BitmapImageObject.Attach((HBITMAP)m_LoaderImageObject);
-	//m_ImageList.Add(&m_BitmapImageObject, RGB(0x00, 0x00, 0x00));
-	//
-	//m_List.SetImageList(&m_ImageList, LVSIL_NORMAL);
-	//int imageIndex = m_ImageList.Add(&m_BitmapImageObject, RGB(0xff, 0xff, 0xff));
-	//
-	//m_List.SetImageList(&m_ImageList, LVSIL_SMALL);
-	//
-	//int listIndex;
-	//LV_ITEM lvItem;
-	//listIndex = m_List.GetItemCount() + 1;
-	//lvItem.mask = LVIF_IMAGE | LVIF_TEXT;
-	//lvItem.iItem = listIndex;
-	//lvItem.iSubItem = 0;
-	//lvItem.iImage = 0;
-	//lvItem.iImage = imageIndex;
-	//lvItem.pszText = const_cast<LPWSTR>(imageName.GetString());
-	//
-	//listIndex = m_List.InsertItem(&lvItem);
-	//lvItem.mask = LVIF_TEXT;
-	//lvItem.iItem = listIndex;
-	//lvItem.iSubItem = 1;
-	//lvItem.iImage = 0;
-	//lvItem.pszText = const_cast<LPWSTR>(pathImage.GetString());
-	//m_List.SetItem(&lvItem);
+	if (!pathImage || !imageName || !imageExt)
+		return;
+
+	HRESULT res;
+	CImage m_LoaderImageObject;
+	CBitmap m_BitmapImageObject;
+	res = m_LoaderImageObject.Load(pathImage);
+	
+	m_BitmapImageObject.Attach((HBITMAP)m_LoaderImageObject);
+	m_ImageList.Add(&m_BitmapImageObject, RGB(0x00, 0x00, 0x00));
+	
+	m_dhImgList.SetImageList(&m_ImageList, LVSIL_NORMAL);
+	int imageIndex = m_ImageList.Add(&m_BitmapImageObject, RGB(0xff, 0xff, 0xff));
+	
+	m_dhImgList.SetImageList(&m_ImageList, LVSIL_SMALL);
+	
+	int listIndex;
+	LV_ITEM lvItem;
+	listIndex = m_dhImgList.GetItemCount() + 1;
+	lvItem.mask = LVIF_IMAGE | LVIF_TEXT;
+	lvItem.iItem = listIndex;
+	lvItem.iSubItem = 0;
+	lvItem.iImage = 0;
+	lvItem.iImage = imageIndex;
+	lvItem.pszText = const_cast<LPWSTR>(imageName.GetString());
+	
+	listIndex = m_dhImgList.InsertItem(&lvItem);
+	lvItem.mask = LVIF_TEXT;
+	lvItem.iItem = listIndex;
+	lvItem.iSubItem = 1;
+	lvItem.iImage = 0;
+	lvItem.pszText = const_cast<LPWSTR>(pathImage.GetString());
+	m_dhImgList.SetItem(&lvItem);
 }
 
 void DHImgExpr::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -233,21 +231,6 @@ void DHImgExpr::OnCreateNew()
 	//mHoloView->SetImagePath(ImagePath);
 }
 
-void DHImgExpr::OnEditCut()
-{
-	// TODO: добавьте сюда код обработчика команд
-}
-
-void DHImgExpr::OnEditCopy()
-{
-	// TODO: добавьте сюда код обработчика команд
-}
-
-void DHImgExpr::OnEditClear()
-{
-	// TODO: добавьте сюда код обработчика команд
-}
-
 void DHImgExpr::OnPaint()
 {
 	CPaintDC dc(this);
@@ -292,14 +275,6 @@ void DHImgExpr::OnChangeVisualStyle()
 	//nFlags |= (theApp.m_bHiColorIcons) ? ILC_COLOR24 : ILC_COLOR4;
 }
 
-//void DHImgExpr::LoadImage()
-//{
-//	CFileDialog dlg(true);
-//
-//	if (dlg.DoModal() == IDOK)
-//		AddImage(dlg.GetPathName(), dlg.GetFileName(), dlg.GetFileExt());
-//}
-
 void DHImgExpr::OnUpdateDummyCompile(CCmdUI* pCmdUI)
 {
 	//if (m_List.GetItemCount() == 0)
@@ -317,13 +292,6 @@ void DHImgExpr::OnUpdateDummyCompile(CCmdUI* pCmdUI)
 	//pCmdUI->Enable(true);
 }	//
 
-
-void DHImgExpr::OnAddImage()
-{
-	// TODO: добавьте свой код обработчика команд
-}
-
-
 void DHImgExpr::OnDeleteImage()
 {
 	// TODO: добавьте свой код обработчика команд
@@ -332,5 +300,8 @@ void DHImgExpr::OnDeleteImage()
 
 void DHImgExpr::OnLoadImage()
 {
-	// TODO: добавьте свой код обработчика команд
+	CFileDialog dlg(true);
+	
+	if (dlg.DoModal() == IDOK)
+		AddImage(dlg.GetPathName(), dlg.GetFileName(), dlg.GetFileExt());
 }
