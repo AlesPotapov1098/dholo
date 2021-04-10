@@ -29,6 +29,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 
+	afx_msg void OnAddImage();
+
 	DECLARE_MESSAGE_MAP()
 
 // Приватные члены для создания 

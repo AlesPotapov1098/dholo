@@ -13,7 +13,6 @@ DHImgExpr::DHImgExpr() noexcept
 {
 }
 
-
 DHImgExpr::~DHImgExpr()
 {
 }
@@ -24,6 +23,7 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_WM_CONTEXTMENU()
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	//ON_COMMAND(ID_ADD_IMAGE, OnAddImage)
 END_MESSAGE_MAP()
 
 void DHImgExpr::AddJustLayout()
@@ -53,9 +53,15 @@ int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_toolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
 	m_toolBar.LoadToolBar(IDR_EXPLORER);
 
+	//m_toolBar.SetPaneStyle(m_toolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
+	
+	//m_toolBar.SetPaneStyle(m_toolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
+
 	m_toolBar.SetOwner(this);
 
 //	m_toolBar.SetRouteCommandsViaFrame(FALSE);
+
+	AddJustLayout();
 
 	return 0;
 }
@@ -68,10 +74,17 @@ void DHImgExpr::OnSize(UINT nType, int cx, int cy)
 
 void DHImgExpr::OnContextMenu(CWnd * pWnd, CPoint point)
 {
+
 }
 
 void DHImgExpr::OnProperties()
 {
+
+}
+
+void DHImgExpr::OnAddImage()
+{
+
 }
 
 void DHImgExpr::OnPaint()

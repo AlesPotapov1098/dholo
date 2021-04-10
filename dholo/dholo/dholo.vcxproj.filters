@@ -73,7 +73,9 @@
     <Image Include="res\dholo.ico">
       <Filter>resources</Filter>
     </Image>
-    <Image Include="res\toolbar1.bmp" />
+    <Image Include="res\toolbar1.bmp">
+      <Filter>resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\dholo.rc2">
