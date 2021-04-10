@@ -16,6 +16,7 @@
 #define IDR_MAINFRAME_256               129
 #define IDS_EXPLORER                    129
 #define IDR_dholoTYPE                   130
+#define ID_IMAGE_PANEL                  131
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        205
@@ -42,15 +43,21 @@
 #define ID_32775                        32775
 #define ID_32776                        32776
 #define ID_32777                        32777
+#define ID_LOAD_IMAGE                   32778
+#define ID_DELETE_IMAGE                 32779
+#define ID_32780                        32780
+#define ID_PROPERTIES                   32781
+#define ID_BUTTON32782                  32782
 #define IDS_IMAGE_LIST_COLUMN_IMAGE     62000
 #define IDS_IMAGE_LIST_COLUMN_PATH      62001
+#define IDS_IMAGE_LIST                  62002
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        315
-#define _APS_NEXT_COMMAND_VALUE         32778
+#define _APS_NEXT_COMMAND_VALUE         32784
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

@@ -27,6 +27,9 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnAddImage)
+	ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
+	ON_COMMAND(ID_LOAD_IMAGE, &DHImgExpr::OnLoadImage)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -179,12 +182,12 @@ void DHImgExpr::AdjustLayout()
 
 void DHImgExpr::OnProperties()
 {
-	OnLoadImage();
+	//LoadImage();
 }
 
 void DHImgExpr::OnFileOpen()
 {
-	OnLoadImage();
+	//LoadImage();
 }
 
 void DHImgExpr::OnFileOpenWith()
@@ -288,13 +291,13 @@ void DHImgExpr::OnChangeVisualStyle()
 	//nFlags |= (theApp.m_bHiColorIcons) ? ILC_COLOR24 : ILC_COLOR4;
 }
 
-void DHImgExpr::OnLoadImage()
-{
-	CFileDialog dlg(true);
-
-	if (dlg.DoModal() == IDOK)
-		AddImage(dlg.GetPathName(), dlg.GetFileName(), dlg.GetFileExt());
-}
+//void DHImgExpr::LoadImage()
+//{
+//	CFileDialog dlg(true);
+//
+//	if (dlg.DoModal() == IDOK)
+//		AddImage(dlg.GetPathName(), dlg.GetFileName(), dlg.GetFileExt());
+//}
 
 void DHImgExpr::OnUpdateDummyCompile(CCmdUI* pCmdUI)
 {
@@ -312,3 +315,21 @@ void DHImgExpr::OnUpdateDummyCompile(CCmdUI* pCmdUI)
 	//
 	//pCmdUI->Enable(true);
 }	//
+
+
+void DHImgExpr::OnAddImage()
+{
+	// TODO: добавьте свой код обработчика команд
+}
+
+
+void DHImgExpr::OnDeleteImage()
+{
+	// TODO: добавьте свой код обработчика команд
+}
+
+
+void DHImgExpr::OnLoadImage()
+{
+	// TODO: добавьте свой код обработчика команд
+}

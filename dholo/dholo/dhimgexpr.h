@@ -23,9 +23,6 @@ public:
 	void OnChangeVisualStyle();
 	void AddImage(CStringW pathImage, CStringW imageName, CStringW imageExt);
 
-private:
-	void OnLoadImage();
-
 protected:
 	void FillFileView();
 
@@ -54,5 +51,8 @@ private:
 	const int COLUMN_PATH_WIDTH = 90;
 public:
 	afx_msg void OnUpdateDummyCompile(CCmdUI* pCmdUI);
+	afx_msg void OnAddImage();
+	afx_msg void OnDeleteImage();
+	afx_msg void OnLoadImage();
 };
 
