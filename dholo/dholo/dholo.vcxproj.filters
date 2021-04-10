@@ -18,13 +18,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ChildView.h">
-      <Filter>scr\app</Filter>
-    </ClInclude>
     <ClInclude Include="dholo.h">
-      <Filter>scr\app</Filter>
-    </ClInclude>
-    <ClInclude Include="MainFrm.h">
       <Filter>scr\app</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -36,19 +30,25 @@
     <ClInclude Include="Resource.h">
       <Filter>resources</Filter>
     </ClInclude>
+    <ClInclude Include="dhWnd.h">
+      <Filter>scr\app</Filter>
+    </ClInclude>
+    <ClInclude Include="dhmainfrm.h">
+      <Filter>scr\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ChildView.cpp">
-      <Filter>scr\app</Filter>
-    </ClCompile>
     <ClCompile Include="dholo.cpp">
-      <Filter>scr\app</Filter>
-    </ClCompile>
-    <ClCompile Include="MainFrm.cpp">
       <Filter>scr\app</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>scr\etc</Filter>
+    </ClCompile>
+    <ClCompile Include="dhWnd.cpp">
+      <Filter>scr\app</Filter>
+    </ClCompile>
+    <ClCompile Include="dhmainfrm.cpp">
+      <Filter>scr\app</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
