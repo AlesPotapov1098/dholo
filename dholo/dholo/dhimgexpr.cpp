@@ -3,6 +3,7 @@
 #include "resource.h"
 #include "dhmainfrm.h"
 
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
@@ -42,13 +43,13 @@ int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// Создание представления:
 	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | LVS_ICON | LVS_REPORT;
 
-	//if (!m_List.Create(dwViewStyle, rectDummy, this, 4))
-	//{
-	//	TRACE0("Не удалось создать представление файлов\n");
-	//	return -1;      // не удалось создать
-	//}
-	//
-	//m_ImageList.Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 4);
+	if (!m_dhImgList.Create(dwViewStyle, rectDummy, this, 4))
+	{
+		TRACE0("Не удалось создать представление файлов\n");
+		return -1;      // не удалось создать
+	}
+	
+	m_ImageList.Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 4);
 
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
 	m_wndToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* Заблокирован */);
@@ -77,26 +78,25 @@ void DHImgExpr::OnSize(UINT nType, int cx, int cy)
 
 void DHImgExpr::FillFileView()
 {
-	//int Index;
-	//BOOL validString;
-	//
-	//CString columnImage;
-	//validString = columnImage.LoadStringW(IDS_IMAGE_LIST_COLUMN_IMAGE);
-	//if (!validString)
-	//	return;
-	//
-	//m_List.InsertColumn(0, columnImage, LVCFMT_LEFT);
-	//
-	//CString columnPath;
-	//validString = columnPath.LoadStringW(IDS_IMAGE_LIST_COLUMN_PATH);
-	//if (!validString)
-	//	return;
-	//
-	//m_List.InsertColumn(1, columnPath, LVCFMT_LEFT);
-	//
-	//m_List.SetColumnWidth(0, COLUMN_IMAGE_WIDTH);
-	//m_List.SetColumnWidth(1, COLUMN_PATH_WIDTH);
-
+	int Index;
+	BOOL validString;
+	
+	CString columnImage;
+	validString = columnImage.LoadStringW(IDS_IMAGE_LIST_COLUMN_IMAGE);
+	if (!validString)
+		return;
+	
+	m_dhImgList.InsertColumn(0, columnImage, LVCFMT_LEFT);
+	
+	CString columnPath;
+	validString = columnPath.LoadStringW(IDS_IMAGE_LIST_COLUMN_PATH);
+	if (!validString)
+		return;
+	
+	m_dhImgList.InsertColumn(1, columnPath, LVCFMT_LEFT);
+	
+	m_dhImgList.SetColumnWidth(0, COLUMN_IMAGE_WIDTH);
+	m_dhImgList.SetColumnWidth(1, COLUMN_PATH_WIDTH);
 }
 
 void DHImgExpr::AddImage(CStringW pathImage, CStringW imageName, CStringW imageExt)
@@ -177,7 +177,7 @@ void DHImgExpr::AdjustLayout()
 	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
 	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
-	//m_List.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
+	m_dhImgList.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 void DHImgExpr::OnProperties()
@@ -252,7 +252,7 @@ void DHImgExpr::OnPaint()
 	CPaintDC dc(this); // контекст устройства для рисования
 
 	CRect rectTree;
-	//m_List.GetWindowRect(rectTree);
+	m_dhImgList.GetWindowRect(rectTree);
 	ScreenToClient(rectTree);
 
 	rectTree.InflateRect(1, 1);
@@ -263,7 +263,7 @@ void DHImgExpr::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
 
-	//m_List.SetFocus();
+	m_dhImgList.SetFocus();
 }
 
 void DHImgExpr::OnChangeVisualStyle()

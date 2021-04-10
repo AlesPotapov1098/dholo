@@ -51,6 +51,9 @@
     <ClInclude Include="dhwnd.h">
       <Filter>scr\app\holo</Filter>
     </ClInclude>
+    <ClInclude Include="dhimglist.h">
+      <Filter>scr\app\img</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -67,6 +70,9 @@
     </ClCompile>
     <ClCompile Include="dhwnd.cpp">
       <Filter>scr\app\holo</Filter>
+    </ClCompile>
+    <ClCompile Include="dhimglist.cpp">
+      <Filter>scr\app\img</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -187,6 +187,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="dhimgexpr.h" />
+    <ClInclude Include="dhimglist.h" />
     <ClInclude Include="dhwnd.h" />
     <ClInclude Include="dholo.h" />
     <ClInclude Include="dhmainfrm.h" />
@@ -196,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dhimgexpr.cpp" />
+    <ClCompile Include="dhimglist.cpp" />
     <ClCompile Include="dhwnd.cpp" />
     <ClCompile Include="dholo.cpp" />
     <ClCompile Include="dhmainfrm.cpp" />

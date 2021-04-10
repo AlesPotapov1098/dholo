@@ -1,5 +1,7 @@
 #pragma once
 
+#include "dhimglist.h"
+
 class DHToolBar : public CMFCToolBar
 {
 	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
@@ -44,9 +46,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CImageList m_ImageList;
 	DHToolBar m_wndToolBar;
+	DHImgList m_dhImgList;
+	CImageList m_ImageList;
 
+	const int COLUMN_IMAGE_WIDTH = 120;
+	const int COLUMN_PATH_WIDTH = 90;
 public:
 	afx_msg void OnUpdateDummyCompile(CCmdUI* pCmdUI);
 };
