@@ -96,6 +96,7 @@
     <None Include="res\dholo.rc2">
       <Filter>resources</Filter>
     </None>
+    <None Include="res\idr_popu.bin" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dholo.rc">

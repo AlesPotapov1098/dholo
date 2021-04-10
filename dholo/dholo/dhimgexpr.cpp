@@ -2,7 +2,7 @@
 #include "dhimgexpr.h"
 #include "resource.h"
 #include "dhmainfrm.h"
-
+#include "dholo.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -137,31 +137,23 @@ void DHImgExpr::AddImage(CStringW pathImage, CStringW imageName, CStringW imageE
 
 void DHImgExpr::OnContextMenu(CWnd* pWnd, CPoint point)
 {
-	//CTreeCtrl* pWndTree = (CTreeCtrl*)&m_List;
-	//ASSERT_VALID(pWndTree);
-	//
-	//if (pWnd != pWndTree)
-	//{
-	//	CDockablePane::OnContextMenu(pWnd, point);
-	//	return;
-	//}
-	//
-	//if (point != CPoint(-1, -1))
-	//{
-	//	// Выбрать нажатый элемент:
-	//	CPoint ptTree = point;
-	//	pWndTree->ScreenToClient(&ptTree);
-	//
-	//	UINT flags = 0;
-	//	HTREEITEM hTreeItem = pWndTree->HitTest(ptTree, &flags);
-	//	if (hTreeItem != nullptr)
-	//	{
-	//		pWndTree->SelectItem(hTreeItem);
-	//	}
-	//}
-	//
-	//pWndTree->SetFocus();
-	//theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
+	CListCtrl* pdhImgList = (CListCtrl*)&m_dhImgList;
+	ASSERT_VALID(pdhImgList);
+	
+	if (pWnd != pdhImgList)
+	{
+		CDockablePane::OnContextMenu(pWnd, point);
+		return;
+	}
+	
+	if (point != CPoint(-1, -1))
+	{
+		CPoint ptTree = point;
+		pdhImgList->ScreenToClient(&ptTree);
+	}
+	
+	pdhImgList->SetFocus();
+	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
 }
 
 void DHImgExpr::AdjustLayout()
@@ -176,8 +168,13 @@ void DHImgExpr::AdjustLayout()
 
 	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndToolBar.SetWindowPos(nullptr, rectClient.left, rectClient.top, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
-	m_dhImgList.SetWindowPos(nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wndToolBar.SetWindowPos(
+		nullptr, rectClient.left, rectClient.top, rectClient.Width(), 
+		cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
+	
+	m_dhImgList.SetWindowPos(
+		nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, 
+		rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 void DHImgExpr::OnProperties()
@@ -249,7 +246,7 @@ void DHImgExpr::OnEditClear()
 
 void DHImgExpr::OnPaint()
 {
-	CPaintDC dc(this); // контекст устройства для рисования
+	CPaintDC dc(this);
 
 	CRect rectTree;
 	m_dhImgList.GetWindowRect(rectTree);

@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="res\dholo.rc2" />
+    <None Include="res\idr_popu.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
