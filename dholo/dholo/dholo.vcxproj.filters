@@ -1,75 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Исходные файлы">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="scr">
+      <UniqueIdentifier>{16bff378-77df-4be4-856c-7ac375151dc9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы заголовков">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="resources">
+      <UniqueIdentifier>{9f1c0032-b6e2-49fc-b3a7-619dcd8533af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Файлы ресурсов">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="scr\app">
+      <UniqueIdentifier>{4ab67e7f-d502-4381-b134-21b6ad7a2543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scr\gpgpu">
+      <UniqueIdentifier>{15e6f6b2-47a1-4753-8e8d-16ab992ac4c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scr\etc">
+      <UniqueIdentifier>{ee276a1b-594c-4a15-a09e-c186b02504e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChildView.h">
+      <Filter>scr\app</Filter>
+    </ClInclude>
     <ClInclude Include="dholo.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>scr\app</Filter>
     </ClInclude>
     <ClInclude Include="MainFrm.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>scr\app</Filter>
     </ClInclude>
-    <ClInclude Include="ChildView.h">
-      <Filter>Файлы заголовков</Filter>
+    <ClInclude Include="stdafx.h">
+      <Filter>scr\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>scr\etc</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dholo.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="ChildView.cpp">
+      <Filter>scr\app</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="dholo.cpp">
+      <Filter>scr\app</Filter>
     </ClCompile>
     <ClCompile Include="MainFrm.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>scr\app</Filter>
     </ClCompile>
-    <ClCompile Include="ChildView.cpp">
-      <Filter>Исходные файлы</Filter>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>scr\etc</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="dholo.rc">
-      <Filter>Файлы ресурсов</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\userimages.bmp">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="res\dholo.ico">
-      <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="res\Toolbar.bmp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>resources</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\dholo.ico">
+      <Filter>resources</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\dholo.rc2">
-      <Filter>Файлы ресурсов</Filter>
+      <Filter>resources</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dholo.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
