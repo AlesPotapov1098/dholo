@@ -30,6 +30,7 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnAddImage)
 	ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 	ON_COMMAND(ID_LOAD_IMAGE, &DHImgExpr::OnLoadImage)
+	ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
