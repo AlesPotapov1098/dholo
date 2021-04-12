@@ -37,6 +37,7 @@ bool DHImgLoader::OpenDialog()
 		return true;
 	}
 	
+	return false;
 }
 
 int DHImgLoader::GetWidth() const
