@@ -22,7 +22,6 @@ public:
 
 private:
 	unsigned char * m_PixelsData;
-	LPSTR m_ImagePath;
 
 	int m_width;
 	int m_height;
