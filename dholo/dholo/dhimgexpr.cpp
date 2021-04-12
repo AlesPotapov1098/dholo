@@ -26,7 +26,7 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 	ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
-	ON_COMMAND(ID_LOAD_IMAGE, &DHImgExpr::OnLoadImage)
+	ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 	ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 END_MESSAGE_MAP()
 
@@ -52,17 +52,17 @@ int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 	m_ImageList.Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 4);
 
-	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
-	m_wndToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* «аблокирован */);
+	m_FunctionalToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
+	m_FunctionalToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* «аблокирован */);
 
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
+	m_FunctionalToolBar.SetPaneStyle(m_FunctionalToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
+	m_FunctionalToolBar.SetPaneStyle(m_FunctionalToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
 
-	m_wndToolBar.SetOwner(this);
+	m_FunctionalToolBar.SetOwner(this);
 
 	// ¬се команды будут перенаправлены через этот элемент управлени€, а не через родительскую рамку:
-	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
+	m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	// ¬ведите некоторые данные статического представлени€ в виде дерева (пустой код, ничего более)
 	FillFileView();
@@ -79,7 +79,6 @@ void DHImgExpr::OnSize(UINT nType, int cx, int cy)
 
 void DHImgExpr::FillFileView()
 {
-	int Index;
 	BOOL validString;
 	
 	CString columnImage;
@@ -168,9 +167,9 @@ void DHImgExpr::AdjustLayout()
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	int cyTlb = m_FunctionalToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndToolBar.SetWindowPos(
+	m_FunctionalToolBar.SetWindowPos(
 		nullptr, rectClient.left, rectClient.top, rectClient.Width(), 
 		cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	
@@ -248,6 +247,22 @@ void DHImgExpr::OnSetFocus(CWnd* pOldWnd)
 	CDockablePane::OnSetFocus(pOldWnd);
 
 	m_dhImgList.SetFocus();
+}
+
+void DHImgExpr::OnSelectImage()
+{
+	if (!m_dhImgList.GetItemCount())
+		return;
+
+	POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+
+	if (pos == 0)
+		return;
+
+	UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
+	CString ImagePath = m_dhImgList.GetItemText(SelectedItem, 1);
+
+	theApp.SelectImage(CStringA(ImagePath));
 }
 
 void DHImgExpr::OnChangeVisualStyle()

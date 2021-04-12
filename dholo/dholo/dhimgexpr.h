@@ -1,16 +1,7 @@
 #pragma once
 
 #include "dhimglist.h"
-
-class DHToolBar : public CMFCToolBar
-{
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
-	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
-	}
-
-	virtual BOOL AllowShowOnList() const { return FALSE; }
-};
+#include "dhtoolbar.h"
 
 class DHImgExpr : public CDockablePane
 {
@@ -36,11 +27,12 @@ protected:
 	afx_msg void OnCreateNew();
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnSelectImage();
 
 	DECLARE_MESSAGE_MAP()
 
 private:
-	DHToolBar m_wndToolBar;
+	DHToolBar m_FunctionalToolBar;
 	DHImgList m_dhImgList;
 	CImageList m_ImageList;
 
