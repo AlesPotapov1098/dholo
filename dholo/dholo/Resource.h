@@ -36,6 +36,26 @@
 #define IDR_MENU2                       313
 #define IDR_IDR_POPUP_IMAGE_LIST1       314
 #define IDR_POPUP_EXPLORER              315
+#define IDD_DIALOG_CREATE_WINDOW        316
+#define IDC_OPENCL_PLATFORM_INFO        1008
+#define IDC_STATIC_PLATFORM_NAME        1009
+#define IDC_COMBO_PLATFROMS             1010
+#define IDC_EDIT_PLATFORM_VENDOR        1011
+#define IDC_STATIC_PLATFORM_VENDOR      1012
+#define IDC_STATIC_PLATFORM_EXTENSIONS  1013
+#define IDC_COMBO_PLATFORM_EXTENSIONS   1014
+#define IDC_LABEL_PLATFORM_VERSION      1015
+#define IDC_STATIC_DEVICE_NAME          1016
+#define IDC_COMBO_DEVICE                1017
+#define IDC_EDIT_PLATFORM_VERSION       1018
+#define IDC_EDIT_DEVICE_VENDOR          1019
+#define IDC_STATIC_DEVICE_VENDOR        1020
+#define IDC_STATIC_DEVICE               1021
+#define IDC_STATIC_DEVICE_EXTENSIONS    1022
+#define IDC_LABEL_DEVICE_VERSION        1024
+#define IDC_EDIT_DEVICE_VERSION         1025
+#define IDC_LIST_PLATFORM_EXTENSIONS    1026
+#define IDC_LIST_DEVICE_EXTENSIONS      1027
 #define ID_ADD_IMAGE                    32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -58,7 +78,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        315
+#define _APS_NEXT_RESOURCE_VALUE        317
 #define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

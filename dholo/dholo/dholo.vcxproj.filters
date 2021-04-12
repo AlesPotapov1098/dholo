@@ -31,6 +31,9 @@
     <Filter Include="scr\app\toolbar">
       <UniqueIdentifier>{aaff868c-1a28-4b9c-a118-9dab6000b15f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\app\dlg">
+      <UniqueIdentifier>{a00189de-789a-4fd5-96cc-709ab67239d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="dhtoolbar.h">
       <Filter>scr\app\toolbar</Filter>
     </ClInclude>
+    <ClInclude Include="dhopencldlg.h">
+      <Filter>scr\app\dlg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -97,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="dhtoolbar.cpp">
       <Filter>scr\app\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="dhopencldlg.cpp">
+      <Filter>scr\app\dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
