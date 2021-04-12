@@ -6,6 +6,7 @@
 
 DHImgLoader::DHImgLoader()
 {
+	m_PixelsData = nullptr;
 }
 
 

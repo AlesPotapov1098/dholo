@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+#include "dhimgloader.h"
+
 #pragma comment(lib, "OpenGL32.lib")
 
 namespace gpgpu {
@@ -17,33 +19,27 @@ namespace gpgpu {
 			OGL();
 			~OGL();
 
-			void InitOpenGL(HDC);
+			void InitOpenGL();
 
 			bool IsActive();
-			void Render(CDC* dc);
+			void Render(CDC* dc, CRect* rect);
 
-			void InitTexture(CString pathImage);
-
+			void InitTexture(const CStringA& pathImage);
+			void DrawTexture();
 			void ReleaseOpenGL();
 
 		private:
-			HDC m_hDC;
 			HGLRC m_hRC;
 			PIXELFORMATDESCRIPTOR m_Desc;
 
-			CImage m_Image;
-			CBitmap m_Bitmap;
-			BITMAP m_hBitmap;
-
 			GLuint m_Texture;
 
-			float m_CubeCoord[4][2];
-			float m_TexCoord[4][2];
+			GLfloat m_X;
+			GLfloat m_Y;
 
-			int WIDTH, HEIGHT;
+			CRect * m_Rect;
 
-			GLuint* pixels;
-			GLuint texture;
+			DHImgLoader m_ImgLoader;
 		};
 	}
 }

@@ -7,73 +7,25 @@ namespace gpgpu
 	{
 		OGL::OGL()
 		{
-			m_hDC = nullptr;
 			m_hRC = nullptr;
 			ZeroMemory(&m_Desc, sizeof(m_Desc));
-
-			m_CubeCoord[0][0] = -0.5f;	m_TexCoord[0][0] = 0.0f;
-			m_CubeCoord[0][1] = -0.5f;	m_TexCoord[0][1] = 0.0f;
-
-			m_CubeCoord[1][0] = 0.5f;	m_TexCoord[1][0] = 1.0f;
-			m_CubeCoord[1][1] = -0.5f;	m_TexCoord[1][1] = 0.0f;
-
-			m_CubeCoord[2][0] = 0.5f;	m_TexCoord[2][0] = 1.0f;
-			m_CubeCoord[2][1] = 0.5f;	m_TexCoord[2][1] = 1.0f;
-
-			m_CubeCoord[3][0] = -0.5f;	m_TexCoord[3][0] = 0.0f;
-			m_CubeCoord[3][1] = 0.5f;	m_TexCoord[3][1] = 1.0f;
-
-			WIDTH = 1200;
-			HEIGHT = 800;
 		}
 
 		OGL::~OGL()
 		{
-			m_hDC = nullptr;
 			m_hRC = nullptr;
 			ZeroMemory(&m_Desc, sizeof(m_Desc));
 		}
 
-		void OGL::InitOpenGL(HDC dc)
+		void OGL::InitOpenGL()
 		{
-			m_hDC = dc;
-
 			m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
 			m_Desc.nVersion = 1;
 			m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 			m_Desc.iPixelType = PFD_TYPE_RGBA;
-			m_Desc.cColorBits = 24;
-			m_Desc.cRedBits = 0;
-			m_Desc.cRedShift = 0;
-			m_Desc.cGreenBits = 0;
-			m_Desc.cGreenShift = 0;
-			m_Desc.cBlueBits = 0;
-			m_Desc.cBlueShift = 0;
-			m_Desc.cAlphaBits = 0;
-			m_Desc.cAlphaShift = 0;
-			m_Desc.cAccumBits = 0;
-			m_Desc.cAccumRedBits = 0;
-			m_Desc.cAccumGreenBits = 0;
-			m_Desc.cAccumBlueBits = 0;
-			m_Desc.cAccumAlphaBits = 0;
+			m_Desc.cColorBits = 64;
 			m_Desc.cDepthBits = 32;
-			m_Desc.cStencilBits = 0;
-			m_Desc.cAuxBuffers = 0;
 			m_Desc.iLayerType = PFD_MAIN_PLANE;
-			m_Desc.bReserved = 0;
-			m_Desc.dwLayerMask = 0;
-			m_Desc.dwVisibleMask = 0;
-
-			int pf = ChoosePixelFormat(m_hDC, &m_Desc);
-			if (!SetPixelFormat(m_hDC, pf, &m_Desc))
-				return;
-
-			m_hRC = wglCreateContext(m_hDC);
-			if (!m_hRC)
-				return;
-
-			if (!wglMakeCurrent(m_hDC, m_hRC))
-				return;
 		}
 
 		bool OGL::IsActive()
@@ -84,78 +36,94 @@ namespace gpgpu
 			return true;
 		}
 
-		void OGL::Render(CDC* dc)
+		void OGL::Render(CDC* dc, CRect* rect)
 		{
-			if (dc == nullptr)
+			if (dc == nullptr || rect == nullptr)
 				return;
 
-			wglMakeCurrent(dc->GetSafeHdc(), m_hRC);
+			m_Rect = rect;
+
+			if (!SetPixelFormat(dc->m_hDC, 
+				ChoosePixelFormat(dc->m_hDC, &m_Desc),
+				&m_Desc))
+				return;
+
+			m_hRC = wglCreateContext(dc->m_hDC);
+			if (!m_hRC)
+				return;
+
+			if (!wglMakeCurrent(dc->m_hDC, m_hRC))
+				return;
+
+			wglMakeCurrent(dc->m_hDC, m_hRC);
 
 			glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			
-			glBegin(GL_QUADS);
-				glVertex2f(-0.5f, 0.5f);
-				glVertex2f(0.5f, 0.5f);
-				glVertex2f(0.5f, -0.5f);
-				glVertex2f(-0.5f, -0.5f);
-			glEnd();
-			
-			glFinish();
-			SwapBuffers(wglGetCurrentDC());
+
+			DrawTexture();
+
+			SwapBuffers(dc->m_hDC);
 		}
 
-		void OGL::InitTexture(CString pathImage)
+		void OGL::InitTexture(const CStringA& pathImage)
 		{
-			//HRESULT res = m_Image.Load(pathImage);
-			//if (res != S_OK)
-			//	return;
-			//
-			//BOOL isAttached = m_Bitmap.Attach((HBITMAP)m_Image);
-			//if (!isAttached)
-			//	return;
-			//
-			//int isLoadBitmap = m_Bitmap.GetBitmap(&m_hBitmap);
-			//if (!isLoadBitmap)
-			//	return;
+			m_ImgLoader.Load(pathImage);
+		}
 
-			std::size_t size = WIDTH * HEIGHT * 4;
-			pixels = new GLuint[size];
-			if (pixels == nullptr)
-				return;
-
-			for (int i = 0; i < size;)
-			{
-				pixels[i++] = 0;
-				pixels[i++] = 0;
-				pixels[i++] = 0;
-				pixels[i++] = 0;
-			}
-
+		void OGL::DrawTexture()
+		{
 			glEnable(GL_TEXTURE_2D);
-			glGenTextures(1, &texture);
-			glBindTexture(GL_TEXTURE_2D, texture);
+			glGenTextures(1, &m_Texture);
+			glBindTexture(GL_TEXTURE_2D, m_Texture);
 
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WIDTH, HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			//glEnable(GL_TEXTURE_2D);
-			//glGenTextures(1, &m_Texture);
-			//glBindTexture(GL_TEXTURE_2D, m_Texture);
-			//
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, m_hBitmap.bmWidth, m_hBitmap.bmHeight, 0, GL_RGB8, GL_UNSIGNED_BYTE, m_hBitmap.bmBits);
+			if (m_ImgLoader.GetChannels() == 3)
+				glTexImage2D(
+					GL_TEXTURE_2D, 0, GL_RGB,
+					m_ImgLoader.GetWidth(),
+					m_ImgLoader.GetHeight(),
+					0, GL_RGB, GL_UNSIGNED_BYTE,
+					m_ImgLoader.GetPixelsData());
+			else if (m_ImgLoader.GetChannels() == 4)
+			{
+				glTexImage2D(
+					GL_TEXTURE_2D, 0, GL_RGBA,
+					m_ImgLoader.GetWidth(),
+					m_ImgLoader.GetHeight(),
+					0, GL_RGBA, GL_UNSIGNED_BYTE,
+					m_ImgLoader.GetPixelsData());
+
+				m_X = (float)m_ImgLoader.GetWidth() / (float)(m_Rect->Width());
+				m_Y = (float)m_ImgLoader.GetHeight() / (float)(m_Rect->Height());
+
+				m_X = m_X >= 1.0f ? 1.0f : m_X;
+				m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
+			}
+			else
+			{
+				m_X = 0.95f;
+				m_Y = 0.95f;
+			}
+
+			glBegin(GL_QUADS);
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-m_X, -m_Y);
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-m_X, m_Y);
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(m_X, m_Y);
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(m_X, -m_Y);
+			glEnd();
 		}
 
 		void OGL::ReleaseOpenGL()
 		{
-			//wglDeleteContext(m_hRC);
+			wglDeleteContext(m_hRC);
 		}
 	}
 }
