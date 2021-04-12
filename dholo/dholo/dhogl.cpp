@@ -65,12 +65,12 @@ namespace gpgpu
 			SwapBuffers(dc->m_hDC);
 		}
 
-		void OGL::InitTexture(const CStringA& pathImage)
+		void OGL::LoadTexture(const CStringA& pathImage)
 		{
 			m_ImgLoader.Load(pathImage);
 		}
 
-		void OGL::DrawTexture()
+		void OGL::InitTexture()
 		{
 			glEnable(GL_TEXTURE_2D);
 			glGenTextures(1, &m_Texture);
@@ -108,7 +108,10 @@ namespace gpgpu
 				m_X = 0.95f;
 				m_Y = 0.95f;
 			}
+		}
 
+		void OGL::DrawTexture()
+		{
 			glBegin(GL_QUADS);
 				glTexCoord2f(0.0f, 0.0f);
 				glVertex2f(-m_X, -m_Y);

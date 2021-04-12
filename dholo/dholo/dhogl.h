@@ -24,7 +24,8 @@ namespace gpgpu {
 			bool IsActive();
 			void Render(CDC* dc, CRect* rect);
 
-			void InitTexture(const CStringA& pathImage);
+			void LoadTexture(const CStringA& pathImage);
+			void InitTexture();
 			void DrawTexture();
 			void ReleaseOpenGL();
 
