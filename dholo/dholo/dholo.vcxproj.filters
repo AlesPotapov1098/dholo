@@ -28,6 +28,9 @@
     <Filter Include="scr\app\holo">
       <UniqueIdentifier>{9a14d040-b228-4bd8-817f-d74eeacb768b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\app\toolbar">
+      <UniqueIdentifier>{aaff868c-1a28-4b9c-a118-9dab6000b15f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -63,6 +66,9 @@
     <ClInclude Include="dhimgloader.h">
       <Filter>scr\app\img</Filter>
     </ClInclude>
+    <ClInclude Include="dhtoolbar.h">
+      <Filter>scr\app\toolbar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -88,6 +94,9 @@
     </ClCompile>
     <ClCompile Include="dhimgloader.cpp">
       <Filter>scr\app\img</Filter>
+    </ClCompile>
+    <ClCompile Include="dhtoolbar.cpp">
+      <Filter>scr\app\toolbar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

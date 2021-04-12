@@ -1,16 +1,7 @@
 #pragma once
 
 #include "dhimglist.h"
-
-class DHToolBar : public CMFCToolBar
-{
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
-	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
-	}
-
-	virtual BOOL AllowShowOnList() const { return FALSE; }
-};
+#include "dhtoolbar.h"
 
 class DHImgExpr : public CDockablePane
 {
