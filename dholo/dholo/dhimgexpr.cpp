@@ -79,7 +79,6 @@ void DHImgExpr::OnSize(UINT nType, int cx, int cy)
 
 void DHImgExpr::FillFileView()
 {
-	int Index;
 	BOOL validString;
 	
 	CString columnImage;

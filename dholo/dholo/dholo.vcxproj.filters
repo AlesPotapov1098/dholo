@@ -60,6 +60,9 @@
     <ClInclude Include="stb_image.h">
       <Filter>scr\etc</Filter>
     </ClInclude>
+    <ClInclude Include="dhimgloader.h">
+      <Filter>scr\app\img</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="dhogl.cpp">
       <Filter>scr\gpgpu\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="dhimgloader.cpp">
+      <Filter>scr\app\img</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
