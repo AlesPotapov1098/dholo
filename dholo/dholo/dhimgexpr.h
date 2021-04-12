@@ -27,6 +27,7 @@ protected:
 	afx_msg void OnCreateNew();
 	afx_msg void OnPaint();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
+	afx_msg void OnSelectImage();
 
 	DECLARE_MESSAGE_MAP()
 

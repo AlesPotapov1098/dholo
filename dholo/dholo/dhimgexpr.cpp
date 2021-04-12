@@ -26,7 +26,7 @@ BEGIN_MESSAGE_MAP(DHImgExpr, CDockablePane)
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 	ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
-	ON_COMMAND(ID_LOAD_IMAGE, &DHImgExpr::OnLoadImage)
+	ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 	ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 END_MESSAGE_MAP()
 
@@ -247,6 +247,22 @@ void DHImgExpr::OnSetFocus(CWnd* pOldWnd)
 	CDockablePane::OnSetFocus(pOldWnd);
 
 	m_dhImgList.SetFocus();
+}
+
+void DHImgExpr::OnSelectImage()
+{
+	if (!m_dhImgList.GetItemCount())
+		return;
+
+	POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+
+	if (pos == 0)
+		return;
+
+	UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
+	CString ImagePath = m_dhImgList.GetItemText(SelectedItem, 1);
+
+	theApp.SelectImage(CStringA(ImagePath));
 }
 
 void DHImgExpr::OnChangeVisualStyle()
