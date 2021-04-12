@@ -1,8 +1,9 @@
 #pragma once
 
-
-
 #include <gl\GL.h>
+
+#include <string>
+#include <codecvt>
 
 class DHImgLoader
 {
@@ -10,7 +11,7 @@ public:
 	DHImgLoader();
 	~DHImgLoader();
 
-	bool Load(LPCSTR imgPath);
+	bool Load(const CStringA& imgPath);
 	bool OpenDialog();
 
 	int GetWidth() const;

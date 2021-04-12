@@ -31,7 +31,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	DHToolBar m_wndToolBar;
+	DHToolBar m_FunctionalToolBar;
 	DHImgList m_dhImgList;
 	CImageList m_ImageList;
 

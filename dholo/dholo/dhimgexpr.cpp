@@ -52,17 +52,17 @@ int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 	m_ImageList.Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 4);
 
-	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
-	m_wndToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* «аблокирован */);
+	m_FunctionalToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
+	m_FunctionalToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* «аблокирован */);
 
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
+	m_FunctionalToolBar.SetPaneStyle(m_FunctionalToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
+	m_FunctionalToolBar.SetPaneStyle(m_FunctionalToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
 
-	m_wndToolBar.SetOwner(this);
+	m_FunctionalToolBar.SetOwner(this);
 
 	// ¬се команды будут перенаправлены через этот элемент управлени€, а не через родительскую рамку:
-	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
+	m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	// ¬ведите некоторые данные статического представлени€ в виде дерева (пустой код, ничего более)
 	FillFileView();
@@ -167,9 +167,9 @@ void DHImgExpr::AdjustLayout()
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	int cyTlb = m_FunctionalToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndToolBar.SetWindowPos(
+	m_FunctionalToolBar.SetWindowPos(
 		nullptr, rectClient.left, rectClient.top, rectClient.Width(), 
 		cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	

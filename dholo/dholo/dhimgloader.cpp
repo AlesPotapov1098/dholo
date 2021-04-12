@@ -15,13 +15,13 @@ DHImgLoader::~DHImgLoader()
 		stbi_image_free(m_PixelsData);
 }
 
-bool DHImgLoader::Load(LPCSTR imgPath)
+bool DHImgLoader::Load(const CStringA& imgPath)
 {
 	if (!imgPath)
 		return false;
 
 	stbi_set_flip_vertically_on_load(true);
-	m_PixelsData = stbi_load("res\\D8uiF1PD31k.jpg", &m_width, &m_height, &m_nrChannels, 0);
+	m_PixelsData = stbi_load(imgPath.GetString(), &m_width, &m_height, &m_nrChannels, 0);
 	if (!m_PixelsData)
 		return false;
 
@@ -33,7 +33,7 @@ bool DHImgLoader::OpenDialog()
 	CFileDialog dlg(true);
 	if (dlg.DoModal() == IDOK)
 	{
-		Load("");
+		Load(CStringA(dlg.GetPathName()));
 		return true;
 	}
 	

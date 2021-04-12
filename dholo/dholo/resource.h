@@ -48,6 +48,9 @@
 #define ID_32780                        32780
 #define ID_PROPERTIES                   32781
 #define ID_CUT_IMAGE                    32784
+#define ID_BUTTON32785                  32785
+#define ID_BUTTON32789                  32789
+#define ID_LOAD_IMG                     32789
 #define IDS_IMAGE_LIST_COLUMN_IMAGE     62000
 #define IDS_IMAGE_LIST_COLUMN_PATH      62001
 #define IDS_IMAGE_LIST                  62002
@@ -57,7 +60,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        315
-#define _APS_NEXT_COMMAND_VALUE         32785
+#define _APS_NEXT_COMMAND_VALUE         32790
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
