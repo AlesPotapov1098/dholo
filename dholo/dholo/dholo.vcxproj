@@ -189,6 +189,7 @@
     <ClInclude Include="dhimgexpr.h" />
     <ClInclude Include="dhimglist.h" />
     <ClInclude Include="dhimgloader.h" />
+    <ClInclude Include="dhoclcalc.h" />
     <ClInclude Include="dhoclinit.h" />
     <ClInclude Include="dhopencldlg.h" />
     <ClInclude Include="dhtoolbar.h" />
@@ -196,6 +197,8 @@
     <ClInclude Include="dholo.h" />
     <ClInclude Include="dhmainfrm.h" />
     <ClInclude Include="dhogl.h" />
+    <ClInclude Include="idhcalculate.h" />
+    <ClInclude Include="idhrender.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stdafx.h" />
@@ -205,6 +208,7 @@
     <ClCompile Include="dhimgexpr.cpp" />
     <ClCompile Include="dhimglist.cpp" />
     <ClCompile Include="dhimgloader.cpp" />
+    <ClCompile Include="dhoclcalc.cpp" />
     <ClCompile Include="dhoclinit.cpp" />
     <ClCompile Include="dhopencldlg.cpp" />
     <ClCompile Include="dhtoolbar.cpp" />
