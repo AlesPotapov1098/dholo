@@ -12,7 +12,7 @@
 
 #pragma comment(lib, "OpenGL32.lib")
 
-class DHOGLRender
+class DHOGLRender : public IDHRender
 {
 public:
 	DHOGLRender();
@@ -21,7 +21,7 @@ public:
 	/// <summary>
 	/// «ахват контекста и создание контекста OpenGL дл€ Windows.
 	/// </summary>
-	virtual void Init(const CDC& dc);
+	void Init(const CDC& dc);
 	
 	/// <summary>
 	/// —оздание текстуры из пикселей imgldr

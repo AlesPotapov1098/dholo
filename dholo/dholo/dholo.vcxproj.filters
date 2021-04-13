@@ -34,6 +34,9 @@
     <Filter Include="scr\app\dlg">
       <UniqueIdentifier>{a00189de-789a-4fd5-96cc-709ab67239d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\gpgpu\programs">
+      <UniqueIdentifier>{ec5a5c5c-61b4-4366-bb7c-ef345f411ab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -146,6 +149,9 @@
   <ItemGroup>
     <None Include="res\dholo.rc2">
       <Filter>resources</Filter>
+    </None>
+    <None Include="black.cl">
+      <Filter>scr\gpgpu\programs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
