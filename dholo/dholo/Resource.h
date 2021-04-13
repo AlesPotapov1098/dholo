@@ -14,9 +14,10 @@
 #define ID_VIEW_CUSTOMIZE               126
 #define IDR_MAINFRAME                   128
 #define IDR_MAINFRAME_256               129
-#define IDS_EXPLORER                    129
 #define IDR_dholoTYPE                   130
 #define ID_IMAGE_PANEL                  131
+#define IDS_EXPLORER                    132
+#define IDS_CONVERTER                   133
 #define IDR_THEME_MENU                  200
 #define ID_SET_STYLE                    201
 #define ID_VIEW_APPLOOK_WIN_2000        205
@@ -73,6 +74,9 @@
 #define IDS_IMAGE_LIST_COLUMN_IMAGE     62000
 #define IDS_IMAGE_LIST_COLUMN_PATH      62001
 #define IDS_IMAGE_LIST                  62002
+#define IDR_POPUP_CONVERTER             62003
+#define ID_CONVERT_IMAGE                62004
+#define IDS_IMG_CONVERTER               62005
 
 // Next default values for new objects
 // 
