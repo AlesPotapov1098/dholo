@@ -2,9 +2,10 @@
 
 #include <afxwin.h>
 #include <Windows.h>
-
+#include <string>
 #include <gl\GLU.h>
 #include <gl\GL.h>
+#include <fstream>
 
 #include "idhcalculate.h"
 #include "dhoclinit.h"
@@ -20,7 +21,7 @@ public:
 	/// Загрузка исходного кода программы и его компиляция.
 	/// Создания ядра
 	/// </summary>
-	void virtual Init(const DHOCLHost& host, const CStringA& progpath);
+	void virtual Init(const DHOCLHost& host, const std::string& progpath);
 
 	/// <summary>
 	/// Загрузка текстуры OpenGL.
@@ -37,6 +38,7 @@ public:
 private:
 	cl::Program m_Program;
 	cl::Kernel m_Kernel;
+	cl::Context m_Context;
 	cl::Memory m_InOutMem;
 	cl::CommandQueue m_CommandQueue;
 };
