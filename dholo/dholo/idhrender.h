@@ -9,15 +9,15 @@ public:
 	/// <summary>
 	/// Методя для инициализации
 	/// </summary>
-	void virtual Init() = 0;
+	virtual void Init() = 0;
 
 	/// <summary>
 	/// Метод для создания изображения
 	/// </summary>
-	void virtual LoadImg() = 0;
+	virtual void LoadImg() = 0;
 
 	/// <summary>
 	/// Методя для отрисовки изображения
 	/// </summary>
-	void virtual Draw() = 0;
+	virtual void Draw() = 0;
 };

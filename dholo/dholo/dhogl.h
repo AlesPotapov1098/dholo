@@ -12,26 +12,26 @@
 
 #pragma comment(lib, "OpenGL32.lib")
 
-class OGL1 : public IDHRender
+class DHOGLRender
 {
 public:
-	OGL1();
-	~OGL1();
+	DHOGLRender();
+	~DHOGLRender();
 
 	/// <summary>
 	/// Захват контекста и создание контекста OpenGL для Windows.
 	/// </summary>
-	void virtual Init(const CDC& dc);
+	virtual void Init(const CDC& dc);
 	
 	/// <summary>
 	/// Создание текстуры из пикселей imgldr
 	/// </summary>
-	void virtual LoadImg(const DHImgLoader& imgldr, const CRect& rect);
+	void LoadImg(const DHImgLoader& imgldr, const CRect& rect);
 
 	/// <summary>
 	/// Рисуем
 	/// </summary>
-	void Draw() override;
+	void Draw();
 
 	/// <summary>
 	/// Даем текстуру
@@ -46,37 +46,3 @@ private:
 	GLfloat m_X;
 	GLfloat m_Y;
 };
-
-namespace gpgpu {
-	namespace ogl {
-		class OGL
-		{
-		public:
-			OGL();
-			~OGL();
-
-			void InitOpenGL();
-
-			bool IsActive();
-			void Render(CDC* dc, CRect* rect);
-
-			void LoadTexture(const CStringA& pathImage);
-			void InitTexture();
-			void DrawTexture();
-			void ReleaseOpenGL();
-
-		private:
-			HGLRC m_hRC;
-			PIXELFORMATDESCRIPTOR m_Desc;
-
-			GLuint m_Texture;
-
-			GLfloat m_X;
-			GLfloat m_Y;
-
-			CRect * m_Rect;
-
-			DHImgLoader m_ImgLoader;
-		};
-	}
-}

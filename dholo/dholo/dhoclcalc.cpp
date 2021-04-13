@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "dhoclcalc.h"
 
 void DHOCLCalc::Init(const DHOCLHost & host, const CStringA& progpath)
