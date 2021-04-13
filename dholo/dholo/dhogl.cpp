@@ -1,132 +1,102 @@
 #include "stdafx.h"
 #include "dhogl.h"
 
-namespace gpgpu
+DHOGLRender::DHOGLRender()
 {
-	namespace ogl
-	{
-		OGL::OGL()
-		{
-			m_hRC = nullptr;
-			ZeroMemory(&m_Desc, sizeof(m_Desc));
-		}
+	m_hRC = nullptr;
+	ZeroMemory(&m_Desc, sizeof(m_Desc));
 
-		OGL::~OGL()
-		{
-			m_hRC = nullptr;
-			ZeroMemory(&m_Desc, sizeof(m_Desc));
-		}
+	m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+	m_Desc.nVersion = 1;
+	m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+	m_Desc.iPixelType = PFD_TYPE_RGBA;
+	m_Desc.cColorBits = 64;
+	m_Desc.cDepthBits = 32;
+	m_Desc.iLayerType = PFD_MAIN_PLANE;
+}
 
-		void OGL::InitOpenGL()
-		{
-			m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
-			m_Desc.nVersion = 1;
-			m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-			m_Desc.iPixelType = PFD_TYPE_RGBA;
-			m_Desc.cColorBits = 64;
-			m_Desc.cDepthBits = 32;
-			m_Desc.iLayerType = PFD_MAIN_PLANE;
-		}
+DHOGLRender::~DHOGLRender()
+{
+	m_hRC = nullptr;
+	ZeroMemory(&m_Desc, sizeof(m_Desc));
+}
 
-		bool OGL::IsActive()
-		{
-			if (m_hRC == nullptr)
-				return false;
+void DHOGLRender::Init(const CDC & dc)
+{
+	if (dc == nullptr)
+		return;
 
-			return true;
-		}
+	if (!SetPixelFormat(dc.m_hDC,
+		ChoosePixelFormat(dc.m_hDC, &m_Desc),
+		&m_Desc))
+		return;
 
-		void OGL::Render(CDC* dc, CRect* rect)
-		{
-			if (dc == nullptr || rect == nullptr)
-				return;
+	m_hRC = wglCreateContext(dc.m_hDC);
+	if (!m_hRC)
+		return;
 
-			m_Rect = rect;
+	if (!wglMakeCurrent(dc.m_hDC, m_hRC))
+		return;
 
-			if (!SetPixelFormat(dc->m_hDC, 
-				ChoosePixelFormat(dc->m_hDC, &m_Desc),
-				&m_Desc))
-				return;
+	wglMakeCurrent(dc.m_hDC, m_hRC);
 
-			m_hRC = wglCreateContext(dc->m_hDC);
-			if (!m_hRC)
-				return;
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
-			if (!wglMakeCurrent(dc->m_hDC, m_hRC))
-				return;
+void DHOGLRender::LoadImg(const DHImgLoader & imgldr, const CRect& rect)
+{
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &m_Texture);
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-			wglMakeCurrent(dc->m_hDC, m_hRC);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-			glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (imgldr.GetChannels() == 3)
+		glTexImage2D(
+			GL_TEXTURE_2D, 0, GL_RGB,
+			imgldr.GetWidth(),
+			imgldr.GetHeight(),
+			0, GL_RGB, GL_UNSIGNED_BYTE,
+			imgldr.GetPixelsData());
+	else if (imgldr.GetChannels() == 4)
+		glTexImage2D(
+			GL_TEXTURE_2D, 0, GL_RGBA,
+			imgldr.GetWidth(),
+			imgldr.GetHeight(),
+			0, GL_RGBA, GL_UNSIGNED_BYTE,
+			imgldr.GetPixelsData());
 
-			DrawTexture();
+	m_X = (float)imgldr.GetWidth() / (float)(rect.Width());
+	m_Y = (float)imgldr.GetHeight() / (float)(rect.Height());
 
-			SwapBuffers(dc->m_hDC);
-		}
+	m_X = m_X >= 1.0f ? 1.0f : m_X;
+	m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
+}
 
-		void OGL::LoadTexture(const CStringA& pathImage)
-		{
-			m_ImgLoader.Load(pathImage);
-		}
+void DHOGLRender::Draw()
+{
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(-m_X, -m_Y);
 
-		void OGL::InitTexture()
-		{
-			glEnable(GL_TEXTURE_2D);
-			glGenTextures(1, &m_Texture);
-			glBindTexture(GL_TEXTURE_2D, m_Texture);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(-m_X, m_Y);
 
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(m_X, m_Y);
 
-			if (m_ImgLoader.GetChannels() == 3)
-				glTexImage2D(
-					GL_TEXTURE_2D, 0, GL_RGB,
-					m_ImgLoader.GetWidth(),
-					m_ImgLoader.GetHeight(),
-					0, GL_RGB, GL_UNSIGNED_BYTE,
-					m_ImgLoader.GetPixelsData());
-			else if (m_ImgLoader.GetChannels() == 4)
-			{
-				glTexImage2D(
-					GL_TEXTURE_2D, 0, GL_RGBA,
-					m_ImgLoader.GetWidth(),
-					m_ImgLoader.GetHeight(),
-					0, GL_RGBA, GL_UNSIGNED_BYTE,
-					m_ImgLoader.GetPixelsData());
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(m_X, -m_Y);
+	glEnd();
 
-				m_X = (float)m_ImgLoader.GetWidth() / (float)(m_Rect->Width());
-				m_Y = (float)m_ImgLoader.GetHeight() / (float)(m_Rect->Height());
 
-				m_X = m_X >= 1.0f ? 1.0f : m_X;
-				m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
-			}
-			else
-			{
-				m_X = 0.95f;
-				m_Y = 0.95f;
-			}
-		}
+}
 
-		void OGL::DrawTexture()
-		{
-			glBegin(GL_QUADS);
-				glTexCoord2f(0.0f, 0.0f);
-				glVertex2f(-m_X, -m_Y);
-				glTexCoord2f(0.0f, 1.0f);
-				glVertex2f(-m_X, m_Y);
-				glTexCoord2f(1.0f, 1.0f);
-				glVertex2f(m_X, m_Y);
-				glTexCoord2f(1.0f, 0.0f);
-				glVertex2f(m_X, -m_Y);
-			glEnd();
-		}
-
-		void OGL::ReleaseOpenGL()
-		{
-			wglDeleteContext(m_hRC);
-		}
-	}
+GLuint DHOGLRender::GetTexture() const
+{
+	return m_Texture;
 }

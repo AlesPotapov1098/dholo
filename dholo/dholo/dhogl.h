@@ -8,39 +8,41 @@
 #include <iostream>
 
 #include "dhimgloader.h"
+#include "idhrender.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
-namespace gpgpu {
-	namespace ogl {
-		class OGL
-		{
-		public:
-			OGL();
-			~OGL();
+class DHOGLRender
+{
+public:
+	DHOGLRender();
+	~DHOGLRender();
 
-			void InitOpenGL();
+	/// <summary>
+	/// Захват контекста и создание контекста OpenGL для Windows.
+	/// </summary>
+	virtual void Init(const CDC& dc);
+	
+	/// <summary>
+	/// Создание текстуры из пикселей imgldr
+	/// </summary>
+	void LoadImg(const DHImgLoader& imgldr, const CRect& rect);
 
-			bool IsActive();
-			void Render(CDC* dc, CRect* rect);
+	/// <summary>
+	/// Рисуем
+	/// </summary>
+	void Draw();
 
-			void LoadTexture(const CStringA& pathImage);
-			void InitTexture();
-			void DrawTexture();
-			void ReleaseOpenGL();
+	/// <summary>
+	/// Даем текстуру
+	/// </summary>
+	GLuint GetTexture() const;
 
-		private:
-			HGLRC m_hRC;
-			PIXELFORMATDESCRIPTOR m_Desc;
+private:
+	HGLRC m_hRC;
+	PIXELFORMATDESCRIPTOR m_Desc;
+	GLuint m_Texture;
 
-			GLuint m_Texture;
-
-			GLfloat m_X;
-			GLfloat m_Y;
-
-			CRect * m_Rect;
-
-			DHImgLoader m_ImgLoader;
-		};
-	}
-}
+	GLfloat m_X;
+	GLfloat m_Y;
+};

@@ -78,6 +78,15 @@
     <ClInclude Include="dhoclinit.h">
       <Filter>scr\gpgpu\opencl</Filter>
     </ClInclude>
+    <ClInclude Include="idhcalculate.h">
+      <Filter>scr\gpgpu</Filter>
+    </ClInclude>
+    <ClInclude Include="idhrender.h">
+      <Filter>scr\gpgpu</Filter>
+    </ClInclude>
+    <ClInclude Include="dhoclcalc.h">
+      <Filter>scr\gpgpu\opencl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -111,6 +120,9 @@
       <Filter>scr\app\dlg</Filter>
     </ClCompile>
     <ClCompile Include="dhoclinit.cpp">
+      <Filter>scr\gpgpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="dhoclcalc.cpp">
       <Filter>scr\gpgpu\opencl</Filter>
     </ClCompile>
   </ItemGroup>
