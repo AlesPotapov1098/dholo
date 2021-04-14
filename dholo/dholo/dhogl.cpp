@@ -39,9 +39,6 @@ void DHOGLRender::Init(const CDC & dc)
 		return;
 
 	wglMakeCurrent(dc.m_hDC, m_hRC);
-
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void DHOGLRender::LoadImg(const DHImgLoader & imgldr, const CRect& rect)
@@ -75,10 +72,18 @@ void DHOGLRender::LoadImg(const DHImgLoader & imgldr, const CRect& rect)
 
 	m_X = m_X >= 1.0f ? 1.0f : m_X;
 	m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
+
+	glFinish();
 }
 
 void DHOGLRender::Draw()
 {
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, m_Texture);
+
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(-m_X, -m_Y);
@@ -92,8 +97,6 @@ void DHOGLRender::Draw()
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex2f(m_X, -m_Y);
 	glEnd();
-
-
 }
 
 GLuint DHOGLRender::GetTexture() const

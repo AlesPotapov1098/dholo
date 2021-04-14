@@ -6,11 +6,15 @@
 #include <gl\GLU.h>
 #include <gl\GL.h>
 #include <fstream>
+#include <vector>
 
 #include "idhcalculate.h"
 #include "dhoclinit.h"
 
-class DHOCLCalc : public IDHCalculate
+#include <CL\cl.h>
+#include <CL\opencl.hpp>
+
+class DHOCLCalc //: public IDHCalculate
 {
 public:
 	DHOCLCalc() = default;
@@ -21,19 +25,19 @@ public:
 	/// Загрузка исходного кода программы и его компиляция.
 	/// Создания ядра
 	/// </summary>
-	void virtual Init(const DHOCLHost& host, const std::string& progpath);
+	void Init(const DHOCLHost& host, const std::string& progpath);
 
 	/// <summary>
 	/// Загрузка текстуры OpenGL.
 	/// Инициализация объекта m_InOutMem
 	/// </summary>
-	void virtual LoadImg(const GLuint& texture);
+	void LoadImg(const GLuint& texture, int width, int height);
 
 	/// <summary>
 	/// Передача ядру m_Kernel входных значений.
 	/// Выполнение ядра с заданными параметрами
 	/// </summary>
-	void Calculate() override;
+	void Calculate();
 
 private:
 	cl::Program m_Program;
@@ -41,4 +45,6 @@ private:
 	cl::Context m_Context;
 	cl::Memory m_InOutMem;
 	cl::CommandQueue m_CommandQueue;
+	int m_width;
+	int m_height;
 };

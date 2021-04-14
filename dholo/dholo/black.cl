@@ -1,13 +1,8 @@
-__kernel void paint_it_black(__read_write img2d_t img)
-{
-	const sampler_t smp = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_NONE | CLK_FILTER_LINEAR;
+__kernel void testKernelWrite(__write_only image2d_t resultTexture)
+{	
+	int2 imgCoords = (int2)(get_global_id(0), get_global_id(1));
+	
+	float4 imgVal = (float4)(1.0f, 0.0f, 0.0f, 1.0f);
 
-	int2 coord = (int2)(get_global_id(0), get_global_id(1));
-
-	uint4 bgra = read_imageui(img, smp, coord); 
-	bgra.x = 0;
-	bgra.y = 0;
-	bgra.z = 0;
-
-	write_imageuiimg, coord, bgra);
+	write_imagef(resultTexture, imgCoords, imgVal);
 }
