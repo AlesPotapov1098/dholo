@@ -72,7 +72,7 @@ void DHOGLRender::LoadImg(const DHImgLoader & imgldr, const CRect& rect)
 
 	m_X = m_X >= 1.0f ? 1.0f : m_X;
 	m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
-
+	
 	glFinish();
 }
 

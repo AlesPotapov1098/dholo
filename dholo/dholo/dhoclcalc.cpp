@@ -46,20 +46,30 @@ void DHOCLCalc::LoadImg(const GLuint& texture, int width, int height)
 	cl_int error_code = 847489;
 	m_width = width;
 	m_height = height;
-	m_InOutMem = cl::ImageGL(m_Context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture, &error_code);
+	m_InOutMem = cl::ImageGL(m_Context, CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, texture, &error_code);
 	int d = 0;
 }
 
 void DHOCLCalc::Calculate()
 {
+	cl::Event ev;
 	cl::vector<cl::Memory> vec;
 	vec.push_back(m_InOutMem);
-	cl_int err = m_CommandQueue.enqueueAcquireGLObjects(&vec);
+	cl_int err = m_CommandQueue.enqueueAcquireGLObjects(&vec, NULL, &ev);
+	err = ev.wait();
 	err = m_Kernel.setArg(0, m_InOutMem);
 	cl::NDRange offset = 0;
 	cl::NDRange gloabl_size = cl::NDRange((cl::size_type)m_width, (cl::size_type)m_height);
 	cl::NDRange local_size = { 1, 1 };
-	err = m_CommandQueue.enqueueNDRangeKernel(m_Kernel, offset, gloabl_size, local_size);
-	err = m_CommandQueue.enqueueReleaseGLObjects(&vec);
+	err = m_CommandQueue.enqueueNDRangeKernel(m_Kernel, offset, gloabl_size, local_size, NULL, &ev);
+	err = ev.wait();
+	err = m_CommandQueue.enqueueReleaseGLObjects(&vec, NULL, &ev);
+	err = ev.wait();
+	//if (err != CL_SUCCESS)
+	//{
+	//	auto msg = ev.getProfilingInfo<CL_PROFILING_COMMAND_QUEUED>(&err);
+	//	int d = 0;
+	//}
+
 	err = m_CommandQueue.finish();
 }
