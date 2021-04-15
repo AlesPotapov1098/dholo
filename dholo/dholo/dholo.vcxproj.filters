@@ -159,6 +159,9 @@
     <None Include="black.cl">
       <Filter>scr\gpgpu\programs</Filter>
     </None>
+    <None Include="OpenCLFile.cl">
+      <Filter>scr\gpgpu\programs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dholo.rc">

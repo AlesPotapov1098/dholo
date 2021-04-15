@@ -237,6 +237,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="black.cl" />
+    <None Include="OpenCLFile.cl" />
     <None Include="res\dholo.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
