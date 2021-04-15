@@ -165,8 +165,6 @@ BOOL bSetupPixelFormat(HDC hdc)
 	ppfd->cAccumBits = 0;
 	ppfd->cStencilBits = 0;
 
-	pixelformat = ChoosePixelFormat(hdc, ppfd);
-
 	if ((pixelformat = ChoosePixelFormat(hdc, ppfd)) == 0)
 	{
 		MessageBox(NULL, "ChoosePixelFormat failed", "Error", MB_OK);
