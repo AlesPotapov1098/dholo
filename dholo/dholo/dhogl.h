@@ -12,37 +12,43 @@
 
 #pragma comment(lib, "OpenGL32.lib")
 
-class DHOGLRender : public IDHRender
+namespace dholo
 {
-public:
-	DHOGLRender();
-	~DHOGLRender();
+	namespace ogl
+	{
+		class DHOGLRender : public IDHRender
+		{
+		public:
+			DHOGLRender();
+			~DHOGLRender();
 
-	/// <summary>
-	/// Захват контекста и создание контекста OpenGL для Windows.
-	/// </summary>
-	void Init(const CDC& dc);
-	
-	/// <summary>
-	/// Создание текстуры из пикселей imgldr
-	/// </summary>
-	void LoadImg(const DHImgLoader& imgldr, const CRect& rect);
+			/// <summary>
+			/// Захват контекста и создание контекста OpenGL для Windows.
+			/// </summary>
+			void Init(const CDC& dc);
 
-	/// <summary>
-	/// Рисуем
-	/// </summary>
-	void Draw();
+			/// <summary>
+			/// Создание текстуры из пикселей imgldr
+			/// </summary>
+			void LoadImg(const dholo::img::DHImgLoader& imgldr, const CRect& rect);
 
-	/// <summary>
-	/// Даем текстуру
-	/// </summary>
-	GLuint GetTexture() const;
+			/// <summary>
+			/// Рисуем
+			/// </summary>
+			void Draw();
 
-private:
-	HGLRC m_hRC;
-	PIXELFORMATDESCRIPTOR m_Desc;
-	GLuint m_Texture;
+			/// <summary>
+			/// Даем текстуру
+			/// </summary>
+			GLuint GetTexture() const;
 
-	GLfloat m_X;
-	GLfloat m_Y;
-};
+		private:
+			HGLRC m_hRC;
+			PIXELFORMATDESCRIPTOR m_Desc;
+			GLuint m_Texture;
+
+			GLfloat m_X;
+			GLfloat m_Y;
+		};
+	}
+}

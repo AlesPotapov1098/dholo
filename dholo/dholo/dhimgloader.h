@@ -5,26 +5,31 @@
 #include <string>
 #include <codecvt>
 
-class DHImgLoader
+namespace dholo
 {
-public:
-	DHImgLoader();
-	~DHImgLoader();
+	namespace img
+	{
+		class DHImgLoader
+		{
+		public:
+			DHImgLoader();
+			~DHImgLoader();
 
-	bool Load(const CStringA& imgPath);
-	bool OpenDialog();
+			bool Load(const CStringA& imgPath);
+			bool OpenDialog();
 
-	int GetWidth() const;
-	int GetHeight() const;
-	int GetChannels() const;
+			int GetWidth() const;
+			int GetHeight() const;
+			int GetChannels() const;
 
-	float * GetPixelsData() const;
+			float * GetPixelsData() const;
 
-private:
-	float * m_PixelsData;
+		private:
+			float * m_PixelsData;
 
-	int m_width;
-	int m_height;
-	int m_nrChannels;
-};
-
+			int m_width;
+			int m_height;
+			int m_nrChannels;
+		};
+	}
+}

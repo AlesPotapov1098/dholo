@@ -7,31 +7,34 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-DHImgList::DHImgList() noexcept
+namespace dholo
 {
-}
-
-DHImgList::~DHImgList()
-{
-}
-
-BEGIN_MESSAGE_MAP(DHImgList, CListCtrl)
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// обработчики сообщений CViewTree
-
-BOOL DHImgList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
-{
-	BOOL bRes = CListCtrl::OnNotify(wParam, lParam, pResult);
-
-	NMHDR* pNMHDR = (NMHDR*)lParam;
-	ASSERT(pNMHDR != nullptr);
-
-	if (pNMHDR && pNMHDR->code == TTN_SHOW && GetToolTips() != nullptr)
+	namespace img
 	{
-		GetToolTips()->SetWindowPos(&wndTop, -1, -1, -1, -1, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOSIZE);
-	}
+		DHImgList::DHImgList() noexcept
+		{
+		}
 
-	return bRes;
+		DHImgList::~DHImgList()
+		{
+		}
+
+		BEGIN_MESSAGE_MAP(DHImgList, CListCtrl)
+		END_MESSAGE_MAP()
+
+		BOOL DHImgList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+		{
+			BOOL bRes = CListCtrl::OnNotify(wParam, lParam, pResult);
+
+			NMHDR* pNMHDR = (NMHDR*)lParam;
+			ASSERT(pNMHDR != nullptr);
+
+			if (pNMHDR && pNMHDR->code == TTN_SHOW && GetToolTips() != nullptr)
+			{
+				GetToolTips()->SetWindowPos(&wndTop, -1, -1, -1, -1, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOSIZE);
+			}
+
+			return bRes;
+		}
+	}
 }

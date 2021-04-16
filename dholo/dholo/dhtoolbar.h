@@ -1,11 +1,17 @@
 #pragma once
 
-class DHToolBar : public CMFCToolBar
+namespace dholo
 {
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
+	namespace toolbar
 	{
-		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
-	}
+		class DHToolBar : public CMFCToolBar
+		{
+			virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
+			{
+				CMFCToolBar::OnUpdateCmdUI((CFrameWnd*)GetOwner(), bDisableIfNoHndler);
+			}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
-};
+			virtual BOOL AllowShowOnList() const { return FALSE; }
+		};
+	}
+}
