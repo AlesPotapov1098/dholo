@@ -18,10 +18,10 @@ public:
 	int GetHeight() const;
 	int GetChannels() const;
 
-	unsigned char * GetPixelsData() const;
+	float * GetPixelsData() const;
 
 private:
-	unsigned char * m_PixelsData;
+	float * m_PixelsData;
 
 	int m_width;
 	int m_height;

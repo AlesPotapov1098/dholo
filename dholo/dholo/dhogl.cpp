@@ -47,24 +47,24 @@ void DHOGLRender::LoadImg(const DHImgLoader & imgldr, const CRect& rect)
 	glGenTextures(1, &m_Texture);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	if (imgldr.GetChannels() == 3)
 		glTexImage2D(
 			GL_TEXTURE_2D, 0, GL_RGB,
 			imgldr.GetWidth(),
 			imgldr.GetHeight(),
-			0, GL_RGB, GL_UNSIGNED_BYTE,
+			0, GL_RGB, GL_FLOAT,
 			imgldr.GetPixelsData());
 	else if (imgldr.GetChannels() == 4)
 		glTexImage2D(
 			GL_TEXTURE_2D, 0, GL_RGBA,
 			imgldr.GetWidth(),
 			imgldr.GetHeight(),
-			0, GL_RGBA, GL_UNSIGNED_BYTE,
+			0, GL_RGBA, GL_FLOAT,
 			imgldr.GetPixelsData());
 
 	m_X = (float)imgldr.GetWidth() / (float)(rect.Width());

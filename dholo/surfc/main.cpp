@@ -10,8 +10,8 @@
 #include <iostream>
 #include <cstdio>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "std_image.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include "std_image.h"
 
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "OpenGL32.lib")
@@ -105,9 +105,9 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		InitOpenCL();
 		int chn = 0;
-		stbi_set_flip_vertically_on_load(true);
-		pixels = stbi_loadf("1572778667_3.jpg", &WIDTH, &HEIGHT, &chn, 0);
-		int d = 0;
+		//stbi_set_flip_vertically_on_load(true);
+		//pixels = stbi_loadf("1572778667_3.jpg", &WIDTH, &HEIGHT, &chn, 0);
+		//int d = 0;
 	}
 	break;
 

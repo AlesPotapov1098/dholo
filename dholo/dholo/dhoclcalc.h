@@ -12,9 +12,8 @@
 #include "dhoclinit.h"
 
 #include <CL\cl.h>
-#include <CL\opencl.hpp>
 
-class DHOCLCalc //: public IDHCalculate
+class DHOCLCalc
 {
 public:
 	DHOCLCalc() = default;
@@ -31,7 +30,17 @@ public:
 	/// Загрузка текстуры OpenGL.
 	/// Инициализация объекта m_InOutMem
 	/// </summary>
-	void LoadImg(const GLuint& texture, int width, int height);
+	void LoadImg(const GLuint& texture);
+
+	/// <summary>
+	/// Установка глобальных параметров
+	/// </summary>
+	void SetGlobalPar(int global_x, int global_y);
+
+	/// <summary>
+	/// Установка локальных параметров
+	/// </summary>
+	void SetLocalPar(int local_x, int local_y);
 
 	/// <summary>
 	/// Передача ядру m_Kernel входных значений.
@@ -40,11 +49,11 @@ public:
 	void Calculate();
 
 private:
-	cl::Program m_Program;
-	cl::Kernel m_Kernel;
-	cl::Context m_Context;
-	cl::Memory m_InOutMem;
-	cl::CommandQueue m_CommandQueue;
-	int m_width;
-	int m_height;
+	cl_program m_Program;
+	cl_kernel m_Kernel;
+	cl_context m_Context;
+	cl_mem m_InOutMem;
+	cl_command_queue m_CommandQueue;
+	int m_GlobalX, m_GlobalY;
+	int m_LocalX, m_LocalY;
 };
