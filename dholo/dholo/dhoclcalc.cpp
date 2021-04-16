@@ -81,16 +81,28 @@ void DHOCLCalc::LoadImg(const GLuint& texture)
 		return;
 }
 
-void DHOCLCalc::SetGlobalPar(int global_x = 0, int global_y = 0)
+void DHOCLCalc::SetGlobalSize(std::size_t global_x = 0, std::size_t global_y = 0)
 {
-	m_GlobalX = global_x;
-	m_GlobalY = global_y;
+	m_GlobalSize[0] = global_x;
+	m_GlobalSize[1] = global_y;
 }
 
-void DHOCLCalc::SetLocalPar(int local_x = 1, int local_y = 1)
+void DHOCLCalc::SetGlobalSize(std::size_t globalSize[2])
 {
-	m_LocalX = local_x;
-	m_LocalY = local_y;
+	m_GlobalSize[0] = globalSize[0];
+	m_GlobalSize[1] = globalSize[1];
+}
+
+void DHOCLCalc::SetLocalSize(std::size_t local_x = 1, std::size_t local_y = 1)
+{
+	m_LocalSize[0] = local_x;
+	m_LocalSize[1] = local_y;
+}
+
+void DHOCLCalc::SetLocalSize(std::size_t localSize[2])
+{
+	m_LocalSize[0] = localSize[0];
+	m_LocalSize[1] = localSize[1];
 }
 
 void DHOCLCalc::Calculate()
@@ -98,13 +110,10 @@ void DHOCLCalc::Calculate()
 	clEnqueueAcquireGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 	cl_int res = clSetKernelArg(m_Kernel, 0, sizeof(m_InOutMem), &m_InOutMem);
 
-	if (m_GlobalX <= 0 || m_GlobalY <= 0)
+	if (m_GlobalSize[0] <= 0 || m_GlobalSize[1] <= 0)
 		return;
 
-	const std::size_t global_size[2] = { m_GlobalX, m_GlobalY };
-	const std::size_t local_size[2] = { m_LocalX, m_LocalY };
-
-	clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
+	clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, m_GlobalSize, m_LocalSize, 0, NULL, NULL);
 
 	clEnqueueReleaseGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 	cl_int err = clFinish(m_CommandQueue);
