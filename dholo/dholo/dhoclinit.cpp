@@ -17,6 +17,14 @@ DHOCLHard::DHOCLHard(cl_platform_id platform)
 		m_Devices = nullptr;
 }
 
+DHOCLHard::~DHOCLHard()
+{
+	if (m_Devices && m_Size > 0)
+		for (int i = 0; i < m_Size; i++)
+			if (m_Devices[i])
+				clReleaseDevice(m_Devices[i]);
+}
+
 cl_uint DHOCLHard::GetCountDevices() const
 {
 	return m_Size;
@@ -78,160 +86,97 @@ const DHOCLHard& DHOCLInit::operator[](int index) const
 
 std::wstring DHOCLInit::GetPlatformName(cl_platform_id pl) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetPlatformInfo(pl, CL_PLATFORM_NAME, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetPlatformInfo(pl, CL_PLATFORM_NAME, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetPlatformInfo(pl, CL_PLATFORM_NAME);
 }
 
 std::wstring DHOCLInit::GetPlatformVendor(cl_platform_id pl) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetPlatformInfo(pl, CL_PLATFORM_VENDOR, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetPlatformInfo(pl, CL_PLATFORM_VENDOR, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetPlatformInfo(pl, CL_PLATFORM_VENDOR);
 }
 
 std::wstring DHOCLInit::GetPlatformVersion(cl_platform_id pl) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetPlatformInfo(pl, CL_PLATFORM_VERSION, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetPlatformInfo(pl, CL_PLATFORM_VERSION, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetPlatformInfo(pl, CL_PLATFORM_VERSION);
 }
 
 std::wstring DHOCLInit::GetPlatformExtensions(cl_platform_id pl) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS);
 }
 
 std::wstring DHOCLInit::GetDeviceName(cl_device_id dev) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetDeviceInfo(dev, CL_DEVICE_NAME, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetDeviceInfo(dev, CL_DEVICE_NAME, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetDeviceInfo(dev, CL_DEVICE_NAME);
 }
 
 std::wstring DHOCLInit::GetDeviceVendor(cl_device_id dev) const
 {
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-	std::size_t size = 0;
-
-	cl_int err = clGetDeviceInfo(dev, CL_DEVICE_VENDOR, 0, NULL, &size);
-	if (err != CL_SUCCESS || size == 0)
-		return std::wstring();
-
-	char * info = new char[size];
-
-	err = clGetDeviceInfo(dev, CL_DEVICE_VENDOR, size, (void*)info, NULL);
-	if (err != CL_SUCCESS)
-		return std::wstring();
-
-	return conv.from_bytes(info);
+	return GetDeviceInfo(dev, CL_DEVICE_VENDOR);
 }
 
 std::wstring DHOCLInit::GetDeviceVersion(cl_device_id dev) const
 {
+	return GetDeviceInfo(dev, CL_DEVICE_VERSION);
+}
+
+std::wstring DHOCLInit::GetDeviceExtensions(cl_device_id dev) const
+{
+	return GetDeviceInfo(dev, CL_DEVICE_EXTENSIONS);
+}
+
+std::wstring DHOCLInit::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf) const
+{
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
 
 	std::size_t size = 0;
 
-	cl_int err = clGetDeviceInfo(dev, CL_DEVICE_VERSION, 0, NULL, &size);
+	cl_int err = clGetPlatformInfo(pl, inf, 0, NULL, &size);
 	if (err != CL_SUCCESS || size == 0)
 		return std::wstring();
 
 	char * info = new char[size];
 
-	err = clGetDeviceInfo(dev, CL_DEVICE_VERSION, size, (void*)info, NULL);
+	err = clGetPlatformInfo(pl, inf, size, (void*)info, NULL);
 	if (err != CL_SUCCESS)
 		return std::wstring();
 
 	return conv.from_bytes(info);
 }
 
-std::wstring DHOCLInit::GetDeviceExtensions(cl_device_id dev) const
+std::wstring DHOCLInit::GetDeviceInfo(cl_device_id dev, cl_device_info inf) const
 {
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
 	std::size_t size = 0;
 
-	cl_int err = clGetDeviceInfo(dev, CL_DEVICE_EXTENSIONS, 0, NULL, &size);
+	cl_int err = clGetDeviceInfo(dev, inf, 0, NULL, &size);
 	if (err != CL_SUCCESS || size == 0)
 		return std::wstring();
 
 	char * info = new char[size];
 
-	err = clGetDeviceInfo(dev, CL_DEVICE_EXTENSIONS, size, (void*)info, NULL);
+	err = clGetDeviceInfo(dev, inf, size, (void*)info, NULL);
 	if (err != CL_SUCCESS)
 		return std::wstring();
 
 	return conv.from_bytes(info);
+}
+
+DHOCLHost::DHOCLHost()
+{
+	m_Platform = NULL;
+	m_Device = NULL;
 }
 
 DHOCLHost::DHOCLHost(cl_platform_id pl, cl_device_id dev)
 {
 	m_Device = dev;
 	m_Platform = pl;
+}
+
+DHOCLHost::~DHOCLHost()
+{
+	if (m_Device)
+		clReleaseDevice(m_Device);
 }
 
 void DHOCLHost::SetPlatform(cl_platform_id pl)

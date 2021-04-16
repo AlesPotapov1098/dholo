@@ -8,9 +8,9 @@
 class DHOCLHost
 {
 public:
-	DHOCLHost() = default;
+	DHOCLHost();
 	DHOCLHost(cl_platform_id, cl_device_id);
-	~DHOCLHost() = default;
+	~DHOCLHost();
 
 	void SetPlatform(cl_platform_id);
 	void SetDevice(cl_device_id);
@@ -28,7 +28,7 @@ class DHOCLHard
 public:
 	DHOCLHard() = default;
 	DHOCLHard(cl_platform_id);
-	~DHOCLHard() = default;
+	~DHOCLHard();
 
 	cl_uint GetCountDevices() const;
 	cl_device_id GetDevice(unsigned int index) const;
@@ -62,6 +62,9 @@ public:
 	std::wstring GetDeviceVendor(cl_device_id) const;
 	std::wstring GetDeviceVersion(cl_device_id) const;
 	std::wstring GetDeviceExtensions(cl_device_id) const;
+
+	std::wstring GetPlatformInfo(cl_platform_id, cl_platform_info) const;
+	std::wstring GetDeviceInfo(cl_device_id, cl_device_info) const;
 
 private:
 	std::vector<DHOCLHard> m_Hardware;
