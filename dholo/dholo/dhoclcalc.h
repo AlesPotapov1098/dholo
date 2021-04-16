@@ -12,6 +12,7 @@
 #include "dhoclinit.h"
 
 #include <CL\cl.h>
+#include <CL\cl_gl.h>
 
 class DHOCLCalc
 {

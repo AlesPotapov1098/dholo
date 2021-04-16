@@ -1,6 +1,6 @@
 #pragma once
 
-#include <CL/cl2.h>
+#include <CL/cl.h>
 #include <codecvt>
 #include <string>
 #include <vector>
@@ -9,35 +9,37 @@ class DHOCLHost
 {
 public:
 	DHOCLHost() = default;
-	DHOCLHost(const cl::Platform&, const cl::Device&);
+	DHOCLHost(cl_platform_id, cl_device_id);
 	~DHOCLHost() = default;
 
-	void SetPlatform(const cl::Platform&);
-	void SetDevice(const cl::Device&);
+	void SetPlatform(cl_platform_id);
+	void SetDevice(cl_device_id);
 
-	const cl::Platform& GetPlatform() const;
-	const cl::Device& GetDevice() const;
+	cl_platform_id GetPlatform() const;
+	cl_device_id GetDevice() const;
 
 private:
-	cl::Platform m_Platform;
-	cl::Device   m_Device;
+	cl_platform_id m_Platform;
+	cl_device_id   m_Device;
 };
 
 class DHOCLHard
 {
 public:
 	DHOCLHard() = default;
-	DHOCLHard(const cl::Platform&);
+	DHOCLHard(cl_platform_id);
 	~DHOCLHard() = default;
 
-	std::size_t GetCountDevices() const;
-	const cl::Device& GetDevice(unsigned int index) const;
-	const cl::Platform& GetPlatform() const;
-	const cl::Device& operator[](int index) const;
+	cl_uint GetCountDevices() const;
+	cl_device_id GetDevice(unsigned int index) const;
+	cl_platform_id GetPlatform() const;
+	cl_device_id operator[](int index) const;
 
 private:
-	cl::Platform m_Platform;
-	cl::vector<cl::Device> m_Devices;
+	cl_platform_id m_Platform;
+	cl_device_id* m_Devices;
+
+	cl_uint m_Size;
 };
 
 class DHOCLInit
@@ -51,16 +53,16 @@ public:
 	const DHOCLHard& GetHardware(unsigned int index) const;
 	const DHOCLHard& operator[](int index) const;
 
-	std::wstring GetPlatformName(const cl::Platform&) const;
-	std::wstring GetPlatformVendor(const cl::Platform&) const;
-	std::wstring GetPlatformVersion(const cl::Platform&) const;
-	std::wstring GetPlatformExtensions(const cl::Platform&) const;
+	std::wstring GetPlatformName(cl_platform_id) const;
+	std::wstring GetPlatformVendor(cl_platform_id) const;
+	std::wstring GetPlatformVersion(cl_platform_id) const;
+	std::wstring GetPlatformExtensions(cl_platform_id) const;
 
-	std::wstring GetDeviceName(const cl::Device&) const;
-	std::wstring GetDeviceVendor(const cl::Device&) const;
-	std::wstring GetDeviceVersion(const cl::Device&) const;
-	std::wstring GetDeviceExtensions(const cl::Device&) const;
+	std::wstring GetDeviceName(cl_device_id) const;
+	std::wstring GetDeviceVendor(cl_device_id) const;
+	std::wstring GetDeviceVersion(cl_device_id) const;
+	std::wstring GetDeviceExtensions(cl_device_id) const;
 
 private:
-	cl::vector<DHOCLHard> m_Hardware;
+	std::vector<DHOCLHard> m_Hardware;
 };
