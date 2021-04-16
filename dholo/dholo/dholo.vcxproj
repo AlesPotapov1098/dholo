@@ -23,7 +23,7 @@
     <ProjectGuid>{791CFA3E-B66B-46E2-8D63-2BC48C1093F6}</ProjectGuid>
     <Keyword>MFCProj</Keyword>
     <RootNamespace>dholo</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -44,7 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Static</UseOfMfc>
   </PropertyGroup>
@@ -186,11 +186,11 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="dhgpgpu.h" />
     <ClInclude Include="dhimgexpr.h" />
     <ClInclude Include="dhimglist.h" />
     <ClInclude Include="dhimgloader.h" />
     <ClInclude Include="dhoclcalc.h" />
+    <ClInclude Include="dhoclexp.h" />
     <ClInclude Include="dhoclinit.h" />
     <ClInclude Include="dhopencldlg.h" />
     <ClInclude Include="dhtoolbar.h" />
@@ -206,11 +206,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dhgpgpu.cpp" />
     <ClCompile Include="dhimgexpr.cpp" />
     <ClCompile Include="dhimglist.cpp" />
     <ClCompile Include="dhimgloader.cpp" />
     <ClCompile Include="dhoclcalc.cpp" />
+    <ClCompile Include="dhoclexp.cpp" />
     <ClCompile Include="dhoclinit.cpp" />
     <ClCompile Include="dhopencldlg.cpp" />
     <ClCompile Include="dhtoolbar.cpp" />

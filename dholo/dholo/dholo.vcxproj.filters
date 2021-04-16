@@ -37,6 +37,9 @@
     <Filter Include="scr\gpgpu\programs">
       <UniqueIdentifier>{ec5a5c5c-61b4-4366-bb7c-ef345f411ab9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\gpgpu\exp">
+      <UniqueIdentifier>{c875329d-51f6-4f2d-a7b4-c4e5ce9ccff8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -90,8 +93,8 @@
     <ClInclude Include="dhoclcalc.h">
       <Filter>scr\gpgpu\opencl</Filter>
     </ClInclude>
-    <ClInclude Include="dhgpgpu.h">
-      <Filter>scr\gpgpu</Filter>
+    <ClInclude Include="dhoclexp.h">
+      <Filter>scr\gpgpu\exp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -131,8 +134,8 @@
     <ClCompile Include="dhoclcalc.cpp">
       <Filter>scr\gpgpu\opencl</Filter>
     </ClCompile>
-    <ClCompile Include="dhgpgpu.cpp">
-      <Filter>scr\gpgpu</Filter>
+    <ClCompile Include="dhoclexp.cpp">
+      <Filter>scr\gpgpu\exp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
