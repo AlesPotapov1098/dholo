@@ -17,8 +17,8 @@
 class DHOCLCalc
 {
 public:
-	DHOCLCalc() = default;
-	~DHOCLCalc() = default;
+	DHOCLCalc();
+	~DHOCLCalc();
 
 	/// <summary>
 	/// Инициализация полей класс m_Program и m_Kernel.
@@ -58,6 +58,11 @@ public:
 	/// Выполнение ядра с заданными параметрами
 	/// </summary>
 	void Calculate();
+
+	/// <summary>
+	/// Освобождение ресурсов
+	/// </summary>
+	void Release();
 
 private:
 	cl_program m_Program;

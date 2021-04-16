@@ -81,7 +81,6 @@ void DHOGLRender::Draw()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, m_Texture);
 
 	glBegin(GL_QUADS);
@@ -97,6 +96,8 @@ void DHOGLRender::Draw()
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex2f(m_X, -m_Y);
 	glEnd();
+
+	glFinish();
 }
 
 GLuint DHOGLRender::GetTexture() const

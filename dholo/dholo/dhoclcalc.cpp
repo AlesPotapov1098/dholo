@@ -1,25 +1,33 @@
 #include "stdafx.h"
 #include "dhoclcalc.h"
 
+DHOCLCalc::DHOCLCalc()
+{
+	m_Program = NULL;
+	m_Kernel = NULL;
+	m_Context = NULL;
+	m_InOutMem = NULL;
+	m_CommandQueue = NULL;
+}
+
+DHOCLCalc::~DHOCLCalc()
+{
+	Release();
+}
+
 void DHOCLCalc::Init(const DHOCLHost& host, const std::string& progpath)
 {
 	if (progpath.empty())
 		return;
 
-	cl_platform_id pl;
-	clGetPlatformIDs(1, &pl, NULL);
-
-	cl_device_id dev;
-	clGetDeviceIDs(pl, CL_DEVICE_TYPE_GPU, 1, &dev, NULL);
-
 	cl_int err;
 	cl_context_properties prop[] = {
-		CL_CONTEXT_PLATFORM, (cl_context_properties) pl,
+		CL_CONTEXT_PLATFORM, (cl_context_properties) host.GetPlatform(),
 		CL_GL_CONTEXT_KHR, (cl_context_properties)wglGetCurrentContext(),
 		CL_WGL_HDC_KHR, (cl_context_properties)wglGetCurrentDC(),
 		0};
 
-
+	cl_device_id dev = host.GetDevice();
 	m_Context = clCreateContext(prop, 1, &dev, NULL, NULL, &err);
 
 	if (err != CL_SUCCESS)
@@ -117,4 +125,22 @@ void DHOCLCalc::Calculate()
 
 	clEnqueueReleaseGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 	cl_int err = clFinish(m_CommandQueue);
+}
+
+void DHOCLCalc::Release()
+{
+	if(m_Program)
+		clReleaseProgram(m_Program);
+	
+	if(m_Kernel)
+		clReleaseKernel(m_Kernel);
+	
+	if(m_Context)
+		clReleaseContext(m_Context);
+	
+	if(m_CommandQueue)
+		clReleaseCommandQueue(m_CommandQueue);
+	
+	if(m_InOutMem)
+		clReleaseMemObject(m_InOutMem);
 }
