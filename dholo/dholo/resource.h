@@ -38,7 +38,6 @@
 #define IDR_IDR_POPUP_IMAGE_LIST1       314
 #define IDR_POPUP_EXPLORER              315
 #define IDD_DIALOG_CREATE_WINDOW        316
-#define IDC_MFCVSLISTBOX1               1000
 #define IDC_OPENCL_PLATFORM_INFO        1008
 #define IDC_STATIC_PLATFORM_NAME        1009
 #define IDC_COMBO_PLATFROMS             1010
@@ -54,7 +53,6 @@
 #define IDC_STATIC_DEVICE_VENDOR        1020
 #define IDC_STATIC_DEVICE               1021
 #define IDC_STATIC_DEVICE_EXTENSIONS    1022
-#define IDC_PROGRESS1                   1023
 #define IDC_LABEL_DEVICE_VERSION        1024
 #define IDC_EDIT_DEVICE_VERSION         1025
 #define IDC_LIST_PLATFORM_EXTENSIONS    1026
@@ -86,7 +84,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32791
-#define _APS_NEXT_CONTROL_VALUE         1024
+#define _APS_NEXT_CONTROL_VALUE         1029
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
