@@ -17,6 +17,8 @@ namespace dholo
 			m_Desc.cColorBits = 64;
 			m_Desc.cDepthBits = 32;
 			m_Desc.iLayerType = PFD_MAIN_PLANE;
+
+			m_Texture = nullptr;
 		}
 
 		DHOGLRender::~DHOGLRender()
@@ -48,8 +50,8 @@ namespace dholo
 		void DHOGLRender::LoadImg(const dholo::img::DHImgLoader & imgldr, const CRect& rect)
 		{
 			glEnable(GL_TEXTURE_2D);
-			glGenTextures(1, &m_Texture);
-			glBindTexture(GL_TEXTURE_2D, m_Texture);
+			glGenTextures(1, m_Texture);
+			glBindTexture(GL_TEXTURE_2D, *m_Texture);
 
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -82,6 +84,36 @@ namespace dholo
 
 		void DHOGLRender::LoadImg(const std::vector<dholo::img::DHImgLoader>& imgldr)
 		{
+			glEnable(GL_TEXTURE_2D);
+
+			m_Cnt = imgldr.size();
+			m_Texture = new GLuint[m_Cnt];
+			glGenTextures(m_Cnt, m_Texture);
+
+			for (int i = 0; i < m_Cnt; i++)
+			{
+				glBindTexture(GL_TEXTURE_2D, m_Texture[i]);
+
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				if (imgldr[i].GetChannels() == 3)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGB,
+						imgldr[i].GetWidth(),
+						imgldr[i].GetHeight(),
+						0, GL_RGB, GL_FLOAT,
+						imgldr[i].GetPixelsData());
+				else if (imgldr[i].GetChannels() == 4)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGBA,
+						imgldr[i].GetWidth(),
+						imgldr[i].GetHeight(),
+						0, GL_RGBA, GL_FLOAT,
+						imgldr[i].GetPixelsData());
+			}
 		}
 
 		void DHOGLRender::Draw()
@@ -89,7 +121,13 @@ namespace dholo
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			glBindTexture(GL_TEXTURE_2D, m_Texture);
+			if (!m_Texture)
+			{
+				glFinish();
+				return;
+			}
+
+			glBindTexture(GL_TEXTURE_2D, *m_Texture);
 
 			glBegin(GL_QUADS);
 			glTexCoord2f(0.0f, 0.0f);
@@ -108,9 +146,86 @@ namespace dholo
 			glFinish();
 		}
 
+		void DHOGLRender::DrawAll()
+		{
+			if (!m_Texture)
+				return;
+
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);
+			glBegin(GL_QUADS);
+
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-0.9f, 0.9f);
+
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(-0.1f, 0.9f);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(-0.1f, 0.1f);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-0.9f, 0.1f);
+
+			glEnd();
+
+			glBindTexture(GL_TEXTURE_2D, m_Texture[1]);
+			glBegin(GL_QUADS);
+
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(0.1f, 0.9f);
+
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(0.9f, 0.9f);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(0.9f, 0.1f);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(0.1f, 0.1f);
+
+			glEnd();
+
+			glBindTexture(GL_TEXTURE_2D, m_Texture[2]);
+			glBegin(GL_QUADS);
+
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-0.9f, -0.1f);
+
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(-0.1f, -0.1f);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(-0.1f, -0.9f);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-0.9f, -0.9f);
+
+			glEnd();
+
+			glBindTexture(GL_TEXTURE_2D, m_Texture[3]);
+			glBegin(GL_QUADS);
+
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(0.1f, -0.1f);
+				
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(0.9f, -0.1f);
+				
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(0.9f, -0.9f);
+				
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(0.1f, -0.9f);
+
+			glEnd();
+		}
+
 		GLuint DHOGLRender::GetTexture() const
 		{
-			return m_Texture;
+			return *m_Texture;
 		}
 	}
 }

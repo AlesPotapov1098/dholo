@@ -43,6 +43,11 @@ namespace dholo
 			void Draw();
 
 			/// <summary>
+			/// Рисуем
+			/// </summary>
+			void DrawAll();
+
+			/// <summary>
 			/// Даем текстуру
 			/// </summary>
 			GLuint GetTexture() const;
@@ -50,7 +55,8 @@ namespace dholo
 		private:
 			HGLRC m_hRC;
 			PIXELFORMATDESCRIPTOR m_Desc;
-			GLuint m_Texture;
+			GLuint* m_Texture;
+			UINT m_Cnt;
 
 			GLfloat m_X;
 			GLfloat m_Y;

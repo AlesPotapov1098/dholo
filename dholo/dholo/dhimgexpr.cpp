@@ -265,17 +265,15 @@ namespace dholo
 				return;
 
 			std::vector<CStringA> ImagePaths(count);
+			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+			if (pos == 0)
+				return;
 
 			for (int i = 0; i < count; i++)
 			{
-				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-
-				if (pos == 0)
-					return;
-
 				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				ImagePaths.push_back(
-					CStringA(m_dhImgList.GetItemText(SelectedItem, 1)));
+				ImagePaths[i] = 
+					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
 			}
 
 			theApp.SelectImage(ImagePaths);
