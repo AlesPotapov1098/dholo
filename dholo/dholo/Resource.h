@@ -57,6 +57,16 @@
 #define IDC_EDIT_DEVICE_VERSION         1025
 #define IDC_LIST_PLATFORM_EXTENSIONS    1026
 #define IDC_LIST_DEVICE_EXTENSIONS      1027
+#define IDC_BUTTON1                     1029
+#define IDC_BUTTON2                     1030
+#define IDC_EDIT_GLOBAL_SIZE_H          1031
+#define IDC_EDIT_GLOBAL_SIZE_W          1032
+#define IDC_EDIT3                       1033
+#define IDC_EDIT_LOCAL_SIZE_H           1033
+#define IDC_EDIT_LOCAL_SIZE_W           1034
+#define IDC_WORK_SETTINGS               1035
+#define IDC_STATIC_GLOBAL_SIZE          1036
+#define IDC_STATIC_LOCAL_SIZE           1037
 #define ID_ADD_IMAGE                    32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -82,9 +92,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        317
+#define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32791
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1038
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

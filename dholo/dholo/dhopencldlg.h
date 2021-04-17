@@ -37,8 +37,6 @@ namespace dholo
 			void FillInComboDevice();
 			void FillInDevicePanel();
 
-			void FillListBox(CListBox*, const std::wstring&);
-
 			DECLARE_MESSAGE_MAP()
 
 		private:
