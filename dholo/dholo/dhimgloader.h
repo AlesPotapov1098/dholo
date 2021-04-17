@@ -4,6 +4,7 @@
 
 #include <string>
 #include <codecvt>
+#include <vector>
 
 namespace dholo
 {

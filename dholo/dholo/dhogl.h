@@ -33,6 +33,11 @@ namespace dholo
 			void LoadImg(const dholo::img::DHImgLoader& imgldr, const CRect& rect);
 
 			/// <summary>
+			/// Создание текстуры из пикселей imgldr
+			/// </summary>
+			void LoadImg(const std::vector<dholo::img::DHImgLoader>& imgldr);
+
+			/// <summary>
 			/// Рисуем
 			/// </summary>
 			void Draw();

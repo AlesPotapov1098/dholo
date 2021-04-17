@@ -80,6 +80,10 @@ namespace dholo
 			glFinish();
 		}
 
+		void DHOGLRender::LoadImg(const std::vector<dholo::img::DHImgLoader>& imgldr)
+		{
+		}
+
 		void DHOGLRender::Draw()
 		{
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

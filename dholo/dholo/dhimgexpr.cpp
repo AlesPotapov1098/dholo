@@ -259,15 +259,26 @@ namespace dholo
 			if (!m_dhImgList.GetItemCount())
 				return;
 
-			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-
-			if (pos == 0)
+			UINT count = m_dhImgList.GetSelectedCount();
+			if (count <= 0)
+				// TODO : обработка ошибок!!!
 				return;
 
-			UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
-			CString ImagePath = m_dhImgList.GetItemText(SelectedItem, 1);
+			std::vector<CStringA> ImagePaths(count);
 
-			theApp.SelectImage(CStringA(ImagePath));
+			for (int i = 0; i < count; i++)
+			{
+				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+
+				if (pos == 0)
+					return;
+
+				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
+				ImagePaths.push_back(
+					CStringA(m_dhImgList.GetItemText(SelectedItem, 1)));
+			}
+
+			theApp.SelectImage(ImagePaths);
 		}
 
 		void DHImgExpr::OnChangeVisualStyle()
