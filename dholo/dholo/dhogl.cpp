@@ -14,8 +14,8 @@ namespace dholo
 			m_Desc.nVersion = 1;
 			m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
 			m_Desc.iPixelType = PFD_TYPE_RGBA;
-			m_Desc.cColorBits = 64;
-			m_Desc.cDepthBits = 32;
+			m_Desc.cColorBits = 32;
+			m_Desc.cDepthBits = 24;
 			m_Desc.iLayerType = PFD_MAIN_PLANE;
 
 			m_Texture = nullptr;
@@ -50,6 +50,10 @@ namespace dholo
 		void DHOGLRender::LoadImg(const dholo::img::DHImgLoader & imgldr, const CRect& rect)
 		{
 			glEnable(GL_TEXTURE_2D);
+
+			if(!m_Texture)
+				m_Texture = new GLuint;
+
 			glGenTextures(1, m_Texture);
 			glBindTexture(GL_TEXTURE_2D, *m_Texture);
 
@@ -78,8 +82,6 @@ namespace dholo
 
 			m_X = m_X >= 1.0f ? 1.0f : m_X;
 			m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
-
-			glFinish();
 		}
 
 		void DHOGLRender::LoadImg(const std::vector<dholo::img::DHImgLoader>& imgldr)
@@ -127,23 +129,25 @@ namespace dholo
 				return;
 			}
 
-			glBindTexture(GL_TEXTURE_2D, *m_Texture);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);
 
 			glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 0.0f);
-			glVertex2f(-m_X, -m_Y);
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-m_X, -m_Y);
 
-			glTexCoord2f(0.0f, 1.0f);
-			glVertex2f(-m_X, m_Y);
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-m_X, m_Y);
 
-			glTexCoord2f(1.0f, 1.0f);
-			glVertex2f(m_X, m_Y);
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(m_X, m_Y);
 
-			glTexCoord2f(1.0f, 0.0f);
-			glVertex2f(m_X, -m_Y);
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(m_X, -m_Y);
 			glEnd();
 
 			glFinish();
+			
 		}
 
 		void DHOGLRender::DrawAll()
