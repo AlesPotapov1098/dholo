@@ -22,14 +22,8 @@ namespace dholo
 		{
 		public:
 			DHOCLCalc();
+			DHOCLCalc(const DHOCLHost& host, const std::string& progpath);
 			~DHOCLCalc();
-
-			/// <summary>
-			/// Инициализация полей класс m_Program и m_Kernel.
-			/// Загрузка исходного кода программы и его компиляция.
-			/// Создания ядра
-			/// </summary>
-			void Init(const DHOCLHost& host, const std::string& progpath);
 
 			/// <summary>
 			/// Загрузка текстуры OpenGL.
@@ -62,11 +56,6 @@ namespace dholo
 			/// Выполнение ядра с заданными параметрами
 			/// </summary>
 			void Calculate();
-
-			/// <summary>
-			/// Освобождение ресурсов
-			/// </summary>
-			void Release();
 
 		private:
 			cl_program m_Program;
