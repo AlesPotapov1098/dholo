@@ -21,14 +21,21 @@ namespace dholo
 			m_Texture = nullptr;
 		}
 
-		DHOGLRender::~DHOGLRender()
+		DHOGLRender::DHOGLRender(const CDC& dc)
 		{
 			m_hRC = nullptr;
 			ZeroMemory(&m_Desc, sizeof(m_Desc));
-		}
 
-		void DHOGLRender::Init(const CDC & dc)
-		{
+			m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+			m_Desc.nVersion = 1;
+			m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+			m_Desc.iPixelType = PFD_TYPE_RGBA;
+			m_Desc.cColorBits = 64;
+			m_Desc.cDepthBits = 32;
+			m_Desc.iLayerType = PFD_MAIN_PLANE;
+
+			m_Texture = nullptr;
+
 			if (dc == nullptr)
 				return;
 
@@ -44,7 +51,16 @@ namespace dholo
 			if (!wglMakeCurrent(dc.m_hDC, m_hRC))
 				return;
 
-			wglMakeCurrent(dc.m_hDC, m_hRC);
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		}
+
+		DHOGLRender::~DHOGLRender()
+		{
+			m_hRC = nullptr;
+			ZeroMemory(&m_Desc, sizeof(m_Desc));
+			glFinish();
+			wglMakeCurrent(NULL, NULL);
+			wglDeleteContext(m_hRC);
 		}
 
 		void DHOGLRender::LoadImg(const dholo::img::DHImgLoader & imgldr, const CRect& rect)
@@ -120,7 +136,6 @@ namespace dholo
 
 		void DHOGLRender::Draw()
 		{
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			if (!m_Texture)
@@ -145,9 +160,6 @@ namespace dholo
 				glTexCoord2f(1.0f, 0.0f);
 				glVertex2f(m_X, -m_Y);
 			glEnd();
-
-			glFinish();
-			
 		}
 
 		void DHOGLRender::DrawAll()
@@ -155,7 +167,6 @@ namespace dholo
 			if (!m_Texture)
 				return;
 
-			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);

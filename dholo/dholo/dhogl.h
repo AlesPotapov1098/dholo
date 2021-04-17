@@ -16,16 +16,12 @@ namespace dholo
 {
 	namespace ogl
 	{
-		class DHOGLRender : public IDHRender
+		class DHOGLRender
 		{
 		public:
 			DHOGLRender();
+			DHOGLRender(const CDC& dc);
 			~DHOGLRender();
-
-			/// <summary>
-			/// «ахват контекста и создание контекста OpenGL дл€ Windows.
-			/// </summary>
-			void Init(const CDC& dc);
 
 			/// <summary>
 			/// —оздание текстуры из пикселей imgldr
