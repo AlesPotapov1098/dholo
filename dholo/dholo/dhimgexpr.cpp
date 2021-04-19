@@ -35,9 +35,6 @@ namespace dholo
 			ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 		END_MESSAGE_MAP()
 
-		/////////////////////////////////////////////////////////////////////////////
-		// обработчики сообщений CWorkspaceBar
-
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		{
 			if (CDockablePane::OnCreate(lpCreateStruct) == -1)
@@ -260,7 +257,7 @@ namespace dholo
 				return;
 
 			UINT count = m_dhImgList.GetSelectedCount();
-			if (count <= 0)
+			if (count <= 0 || count > 4 || count < 4)
 				// TODO : обработка ошибок!!!
 				return;
 
