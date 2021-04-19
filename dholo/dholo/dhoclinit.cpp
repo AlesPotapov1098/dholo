@@ -127,6 +127,29 @@ namespace dholo
 			return GetDeviceInfo(dev, CL_DEVICE_EXTENSIONS);
 		}
 
+		std::wstring DHOCLInit::GetDeviceType(cl_device_id dev) const
+		{
+			std::size_t size = 0;
+			cl_device_type* type = nullptr;
+			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, 0, NULL, &size);
+
+			type = new cl_device_type();
+
+			err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, size, (void*)type, NULL);
+
+			switch (*type)
+			{
+			case CL_DEVICE_TYPE_CPU:
+				return L"CPU";
+
+			case CL_DEVICE_TYPE_GPU:
+				return L"GPU";
+
+			default:
+				return L"NONE";
+			}
+		}
+
 		std::wstring DHOCLInit::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf) const
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;

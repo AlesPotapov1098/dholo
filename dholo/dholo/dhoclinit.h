@@ -66,6 +66,7 @@ namespace dholo
 			std::wstring GetDeviceVendor(cl_device_id) const;
 			std::wstring GetDeviceVersion(cl_device_id) const;
 			std::wstring GetDeviceExtensions(cl_device_id) const;
+			std::wstring GetDeviceType(cl_device_id) const;
 
 			std::wstring GetPlatformInfo(cl_platform_id, cl_platform_info) const;
 			std::wstring GetDeviceInfo(cl_device_id, cl_device_info) const;

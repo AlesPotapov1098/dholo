@@ -162,6 +162,10 @@ namespace dholo
 			auto editDeviceVersion =
 				static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VERSION));
 			editDeviceVersion->SetWindowTextW(m_Init.GetDeviceVersion(hard[curSellComboDevices]).c_str());
+
+			auto editDeviceType =
+				static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_TYPE));
+			editDeviceType->SetWindowTextW(m_Init.GetDeviceType(hard[curSellComboDevices]).c_str());
 		}
 	}
 }
