@@ -165,6 +165,9 @@
     <None Include="OpenCLFile.cl">
       <Filter>scr\gpgpu\programs</Filter>
     </None>
+    <None Include="Psi4Kernel.cl">
+      <Filter>scr\gpgpu\programs</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="dholo.rc">
