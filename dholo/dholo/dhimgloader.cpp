@@ -63,7 +63,7 @@ namespace dholo
 			return m_nrChannels;
 		}
 
-		float * DHImgLoader::GetPixelsData() const
+		float* DHImgLoader::GetPixelsData() const
 		{
 			return m_PixelsData;
 		}

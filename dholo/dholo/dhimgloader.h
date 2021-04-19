@@ -23,10 +23,10 @@ namespace dholo
 			int GetHeight() const;
 			int GetChannels() const;
 
-			float * GetPixelsData() const;
+			float* GetPixelsData() const;
 
 		private:
-			float * m_PixelsData;
+			float* m_PixelsData;
 
 			int m_width;
 			int m_height;

@@ -122,13 +122,6 @@ namespace dholo
 			auto editPlatformVersion =
 				static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VERSION));
 			editPlatformVersion->SetWindowTextW(m_Init.GetPlatformVersion(hard.GetPlatform()).c_str());
-		
-			auto listPlatformExtension =
-				static_cast<CListBox*>(this->GetDlgItem(IDC_LIST_PLATFORM_EXTENSIONS));
-		
-			FillListBox(
-				listPlatformExtension, 
-				m_Init.GetPlatformExtensions(hard.GetPlatform()));
 		}
 		
 		void DHOpenCLDlg::FillInComboDevice()
@@ -169,39 +162,6 @@ namespace dholo
 			auto editDeviceVersion =
 				static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VERSION));
 			editDeviceVersion->SetWindowTextW(m_Init.GetDeviceVersion(hard[curSellComboDevices]).c_str());
-		
-			auto listDeviceExtension =
-				static_cast<CListBox*>(this->GetDlgItem(IDC_LIST_DEVICE_EXTENSIONS));
-		
-			FillListBox(
-				listDeviceExtension, 
-				m_Init.GetDeviceExtensions(hard[curSellComboDevices]));
-		}
-		
-		void DHOpenCLDlg::FillListBox(CListBox* listBox, const std::wstring& str)
-		{
-			ASSERT(listBox != nullptr);
-			if (str.empty())
-				return;
-		
-			if (listBox->GetCount() != 0)
-				listBox->ResetContent();
-		
-			int length = str.length();
-			size_t pos = str.find(L' ');
-			size_t initPos = 0;
-		
-			while (pos != std::wstring::npos)
-			{
-				listBox->AddString(str.substr(initPos, pos - initPos).c_str());
-				initPos = pos + 1;
-		
-				pos = str.find(L' ', initPos);
-			}
-		
-			// TODO: починить добавление последней строки
-			listBox->AddString(
-				str.substr(initPos, pos < str.size() ? pos : str.size() - initPos + 1).c_str());
 		}
 	}
 }

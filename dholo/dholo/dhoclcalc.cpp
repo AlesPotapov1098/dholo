@@ -14,12 +14,7 @@ namespace dholo
 			m_CommandQueue = NULL;
 		}
 
-		DHOCLCalc::~DHOCLCalc()
-		{
-			Release();
-		}
-
-		void DHOCLCalc::Init(const DHOCLHost& host, const std::string& progpath)
+		DHOCLCalc::DHOCLCalc(const DHOCLHost& host, const std::string& progpath)
 		{
 			if (progpath.empty())
 				return;
@@ -41,7 +36,7 @@ namespace dholo
 			std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
 
 
-			const char * src = code.c_str();
+			const char* src = code.c_str();
 			std::size_t len = code.length() + 1;
 
 			m_Program = clCreateProgramWithSource(m_Context, 1, &src, &len, &err);
@@ -81,7 +76,24 @@ namespace dholo
 			m_CommandQueue = clCreateCommandQueueWithProperties(m_Context, dev, NULL, &err);
 			if (err != CL_SUCCESS)
 				return;
+		}
 
+		DHOCLCalc::~DHOCLCalc()
+		{
+			if (m_Program)
+				clReleaseProgram(m_Program);
+
+			if (m_Kernel)
+				clReleaseKernel(m_Kernel);
+
+			if (m_Context)
+				clReleaseContext(m_Context);
+
+			if (m_CommandQueue)
+				clReleaseCommandQueue(m_CommandQueue);
+
+			if (m_InOutMem)
+				clReleaseMemObject(m_InOutMem);
 		}
 
 		void DHOCLCalc::LoadImg(const GLuint& texture)
@@ -129,24 +141,6 @@ namespace dholo
 
 			clEnqueueReleaseGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 			cl_int err = clFinish(m_CommandQueue);
-		}
-
-		void DHOCLCalc::Release()
-		{
-			if (m_Program)
-				clReleaseProgram(m_Program);
-
-			if (m_Kernel)
-				clReleaseKernel(m_Kernel);
-
-			if (m_Context)
-				clReleaseContext(m_Context);
-
-			if (m_CommandQueue)
-				clReleaseCommandQueue(m_CommandQueue);
-
-			if (m_InOutMem)
-				clReleaseMemObject(m_InOutMem);
 		}
 	}
 }
