@@ -24,6 +24,11 @@ namespace dholo
 			~DHOGLRender();
 
 			/// <summary>
+			/// Инициализация OpenGL в целевом контексте
+			/// </summary>
+			void Init(const CDC& dc);
+
+			/// <summary>
 			/// Создание текстуры из пикселей imgldr
 			/// </summary>
 			void LoadImg(const dholo::img::DHImgLoader& imgldr, const CRect& rect);

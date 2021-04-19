@@ -36,6 +36,20 @@ namespace dholo
 
 			m_Texture = nullptr;
 
+			Init(dc);
+		}
+
+		DHOGLRender::~DHOGLRender()
+		{
+			m_hRC = nullptr;
+			ZeroMemory(&m_Desc, sizeof(m_Desc));
+			glFinish();
+			wglMakeCurrent(NULL, NULL);
+			wglDeleteContext(m_hRC);
+		}
+
+		void DHOGLRender::Init(const CDC & dc)
+		{
 			if (dc == nullptr)
 				return;
 
@@ -52,15 +66,6 @@ namespace dholo
 				return;
 
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		}
-
-		DHOGLRender::~DHOGLRender()
-		{
-			m_hRC = nullptr;
-			ZeroMemory(&m_Desc, sizeof(m_Desc));
-			glFinish();
-			wglMakeCurrent(NULL, NULL);
-			wglDeleteContext(m_hRC);
 		}
 
 		void DHOGLRender::LoadImg(const dholo::img::DHImgLoader & imgldr, const CRect& rect)
