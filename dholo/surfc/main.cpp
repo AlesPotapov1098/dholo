@@ -49,6 +49,7 @@ cl_kernel kernel;
 cl_command_queue command_queue;
 cl_program program;
 cl_mem mem[5];
+cl_mem mem1[3];
 cl_int err;
 
 void InitOpenCL();
@@ -116,11 +117,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		InitOpenCL();
 		GenSinus();
-		float vec[4] = { 1.0f,0.0f,-1.0f,0.0f };
-		float vec2[4] = { 0.0f };
-		ortho(vec2, vec);
-		float res = 0;
-		mul(&res, vec2, vec);
+		
 		int d = 0;
 	}
 	break;
@@ -296,22 +293,22 @@ void Render()
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[4]);
 
-	mem[0] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[0], &err);
+	mem[0] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[0], &err);
 	
 	if (err != CL_SUCCESS)
 		return;
 	
-	mem[1] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[1], &err);
+	mem[1] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[1], &err);
 	
 	if (err != CL_SUCCESS)
 		return;
 	
-	mem[2] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[2], &err);
+	mem[2] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[2], &err);
 	
 	if (err != CL_SUCCESS)
 		return;
 	
-	mem[3] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[3], &err);
+	mem[3] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[3], &err);
 	
 	if (err != CL_SUCCESS)
 		return;
@@ -321,6 +318,10 @@ void Render()
 	if (err != CL_SUCCESS)
 		return;
 
+	cl_float4 C = { 0.0f, -2.0f, 0.0f, 2.0f };
+	cl_float4 S = { 2.0f, 0.0f, -2.0f, 0.0f };
+	cl_float B = 4.0f;
+
 	glFinish();
 	
 	clEnqueueAcquireGLObjects(command_queue, 5, mem, 0, 0, NULL);
@@ -329,83 +330,37 @@ void Render()
 	res = clSetKernelArg(kernel, 1, sizeof(mem[1]), &mem[1]);
 	res = clSetKernelArg(kernel, 2, sizeof(mem[2]), &mem[2]);
 	res = clSetKernelArg(kernel, 3, sizeof(mem[3]), &mem[3]);
+
+	res = clSetKernelArg(kernel, 4, sizeof(cl_float4), &S);
+	res = clSetKernelArg(kernel, 5, sizeof(cl_float4), &C);
+	res = clSetKernelArg(kernel, 6, sizeof(cl_float), &B);
+
 	res = clSetKernelArg(kernel, 7, sizeof(mem[4]), &mem[4]);
-	//
-	//const std::size_t global_size[2] = { WIDTH, HEIGHT };
-	//const std::size_t local_size[2] = { 1,1 };
-	//clEnqueueNDRangeKernel(command_queue, kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
-	//clEnqueueReleaseGLObjects(command_queue, 1, &mem, 0, 0, NULL);
-	//err = clFinish(command_queue);
+	
+	const std::size_t global_size[2] = { WIDTH, HEIGHT };
+	const std::size_t local_size[2] = { 2,2 };
+	clEnqueueNDRangeKernel(command_queue, kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
+	clEnqueueReleaseGLObjects(command_queue, 5, mem, 0, 0, NULL);
+	err = clFinish(command_queue);
 
 	glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	glBindTexture(GL_TEXTURE_2D, texture[4]);
 	glBegin(GL_QUADS);
-
+	
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex2f(-0.9f, 0.9f);
-
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(-0.1f, 0.9f);
-
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(-0.1f, 0.1f);
-
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(-0.9f, 0.1f);
-
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	glBegin(GL_QUADS);
-
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(0.1f, 0.9f);
-
+	
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex2f(0.9f, 0.9f);
-
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(0.9f, 0.1f);
-
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(0.1f, 0.1f);
-
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, texture[2]);
-	glBegin(GL_QUADS);
-
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(-0.9f, -0.1f);
-
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(-0.1f, -0.1f);
-
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex2f(-0.1f, -0.9f);
-
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(-0.9f, -0.9f);
-
-	glEnd();
-
-	glBindTexture(GL_TEXTURE_2D, texture[3]);
-	glBegin(GL_QUADS);
-
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(0.1f, -0.1f);
-
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex2f(0.9f, -0.1f);
-
+	
 		glTexCoord2f(1.0f, 1.0f);
 		glVertex2f(0.9f, -0.9f);
-
+	
 		glTexCoord2f(0.0f, 1.0f);
-		glVertex2f(0.1f, -0.9f);
-
+		glVertex2f(-0.9f, -0.9f);
+	
 	glEnd();
 	
 	SwapBuffers(ghDC);
