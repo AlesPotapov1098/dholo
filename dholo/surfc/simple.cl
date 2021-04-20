@@ -1,26 +1,50 @@
 #define OPENCL EXTENSION cl_khr_gl_sharing : enable
 
-__kernel void testKernelWrite(
-	__write_only image2d_t img1, 
-	__write_only image2d_t img2, 
-	__write_only image2d_t img3, 
-	__write_only image2d_t img4)
-{	
-	int2 imgCoords = (int2)(get_global_id(0), get_global_id(1));
-	
-	float4 imgVal = (float4)(1.0f, 0.0f, 0.0f, 1.0f);
+// скалярное произведение векторов
+float vecMul(
+	float4 v1, 
+	float4 v2)
+{
+   return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z + v1.w * v2.w;
+}
 
-	write_imagef(img1, imgCoords, imgVal);
+float2 complexFromPolarCoordinates(
+	float magnitude, 
+	float phase)
+{
+    return (float2)(magnitude * cos(phase), magnitude * sin(phase));
+}
 
-	imgVal = (float4)(0.0f, 1.0f, 0.0f, 1.0f);
+__kernel void psi4Kernel(
+	__read_only image2d_t img0, //0
+	__read_only image2d_t img1, //1
+	__read_only image2d_t img2, //2
+	__read_only image2d_t img3, //3
+	float4 k_sin,				//4
+	float4 k_cos,				//5
+	float znmt_abs,				//6
+	__write_only image2d_t output) //7
+{
+    const sampler_t smp = CLK_NORMALIZED_COORDS_FALSE | //Natural coordinates
+         CLK_ADDRESS_CLAMP | //Clamp to zeros
+         CLK_FILTER_NEAREST; //Don't interpolate
 
-	write_imagef(img2, imgCoords, imgVal);
+    int2 coord = (int2)(get_global_id(0), get_global_id(1));
 
-	imgVal = (float4)(0.0f, 0.0f, 1.0f, 1.0f);
+    float4 val0 = read_imagef(img0, smp, coord);
+    float4 val1 = read_imagef(img1, smp, coord);
+    float4 val2 = read_imagef(img2, smp, coord);
+    float4 val3 = read_imagef(img3, smp, coord);
 
-	write_imagef(img3, imgCoords, imgVal);
+    float4 i_sdv = (float4)(val0.x, val1.x, val2.x, val3.x);
 
-	imgVal = (float4)(0.0f, 0.0f, 0.0f, 1.0f);
+    float IC = vecMul(i_sdv, k_cos);
+    float IS = vecMul(i_sdv, k_sin);
 
-	write_imagef(img4, imgCoords, imgVal);
+    float a = atan2(IC, IS);
+    float am = sqrt(IS * IS + IC * IC) / znmt_abs;
+
+    float2 result = complexFromPolarCoordinates(am, a);
+    
+	write_imagef(output, coord, (float4)(result.x, result.y, 0, 0));
 }

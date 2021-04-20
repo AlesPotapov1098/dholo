@@ -121,11 +121,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gpgpu.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gpgpu.h" />
     <ClInclude Include="std_image.h" />
   </ItemGroup>
   <ItemGroup>
