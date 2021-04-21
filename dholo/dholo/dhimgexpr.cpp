@@ -33,6 +33,7 @@ namespace dholo
 			ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 			ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
+			ON_COMMAND(ID_LOAD_INTO_GP, &DHImgExpr::OnLoadIntoGp)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -180,58 +181,6 @@ namespace dholo
 				rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 		}
 
-		void DHImgExpr::OnProperties()
-		{
-			//LoadImage();
-		}
-
-		void DHImgExpr::OnFileOpen()
-		{
-			//LoadImage();
-		}
-
-		void DHImgExpr::OnFileOpenWith()
-		{
-
-		}
-
-		void DHImgExpr::OnCreateNew()
-		{
-			//if (!m_List.GetItemCount())
-			//	return;
-			//
-			//POSITION pos = m_List.GetFirstSelectedItemPosition();
-			//
-			//if (pos == 0)
-			//	return;
-			//
-			//UINT SelectedItem = m_List.GetNextSelectedItem(pos);
-			//CString ImagePath = m_List.GetItemText(SelectedItem, 1);
-			//
-			//theApp.OnFileNew();
-			//
-			//DigitalHologramFrame* pMdiActiveFrame =
-			//	static_cast<DigitalHologramFrame*>(
-			//		static_cast<CMainFrame*>(theApp.m_pMainWnd)->MDIGetActive());
-			//
-			//if (!pMdiActiveFrame)
-			//	return;
-			//
-			//if (!pMdiActiveFrame->IsKindOf(RUNTIME_CLASS(DigitalHologramFrame)))
-			//	return;
-			//
-			//CDigitalHologramView* mHoloView =
-			//	static_cast<CDigitalHologramView*>(pMdiActiveFrame->GetActiveView());
-			//
-			//if (!mHoloView)
-			//	return;
-			//
-			//if (!mHoloView->IsKindOf(RUNTIME_CLASS(CDigitalHologramView)))
-			//	return;
-			//
-			//mHoloView->SetImagePath(ImagePath);
-		}
-
 		void DHImgExpr::OnPaint()
 		{
 			CPaintDC dc(this);
@@ -257,13 +206,14 @@ namespace dholo
 				return;
 
 			UINT count = m_dhImgList.GetSelectedCount();
-			if (count <= 0 || count > 4 || count < 4)
-				// TODO : обработка ошибок!!!
-				return;
+
+			//if (count <= 0 || count > 4 || count < 4)
+			//	// TODO : обработка ошибок!!!
+			//	return;
 
 			std::vector<CStringA> ImagePaths(count);
 			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-			if (pos == 0)
+			if (!pos)
 				return;
 
 			for (int i = 0; i < count; i++)
@@ -276,53 +226,10 @@ namespace dholo
 			theApp.SelectImage(ImagePaths);
 		}
 
-		void DHImgExpr::OnChangeVisualStyle()
-		{
-			//m_wndToolBar.CleanUpLockedImages();
-			//m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_EXPLORER_24 : IDR_EXPLORER, 0, 0, TRUE /* Заблокирован */);
-			//
-			//m_ImageList.DeleteImageList();
-			//
-			//UINT uiBmpId = theApp.m_bHiColorIcons ? IDB_FILE_VIEW_24 : IDB_FILE_VIEW;
-			//
-			//CBitmap bmp;
-			//if (!bmp.LoadBitmap(uiBmpId))
-			//{
-			//	TRACE(_T("Не удается загрузить точечный рисунок: %x\n"), uiBmpId);
-			//	ASSERT(FALSE);
-			//	return;
-			//}
-			//
-			//BITMAP bmpObj;
-			//bmp.GetBitmap(&bmpObj);
-
-			//UINT nFlags = ILC_MASK;
-			//
-			//nFlags |= (theApp.m_bHiColorIcons) ? ILC_COLOR24 : ILC_COLOR4;
-		}
-
-		void DHImgExpr::OnUpdateDummyCompile(CCmdUI* pCmdUI)
-		{
-			//if (m_List.GetItemCount() == 0)
-			//{
-			//	pCmdUI->Enable(false);
-			//	return;
-			//}
-
-			//if (!m_List.GetSelectedCount())
-			//{
-			//	pCmdUI->Enable(false);
-			//	return;
-			//}
-			//
-			//pCmdUI->Enable(true);
-		}	//
-
 		void DHImgExpr::OnDeleteImage()
 		{
 			// TODO: добавьте свой код обработчика команд
 		}
-
 
 		void DHImgExpr::OnLoadImage()
 		{
@@ -340,5 +247,13 @@ namespace dholo
 				}
 			}
 		}
+		
+		void DHImgExpr::OnLoadIntoGp()
+		{
+			// TODO: добавьте свой код обработчика команд
+		}
+
 	}
 }
+
+

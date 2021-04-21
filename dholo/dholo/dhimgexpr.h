@@ -15,7 +15,6 @@ namespace dholo
 			virtual ~DHImgExpr();
 
 			void AdjustLayout();
-			void OnChangeVisualStyle();
 			void AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt);
 
 		protected:
@@ -25,10 +24,6 @@ namespace dholo
 			afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 			afx_msg void OnSize(UINT nType, int cx, int cy);
 			afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-			afx_msg void OnProperties();
-			afx_msg void OnFileOpen();
-			afx_msg void OnFileOpenWith();
-			afx_msg void OnCreateNew();
 			afx_msg void OnPaint();
 			afx_msg void OnSetFocus(CWnd* pOldWnd);
 			afx_msg void OnSelectImage();
@@ -43,9 +38,9 @@ namespace dholo
 			const int COLUMN_IMAGE_WIDTH = 120;
 			const int COLUMN_PATH_WIDTH = 90;
 		public:
-			afx_msg void OnUpdateDummyCompile(CCmdUI* pCmdUI);
 			afx_msg void OnDeleteImage();
 			afx_msg void OnLoadImage();
+			afx_msg void OnLoadIntoGp();
 		};
 	}
 }
