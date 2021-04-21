@@ -40,6 +40,9 @@
     <Filter Include="scr\gpgpu\exp">
       <UniqueIdentifier>{c875329d-51f6-4f2d-a7b4-c4e5ce9ccff8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\gpgpu\test">
+      <UniqueIdentifier>{5b100cf3-5885-4ee7-b490-3ab548f69208}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -96,6 +99,9 @@
     <ClInclude Include="dhoclexp.h">
       <Filter>scr\gpgpu\exp</Filter>
     </ClInclude>
+    <ClInclude Include="dhtest.h">
+      <Filter>scr\gpgpu\test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -136,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="dhoclexp.cpp">
       <Filter>scr\gpgpu\exp</Filter>
+    </ClCompile>
+    <ClCompile Include="dhtest.cpp">
+      <Filter>scr\gpgpu\test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

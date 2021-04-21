@@ -49,5 +49,5 @@ __kernel void psi4Kernel(
 	a += M_PI;
 	a /= 2 * M_PI;
 
-	write_imagef(output, coord, (float4)(a, a, a, 0.0f));
+	write_imagef(output, coord, (float4)(result.x, result.y, 0.0f, 0.0f));
 }

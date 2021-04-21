@@ -193,6 +193,7 @@
     <ClInclude Include="dhoclexp.h" />
     <ClInclude Include="dhoclinit.h" />
     <ClInclude Include="dhopencldlg.h" />
+    <ClInclude Include="dhtest.h" />
     <ClInclude Include="dhtoolbar.h" />
     <ClInclude Include="dhwnd.h" />
     <ClInclude Include="dholo.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="dhoclexp.cpp" />
     <ClCompile Include="dhoclinit.cpp" />
     <ClCompile Include="dhopencldlg.cpp" />
+    <ClCompile Include="dhtest.cpp" />
     <ClCompile Include="dhtoolbar.cpp" />
     <ClCompile Include="dhwnd.cpp" />
     <ClCompile Include="dholo.cpp" />
