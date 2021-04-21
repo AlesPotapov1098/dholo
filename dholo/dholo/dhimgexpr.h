@@ -16,7 +16,7 @@ namespace dholo
 
 			void AdjustLayout();
 			void OnChangeVisualStyle();
-			void AddImage(CStringW pathImage, CStringW imageName, CStringW imageExt);
+			void AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt);
 
 		protected:
 			void FillFileView();

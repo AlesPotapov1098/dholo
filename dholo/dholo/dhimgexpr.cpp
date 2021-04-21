@@ -101,7 +101,7 @@ namespace dholo
 			m_dhImgList.SetColumnWidth(1, COLUMN_PATH_WIDTH);
 		}
 
-		void DHImgExpr::AddImage(CStringW pathImage, CStringW imageName, CStringW imageExt)
+		void DHImgExpr::AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt)
 		{
 			if (!pathImage || !imageName || !imageExt)
 				return;
@@ -326,10 +326,19 @@ namespace dholo
 
 		void DHImgExpr::OnLoadImage()
 		{
-			CFileDialog dlg(true);
+			CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
 
 			if (dlg.DoModal() == IDOK)
-				AddImage(dlg.GetPathName(), dlg.GetFileName(), dlg.GetFileExt());
+			{
+				POSITION ps = dlg.GetStartPosition();
+				while (ps)
+				{
+					CString fileName = dlg.GetFileName();
+					CString fileExt = dlg.GetFileExt();
+					CString pathName = dlg.GetNextPathName(ps);
+					AddImage(pathName, fileName, fileExt);
+				}
+			}
 		}
 	}
 }
