@@ -102,6 +102,9 @@
     <ClInclude Include="dhtest.h">
       <Filter>scr\gpgpu\test</Filter>
     </ClInclude>
+    <ClInclude Include="dhocltest.h">
+      <Filter>scr\gpgpu\opencl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="dhtest.cpp">
       <Filter>scr\gpgpu\test</Filter>
+    </ClCompile>
+    <ClCompile Include="dhocltest.cpp">
+      <Filter>scr\gpgpu\opencl</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -57,7 +57,7 @@ namespace dholo
 			/// </summary>
 			void Calculate();
 
-		private:
+		protected:
 			cl_program m_Program;
 			cl_kernel m_Kernel;
 			cl_context m_Context;

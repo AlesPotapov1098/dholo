@@ -2,7 +2,7 @@
 
 #include "dhtest.h"
 
-namespace holo
+namespace dholo
 {	namespace test
 	{
 		DHTest::DHTest()
@@ -36,31 +36,26 @@ namespace holo
 			{
 				for (int j = 0; j < W; j++)
 				{
-					float n1 = m_Sinus[0][j],
-						  n2 = m_Sinus[1][j],
-						  n3 = m_Sinus[2][j],
-						  n4 = m_Sinus[3][j];
-
-					m_Pixels[0][k] = n1;
-					m_Pixels[1][k] = n2;
-					m_Pixels[2][k] = n3;
-					m_Pixels[3][k] = n4;
+					m_Pixels[0][k] = m_Sinus[0][j];
+					m_Pixels[1][k] = m_Sinus[1][j];
+					m_Pixels[2][k] = m_Sinus[2][j];
+					m_Pixels[3][k] = m_Sinus[3][j];
 					m_Pixels[4][k] = 0.0f;
 
 					k++;
 
-					m_Pixels[0][k] = n1;
-					m_Pixels[1][k] = n2;
-					m_Pixels[2][k] = n3;
-					m_Pixels[3][k] = n4;
+					m_Pixels[0][k] = m_Sinus[0][j];
+					m_Pixels[1][k] = m_Sinus[1][j];
+					m_Pixels[2][k] = m_Sinus[2][j];
+					m_Pixels[3][k] = m_Sinus[3][j];
 					m_Pixels[4][k] = 0.0f;
 
 					k++;
 
-					m_Pixels[0][k] = n1;
-					m_Pixels[1][k] = n2;
-					m_Pixels[2][k] = n3;
-					m_Pixels[3][k] = n4;
+					m_Pixels[0][k] = m_Sinus[0][j];
+					m_Pixels[1][k] = m_Sinus[1][j];
+					m_Pixels[2][k] = m_Sinus[2][j];
+					m_Pixels[3][k] = m_Sinus[3][j];
 					m_Pixels[4][k] = 0.0f;
 
 					k++;
@@ -74,6 +69,14 @@ namespace holo
 				return nullptr;
 
 			return m_Pixels[index];
+		}
+		int DHTest::GetWidth() const
+		{
+			return m_W;
+		}
+		int DHTest::GetHeight() const
+		{
+			return m_H;
 		}
 	}
 }

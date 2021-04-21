@@ -139,6 +139,10 @@ namespace dholo
 			}
 		}
 
+		void DHOGLRender::LoadImg(const test::DHTest & test)
+		{
+		}
+
 		void DHOGLRender::Draw()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -247,5 +251,15 @@ namespace dholo
 		{
 			return *m_Texture;
 		}
+
+		GLuint DHOGLRender::GetTexture(unsigned int index) const
+		{
+			if (index >= m_Cnt)
+				return 0;
+
+			return m_Texture[index];
+		}
+
+
 	}
 }

@@ -9,6 +9,7 @@
 
 #include "dhimgloader.h"
 #include "idhrender.h"
+#include "dhtest.h"
 
 #pragma comment(lib, "OpenGL32.lib")
 
@@ -39,6 +40,11 @@ namespace dholo
 			void LoadImg(const std::vector<dholo::img::DHImgLoader>& imgldr);
 
 			/// <summary>
+			/// Тест
+			/// </summary>
+			void LoadImg(const test::DHTest& test);
+
+			/// <summary>
 			/// Рисуем
 			/// </summary>
 			void Draw();
@@ -52,6 +58,11 @@ namespace dholo
 			/// Даем текстуру
 			/// </summary>
 			GLuint GetTexture() const;
+
+			/// <summary>
+			/// Возвращем текстуру
+			/// </summary>
+			GLuint GetTexture(unsigned int index) const;
 
 		private:
 			HGLRC m_hRC;
