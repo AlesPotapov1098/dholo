@@ -1,5 +1,4 @@
 #define OPENCL EXTENSION cl_khr_gl_sharing : enable
-#define PI           3.14159265358979323846
 
 // скалярное произведение векторов
 float vecMul(
@@ -47,5 +46,8 @@ __kernel void psi4Kernel(
 
     float2 result = complexFromPolarCoordinates(am, a);
     
-	write_imagef(output, coord, (float4)((a + PI / 2.0f) / PI, (a + PI / 2.0f) / PI, (a + PI / 2.0f) / PI, 0.0f));
+	a += M_PI;
+	a /= 2 * M_PI;
+
+	write_imagef(output, coord, (float4)(a, a, a, 0.0f));
 }
