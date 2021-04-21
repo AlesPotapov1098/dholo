@@ -20,8 +20,7 @@ __kernel void psi4Kernel(
 	__read_only image2d_t img3, 
 	float4 k_sin, 
 	float4 k_cos, 
-	float znmt_abs, 
-	float amplitude, 
+	float znmt_abs,  
 	__write_only image2d_t output)
 {
     const sampler_t smp = CLK_NORMALIZED_COORDS_FALSE | //Natural coordinates
@@ -44,6 +43,9 @@ __kernel void psi4Kernel(
     float am = sqrt(IS * IS + IC * IC) / znmt_abs;
 
     float2 result = complexFromPolarCoordinates(am, a);
+
+	a += M_PI;
+	a /= 2 * M_PI;
     
-	write_imagef(output, coord, (float4)(result.x, result.y, 0, 0));
+	write_imagef(output, coord, (float4)(a, a, a, 0));
 }

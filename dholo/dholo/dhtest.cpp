@@ -7,14 +7,20 @@ namespace dholo
 	{
 		DHTest::DHTest()
 		{
+			m_Pixels = new float*[5];
+			for (int i = 0; i < 5; i++)
+				m_Pixels[i] = new float[W * H * 3];
 		}
 
 		DHTest::~DHTest()
 		{
+			if (m_Pixels)
+				delete[] m_Pixels;
 		}
 
 		void DHTest::GenerateTextExmpl()
 		{
+			
 			float phi1 = 0,
 				phi2 = M_PI / 2,
 				phi3 = M_PI,
@@ -63,17 +69,19 @@ namespace dholo
 			}
 		}
 
-		float * DHTest::GetTestExmpl(int index)
+		float * DHTest::GetTestExmpl(int index) const
 		{
 			if (index >= 5)
 				return nullptr;
 
 			return m_Pixels[index];
 		}
+
 		int DHTest::GetWidth() const
 		{
 			return m_W;
 		}
+
 		int DHTest::GetHeight() const
 		{
 			return m_H;

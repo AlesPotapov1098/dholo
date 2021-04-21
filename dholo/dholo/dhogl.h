@@ -52,6 +52,11 @@ namespace dholo
 			/// <summary>
 			/// Рисуем
 			/// </summary>
+			void Draw(unsigned int index);
+
+			/// <summary>
+			/// Рисуем
+			/// </summary>
 			void DrawAll();
 
 			/// <summary>

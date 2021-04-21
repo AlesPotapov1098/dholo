@@ -17,7 +17,7 @@ namespace dholo
 
 			void GenerateTextExmpl();
 
-			float * GetTestExmpl(int index);
+			float * GetTestExmpl(int index) const;
 
 			int GetWidth() const;
 			int GetHeight() const;
@@ -26,7 +26,7 @@ namespace dholo
 			const int m_W = 1024;
 			const int m_H = 1024;
 
-			float m_Pixels[5][W * H * 3];
+			float ** m_Pixels;
 			float m_Sinus[4][W];
 		};
 	}

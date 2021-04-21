@@ -69,7 +69,7 @@ namespace dholo
 				}
 			}
 
-			m_Kernel = clCreateKernel(m_Program, "testKernelWrite", &err);
+			m_Kernel = clCreateKernel(m_Program, "psi4Kernel", &err);
 			if (err != CL_SUCCESS)
 				return;
 

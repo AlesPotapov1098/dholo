@@ -141,6 +141,23 @@ namespace dholo
 
 		void DHOGLRender::LoadImg(const test::DHTest & test)
 		{
+			m_Cnt = 5;
+			m_Texture = new GLuint[m_Cnt];
+
+			for (int i = 0; i < m_Cnt; i++)
+			{
+				glBindTexture(GL_TEXTURE_2D, m_Texture[i]);
+
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 
+					test.GetWidth(), test.GetHeight(), 
+					0, GL_RGB, GL_FLOAT, 
+					test.GetTestExmpl(i));
+			}
 		}
 
 		void DHOGLRender::Draw()
@@ -155,6 +172,34 @@ namespace dholo
 
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);
+
+			glBegin(GL_QUADS);
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-m_X, -m_Y);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-m_X, m_Y);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(m_X, m_Y);
+
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(m_X, -m_Y);
+			glEnd();
+		}
+
+		void DHOGLRender::Draw(unsigned int index)
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			if (!m_Texture)
+			{
+				glFinish();
+				return;
+			}
+
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, m_Texture[index]);
 
 			glBegin(GL_QUADS);
 				glTexCoord2f(0.0f, 0.0f);

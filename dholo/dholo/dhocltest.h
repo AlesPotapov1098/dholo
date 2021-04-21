@@ -4,6 +4,7 @@
 #include "dhoclinit.h"
 #include "dhogl.h"
 
+
 namespace dholo
 {
 	namespace test
@@ -13,7 +14,7 @@ namespace dholo
 		public:
 			DHOCLTest();
 			DHOCLTest(const ocl::DHOCLHost& host, const std::string& progpath);
-			virtual ~DHOCLTest();
+			~DHOCLTest();
 
 			void LoadImg(const ogl::DHOGLRender& scene);
 			void Calculate();
