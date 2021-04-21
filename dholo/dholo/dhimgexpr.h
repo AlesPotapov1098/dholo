@@ -41,6 +41,7 @@ namespace dholo
 			afx_msg void OnDeleteImage();
 			afx_msg void OnLoadImage();
 			afx_msg void OnLoadIntoGp();
+			afx_msg void OnShowImage();
 		};
 	}
 }

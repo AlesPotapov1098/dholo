@@ -34,6 +34,7 @@ namespace dholo
 			ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 			ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_LOAD_INTO_GP, &DHImgExpr::OnLoadIntoGp)
+			ON_COMMAND(ID_SHOW_IMAGE, &DHImgExpr::OnShowImage)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -219,7 +220,7 @@ namespace dholo
 			for (int i = 0; i < count; i++)
 			{
 				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				ImagePaths[i] = 
+				ImagePaths[i] =
 					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
 			}
 
@@ -247,13 +248,32 @@ namespace dholo
 				}
 			}
 		}
-		
+
 		void DHImgExpr::OnLoadIntoGp()
 		{
 			// TODO: добавьте свой код обработчика команд
 		}
 
+		void DHImgExpr::OnShowImage()
+		{
+			if (!m_dhImgList.GetItemCount())
+				return;
+
+			UINT count = m_dhImgList.GetSelectedCount();
+
+			if (count > 1)
+				/// TODO : обработка ошибок
+				return;
+
+			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+			if (!pos)
+				/// TODO : обработка ошибок
+				return;
+
+			UINT item = m_dhImgList.GetNextSelectedItem(pos);
+
+			CString path = m_dhImgList.GetItemText(item, 1);
+			theApp.ShowImage(CStringA(path));
+		}
 	}
 }
-
-

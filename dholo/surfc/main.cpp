@@ -30,8 +30,8 @@ texture_t Tex;
 
 PAINTSTRUCT paint;
 
-const int WIDTH = 1024;
-const int HEIGHT = 1024;
+const int WIDTH = 2816;
+const int HEIGHT = 2816;
 
 const int W = 1000;
 const int H = 1000;

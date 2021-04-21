@@ -87,6 +87,7 @@
 #define ID_SELECT_IMAGE                 32790
 #define ID_32791                        32791
 #define ID_LOAD_INTO_GP                 32792
+#define ID_SHOW_IMAGE                   32793
 #define IDS_IMAGE_LIST_COLUMN_IMAGE     62000
 #define IDS_IMAGE_LIST_COLUMN_PATH      62001
 #define IDS_IMAGE_LIST                  62002
@@ -99,7 +100,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        317
-#define _APS_NEXT_COMMAND_VALUE         32793
+#define _APS_NEXT_COMMAND_VALUE         32794
 #define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
