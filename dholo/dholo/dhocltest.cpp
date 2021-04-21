@@ -69,10 +69,10 @@ namespace dholo
 			if (m_GlobalSize[0] <= 0 || m_GlobalSize[1] <= 0)
 				return;
 
-			clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, m_GlobalSize, m_LocalSize, 0, NULL, NULL);
+			cl_int err = clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, m_GlobalSize, m_LocalSize, 0, NULL, NULL);
 
-			clEnqueueReleaseGLObjects(m_CommandQueue, 5, m_Mem, 0, 0, NULL);
-			cl_int err = clFinish(m_CommandQueue);
+			err = clEnqueueReleaseGLObjects(m_CommandQueue, 5, m_Mem, 0, 0, NULL);
+			err = clFinish(m_CommandQueue);
 		}
 	}
 }

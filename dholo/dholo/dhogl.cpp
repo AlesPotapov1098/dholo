@@ -203,16 +203,16 @@ namespace dholo
 
 			glBegin(GL_QUADS);
 				glTexCoord2f(0.0f, 0.0f);
-				glVertex2f(-m_X, -m_Y);
-
-				glTexCoord2f(0.0f, 1.0f);
-				glVertex2f(-m_X, m_Y);
-
-				glTexCoord2f(1.0f, 1.0f);
-				glVertex2f(m_X, m_Y);
+				glVertex2f(-0.6f, 0.6f);
 
 				glTexCoord2f(1.0f, 0.0f);
-				glVertex2f(m_X, -m_Y);
+				glVertex2f(0.6f, 0.6f);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(0.6f, -0.6f);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-0.6f, -0.6f);
 			glEnd();
 		}
 
