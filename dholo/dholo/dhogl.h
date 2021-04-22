@@ -45,6 +45,11 @@ namespace dholo
 			void LoadImg(const test::DHTest& test);
 
 			/// <summary>
+			/// Создаем текстуры и загружаем пиксели
+			/// </summary>
+			void LoadTexture(const std::vector<dholo::img::DHImgLoader>& imgldr, const CRect& rect);
+
+			/// <summary>
 			/// Рисуем
 			/// </summary>
 			void Draw();

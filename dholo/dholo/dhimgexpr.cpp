@@ -208,9 +208,25 @@ namespace dholo
 
 			UINT count = m_dhImgList.GetSelectedCount();
 
-			//if (count <= 0 || count > 4 || count < 4)
-			//	// TODO : обработка ошибок!!!
-			//	return;
+			if (count == 1)
+			{
+				std::vector<CStringA> imgPath(count);
+				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+				if (!pos)
+					/// TODO: обработка ошибок
+					return;
+
+				UINT selectedItem = m_dhImgList.GetNextSelectedItem(pos);
+				imgPath[0] = CStringA(m_dhImgList.GetItemText(selectedItem, 1));
+
+				theApp.SelectImage(imgPath);
+
+				return;
+			}
+
+			if (count <= 0 || count > 4 || count < 4)
+				// TODO : обработка ошибок!!!
+				return;
 
 			std::vector<CStringA> ImagePaths(count);
 			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();

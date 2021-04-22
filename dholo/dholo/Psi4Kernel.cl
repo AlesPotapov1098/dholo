@@ -49,3 +49,4 @@ __kernel void psi4Kernel(
     
 	write_imagef(output, coord, (float4)(a, a, a, 0));
 }
+

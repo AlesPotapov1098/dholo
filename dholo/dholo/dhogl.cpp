@@ -163,6 +163,46 @@ namespace dholo
 			}
 		}
 
+		void DHOGLRender::LoadTexture(const std::vector<dholo::img::DHImgLoader>& imgldr, const CRect& rect)
+		{
+			glEnable(GL_TEXTURE_2D);
+
+			m_Cnt = imgldr.size() + 1;
+			m_Texture = new GLuint[m_Cnt];
+			glGenTextures(m_Cnt, m_Texture);
+
+			for (int i = 0; i < m_Cnt; i++)
+			{
+				glBindTexture(GL_TEXTURE_2D, m_Texture[i]);
+
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				if (imgldr[i].GetChannels() == 3)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGB,
+						imgldr[i].GetWidth(),
+						imgldr[i].GetHeight(),
+						0, GL_RGB, GL_FLOAT,
+						imgldr[i].GetPixelsData());
+				else if (imgldr[i].GetChannels() == 4)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGBA,
+						imgldr[i].GetWidth(),
+						imgldr[i].GetHeight(),
+						0, GL_RGBA, GL_FLOAT,
+						imgldr[i].GetPixelsData());
+			}
+
+			m_X = (float)imgldr[0].GetWidth() / (float)(rect.Width());
+			m_Y = (float)imgldr[0].GetHeight() / (float)(rect.Height());
+
+			m_X = m_X >= 1.0f ? 1.0f : m_X;
+			m_Y = m_Y >= 1.0f ? 1.0f : m_Y;
+		}
+
 		void DHOGLRender::Draw()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -174,7 +214,7 @@ namespace dholo
 			}
 
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);
+			glBindTexture(GL_TEXTURE_2D, m_Texture[m_Cnt - 1]);
 
 			glBegin(GL_QUADS);
 				glTexCoord2f(0.0f, 0.0f);
