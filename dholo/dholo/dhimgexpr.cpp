@@ -210,22 +210,18 @@ namespace dholo
 
 			if (count == 1)
 			{
-				std::vector<CStringA> imgPath(count);
 				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
 				if (!pos)
 					/// TODO: обработка ошибок
 					return;
 
 				UINT selectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				imgPath[0] = CStringA(m_dhImgList.GetItemText(selectedItem, 1));
-
-				theApp.SelectImage(imgPath);
-
+				theApp.LoadImg(CStringA(m_dhImgList.GetItemText(selectedItem, 1)));
 				return;
 			}
 
 			if (count <= 0 || count > 4 || count < 4)
-				// TODO : обработка ошибок!!!
+				/// TODO : обработка ошибок!!!
 				return;
 
 			std::vector<CStringA> ImagePaths(count);
@@ -240,7 +236,7 @@ namespace dholo
 					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
 			}
 
-			theApp.SelectImage(ImagePaths);
+			theApp.LoadImg(ImagePaths);
 		}
 
 		void DHImgExpr::OnDeleteImage()
@@ -289,7 +285,7 @@ namespace dholo
 			UINT item = m_dhImgList.GetNextSelectedItem(pos);
 
 			CString path = m_dhImgList.GetItemText(item, 1);
-			theApp.ShowImage(CStringA(path));
+			theApp.LoadImg(CStringA(path));
 		}
 	}
 }
