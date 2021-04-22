@@ -141,8 +141,11 @@ namespace dholo
 
 		void DHOGLRender::LoadImg(const test::DHTest & test)
 		{
+			glEnable(GL_TEXTURE_2D);
+
 			m_Cnt = 5;
 			m_Texture = new GLuint[m_Cnt];
+			glGenTextures(m_Cnt, m_Texture);
 
 			for (int i = 0; i < m_Cnt; i++)
 			{
