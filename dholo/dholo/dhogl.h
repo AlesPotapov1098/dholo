@@ -62,7 +62,9 @@ namespace dholo
 			/// <summary>
 			/// Рисуем
 			/// </summary>
-			void DrawAll();
+			void DrawTestAll();
+
+			void DrawTest();
 
 			/// <summary>
 			/// Даем текстуру

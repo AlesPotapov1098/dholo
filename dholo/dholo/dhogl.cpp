@@ -259,7 +259,7 @@ namespace dholo
 			glEnd();
 		}
 
-		void DHOGLRender::DrawAll()
+		void DHOGLRender::DrawTestAll()
 		{
 			if (!m_Texture)
 				return;
@@ -332,6 +332,30 @@ namespace dholo
 				glTexCoord2f(0.0f, 1.0f);
 				glVertex2f(0.1f, -0.9f);
 
+			glEnd();
+		}
+
+		void DHOGLRender::DrawTest()
+		{
+			if (!m_Texture)
+				return;
+
+			glEnable(GL_TEXTURE_2D);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glBindTexture(GL_TEXTURE_2D, m_Texture[0]);
+			glBegin(GL_QUADS);
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2f(-1.0f, 1.0f);
+
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2f(1.0f, 1.0f);
+
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2f(1.0f, -1.0f);
+
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2f(-1.0f, -1.0f);
 			glEnd();
 		}
 
