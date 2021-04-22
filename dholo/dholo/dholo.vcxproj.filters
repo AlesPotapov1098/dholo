@@ -43,6 +43,9 @@
     <Filter Include="scr\gpgpu\test">
       <UniqueIdentifier>{5b100cf3-5885-4ee7-b490-3ab548f69208}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scr\gpgpu\err">
+      <UniqueIdentifier>{7ca3ee59-ae72-4027-8d45-dd0539a3b430}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dholo.h">
@@ -105,6 +108,9 @@
     <ClInclude Include="dhocltest.h">
       <Filter>scr\gpgpu\opencl</Filter>
     </ClInclude>
+    <ClInclude Include="dhoclerr.h">
+      <Filter>scr\gpgpu\err</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dholo.cpp">
@@ -151,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="dhocltest.cpp">
       <Filter>scr\gpgpu\opencl</Filter>
+    </ClCompile>
+    <ClCompile Include="dhoclerr.cpp">
+      <Filter>scr\gpgpu\err</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
