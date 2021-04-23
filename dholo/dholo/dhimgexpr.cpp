@@ -34,7 +34,7 @@ namespace dholo
 			ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 			ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_LOAD_INTO_GP, &DHImgExpr::OnLoadIntoGp)
-			ON_COMMAND(ID_SHOW_IMAGE, &DHImgExpr::OnShowImage)
+			ON_COMMAND(ID_SHOW_IMAGE, &DHImgExpr::OnSelectImage)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)

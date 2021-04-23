@@ -171,7 +171,7 @@ namespace dholo
 			m_Texture = new GLuint[m_Cnt];
 			glGenTextures(m_Cnt, m_Texture);
 
-			for (int i = 0; i < m_Cnt; i++)
+			for (int i = 0; i < m_Cnt - 1; i++)
 			{
 				glBindTexture(GL_TEXTURE_2D, m_Texture[i]);
 
@@ -195,6 +195,28 @@ namespace dholo
 						0, GL_RGBA, GL_FLOAT,
 						imgldr[i].GetPixelsData());
 			}
+
+			//glBindTexture(GL_TEXTURE_2D, m_Texture[m_Cnt - 1]);
+			//
+			//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			//
+			//if (imgldr[m_Cnt - 1].GetChannels() == 3)
+			//	glTexImage2D(
+			//		GL_TEXTURE_2D, 0, GL_RGB,
+			//		imgldr[m_Cnt - 1].GetWidth(),
+			//		imgldr[m_Cnt - 1].GetHeight(),
+			//		0, GL_RGB, GL_FLOAT,
+			//		imgldr[m_Cnt - 1].GetPixelsData());
+			//else if (imgldr[m_Cnt - 1].GetChannels() == 4)
+			//	glTexImage2D(
+			//		GL_TEXTURE_2D, 0, GL_RGBA,
+			//		imgldr[m_Cnt - 1].GetWidth(),
+			//		imgldr[m_Cnt - 1].GetHeight(),
+			//		0, GL_RGBA, GL_FLOAT,
+			//		imgldr[m_Cnt - 1].GetPixelsData());
 
 			m_X = (float)imgldr[0].GetWidth() / (float)(rect.Width());
 			m_Y = (float)imgldr[0].GetHeight() / (float)(rect.Height());
