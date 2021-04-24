@@ -127,6 +127,7 @@
     <ClInclude Include="std_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="fft.cl" />
     <None Include="simple.cl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

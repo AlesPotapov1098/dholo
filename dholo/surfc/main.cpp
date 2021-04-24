@@ -30,14 +30,15 @@ texture_t Tex;
 
 PAINTSTRUCT paint;
 
-const int WIDTH = 2816;
-const int HEIGHT = 2816;
+const int WIDTH = 1024;
+const int HEIGHT = 1024;
 
 const int W = 1000;
 const int H = 1000;
 
 float pixels[5][WIDTH * HEIGHT * 3];
 float sinus[4][WIDTH];
+float fft_sin[WIDTH];
 
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL bSetupPixelFormat(HDC);
@@ -58,6 +59,7 @@ void GenSinus();
 
 void ortho(float * res, float * vec);
 void mul(float * res, float * a, float * b);
+void fft();
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -115,7 +117,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		ghRC = wglCreateContext(ghDC);
 		wglMakeCurrent(ghDC, ghRC);
 
-		InitOpenCL();
+		//InitOpenCL();
 		GenSinus();
 		
 		int d = 0;
@@ -266,87 +268,89 @@ void InitOpenCL()
 void Render()
 {
 	glEnable(GL_TEXTURE_2D);
-	glGenTextures(5, texture);
+	glGenTextures(1, texture);
 
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[0]);
 
-	glBindTexture(GL_TEXTURE_2D, texture[1]);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[1]);
-
-	glBindTexture(GL_TEXTURE_2D, texture[2]);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[2]);
-
-	glBindTexture(GL_TEXTURE_2D, texture[3]);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[3]);
-
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[4]);
-
-	mem[0] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[0], &err);
-	
-	if (err != CL_SUCCESS)
-		return;
-	
-	mem[1] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[1], &err);
-	
-	if (err != CL_SUCCESS)
-		return;
-	
-	mem[2] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[2], &err);
-	
-	if (err != CL_SUCCESS)
-		return;
-	
-	mem[3] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[3], &err);
-	
-	if (err != CL_SUCCESS)
-		return;
-	
-	mem[4] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[4], &err);
-
-	if (err != CL_SUCCESS)
-		return;
-
-	cl_float4 C = { 0.0f, -2.0f, 0.0f, 2.0f };
-	cl_float4 S = { 2.0f, 0.0f, -2.0f, 0.0f };
-	cl_float B = 4.0f;
-
-	glFinish();
-	
-	clEnqueueAcquireGLObjects(command_queue, 5, mem, 0, 0, NULL);
-
-	cl_int res = clSetKernelArg(kernel, 0, sizeof(mem[0]), &mem[0]);
-	res = clSetKernelArg(kernel, 1, sizeof(mem[1]), &mem[1]);
-	res = clSetKernelArg(kernel, 2, sizeof(mem[2]), &mem[2]);
-	res = clSetKernelArg(kernel, 3, sizeof(mem[3]), &mem[3]);
-
-	res = clSetKernelArg(kernel, 4, sizeof(cl_float4), &S);
-	res = clSetKernelArg(kernel, 5, sizeof(cl_float4), &C);
-	res = clSetKernelArg(kernel, 6, sizeof(cl_float), &B);
-
-	res = clSetKernelArg(kernel, 7, sizeof(mem[4]), &mem[4]);
-	
-	const std::size_t global_size[2] = { WIDTH, HEIGHT };
-	const std::size_t local_size[2] = { 2,2 };
-	clEnqueueNDRangeKernel(command_queue, kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
-	clEnqueueReleaseGLObjects(command_queue, 5, mem, 0, 0, NULL);
-	err = clFinish(command_queue);
+	{
+		//glBindTexture(GL_TEXTURE_2D, texture[1]);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[1]);
+		//
+		//glBindTexture(GL_TEXTURE_2D, texture[2]);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[2]);
+		//
+		//glBindTexture(GL_TEXTURE_2D, texture[3]);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[3]);
+		//
+		//glBindTexture(GL_TEXTURE_2D, texture[4]);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_FLOAT, pixels[4]);
+		//
+		//mem[0] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[0], &err);
+		//
+		//if (err != CL_SUCCESS)
+		//	return;
+		//
+		//mem[1] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[1], &err);
+		//
+		//if (err != CL_SUCCESS)
+		//	return;
+		//
+		//mem[2] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[2], &err);
+		//
+		//if (err != CL_SUCCESS)
+		//	return;
+		//
+		//mem[3] = clCreateFromGLTexture(context, CL_MEM_READ_ONLY, GL_TEXTURE_2D, 0, texture[3], &err);
+		//
+		//if (err != CL_SUCCESS)
+		//	return;
+		//
+		//mem[4] = clCreateFromGLTexture(context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture[4], &err);
+		//
+		//if (err != CL_SUCCESS)
+		//	return;
+		//
+		//cl_float4 C = { 0.0f, -2.0f, 0.0f, 2.0f };
+		//cl_float4 S = { 2.0f, 0.0f, -2.0f, 0.0f };
+		//cl_float B = 4.0f;
+		//
+		//glFinish();
+		//
+		//clEnqueueAcquireGLObjects(command_queue, 5, mem, 0, 0, NULL);
+		//
+		//cl_int res = clSetKernelArg(kernel, 0, sizeof(mem[0]), &mem[0]);
+		//res = clSetKernelArg(kernel, 1, sizeof(mem[1]), &mem[1]);
+		//res = clSetKernelArg(kernel, 2, sizeof(mem[2]), &mem[2]);
+		//res = clSetKernelArg(kernel, 3, sizeof(mem[3]), &mem[3]);
+		//
+		//res = clSetKernelArg(kernel, 4, sizeof(cl_float4), &S);
+		//res = clSetKernelArg(kernel, 5, sizeof(cl_float4), &C);
+		//res = clSetKernelArg(kernel, 6, sizeof(cl_float), &B);
+		//
+		//res = clSetKernelArg(kernel, 7, sizeof(mem[4]), &mem[4]);
+		//
+		//const std::size_t global_size[2] = { WIDTH, HEIGHT };
+		//const std::size_t local_size[2] = { 2,2 };
+		//clEnqueueNDRangeKernel(command_queue, kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
+		//clEnqueueReleaseGLObjects(command_queue, 5, mem, 0, 0, NULL);
+		//err = clFinish(command_queue);
+	}
 
 	glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glBindTexture(GL_TEXTURE_2D, texture[4]);
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glBegin(GL_QUADS);
 	
 		glTexCoord2f(0.0f, 0.0f);
@@ -386,6 +390,8 @@ void GenSinus()
 		sinus[2][i] = (sinf((2 * PI * K / WIDTH) * i + phi3) + 1) / 2;
 		sinus[3][i] = (sinf((2 * PI * K / WIDTH) * i + phi4) + 1) / 2;
 	}
+
+	fft();
 
 	for (int i = 0; i < HEIGHT; i++)
 	{
@@ -437,4 +443,56 @@ void ortho(float * res, float * vec)
 void mul(float * res, float * a, float * b)
 {
 	*res = a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
+}
+
+void fft()
+{
+	int m = 10;
+	int i, j, ip, k, l;
+	int n = (int)pow(2., m); 
+	int n1 = n >> 1;
+	
+	for (i = 0, j = 0, k = n1; i<n - 1; i++, j = j + k)
+	{
+		if (i<j) 
+		{ 
+			float t = sinus[0][j]; 
+			sinus[0][j] = sinus[0][i];
+			sinus[0][i] = t;
+		}
+
+		k = n1;
+		
+		while (k <= j) 
+		{ 
+			j = j - k; 
+			k = k >> 1; 
+		}
+	}
+
+	for (l = 1; l <= m; l++)
+	{
+		int ll = (int)pow(2., l);
+		int ll1 = ll >> 1;
+
+		float U_Re = 1.0f;
+		float U_Im = 0.0f;
+
+		float W_Re = cos(CL_M_PI / ll1);
+		float W_Im = sin(CL_M_PI / ll1);
+		
+		for (j = 1; j <= ll1; j++)
+		{
+			for (i = j - 1; i < n; i = i + ll)
+			{
+				ip = i + ll1; 
+				float t = sinus[0][ip] * U_Re; 
+				sinus[0][ip] = sinus[0][i] - t; 
+				sinus[0][i] = sinus[0][i] + t;
+			}
+
+			U_Re = U_Re * W_Re - U_Im * W_Im;
+			U_Im = U_Re * W_Im + U_Im * W_Re;
+		}
+	}
 }
