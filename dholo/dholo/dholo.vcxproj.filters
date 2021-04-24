@@ -57,9 +57,6 @@
     <ClInclude Include="targetver.h">
       <Filter>scr\etc</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>resources</Filter>
-    </ClInclude>
     <ClInclude Include="dhimgexpr.h">
       <Filter>scr\app\img</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="dhoclerr.h">
       <Filter>scr\gpgpu\err</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
