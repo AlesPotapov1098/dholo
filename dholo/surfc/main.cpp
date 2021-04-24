@@ -1,9 +1,8 @@
 #include <Windows.h> 
 #include <GL/gl.h> 
 
-#include <CL/cl2.h>
+#include <CL/cl.h>
 
-#define CL_HPP_TARGET_OPENCL_VERSION 220
 
 #include <string>
 #include <fstream>
@@ -53,6 +52,8 @@ cl_mem mem[5];
 cl_mem mem1[3];
 cl_int err;
 
+void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
+
 void InitOpenCL();
 void Render();
 void GenSinus();
@@ -61,46 +62,117 @@ void ortho(float * res, float * vec);
 void mul(float * res, float * a, float * b);
 void fft();
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int main()
 {
-	MSG        msg;
-	WNDCLASSW   wndclass;
-	ZeroMemory(&wndclass, sizeof(WNDCLASSW));
-	wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wndclass.lpfnWndProc = (WNDPROC)MainWndProc;
-	wndclass.hInstance = hInstance;
-	wndclass.lpszClassName = L"Win OpenGL";
+	std::cout << "Hello OpenCL" << std::endl;
 
-	if (!RegisterClassW(&wndclass))
-		return FALSE;
+	cl_uint size1;
+	err = clGetPlatformIDs(0, nullptr, &size1);
 
-	ghWnd = CreateWindowW(L"Win OpenGL",
-		L"Generic OpenGL Sample",
-		WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		W,
-		H,
-		NULL,
-		NULL,
-		hInstance,
-		NULL);
+	platform = new cl_platform_id[size1];
+	clGetPlatformIDs(size1, platform, nullptr);
 
-	if (!ghWnd)
-		return FALSE;
+	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
 
-	ShowWindow(ghWnd, nCmdShow);
-	UpdateWindow(ghWnd);
+	device = new cl_device_id[size1];
 
-	while (GetMessage(&msg, NULL, 0, 0))
+	cl_int err = clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_context context = clCreateContext(NULL, 1, device, NULL, NULL, &err);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_program program;
+	std::ifstream file("test.cl", std::ios_base::binary);
+	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+
+
+	const char* src = code.c_str();
+	std::size_t len = code.length() + 1;
+
+	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+	if (err != CL_SUCCESS)
 	{
-		if (msg.message == WM_QUIT)
-			break;
+		std::size_t size_log = 0;
+		char* build_log;
+		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+		if (err != CL_SUCCESS) {
+			printf("Error (code) - %d\n", err);
+			return err;
+		}
 
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		if (size_log == 0) {
+			printf("Error (mess) - not such size_log\n");
+			return -1;
+		}
+
+		build_log = new char[size_log];
+		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+		if (err != CL_SUCCESS) {
+			printf("Error (code) - %d\n", err);
+			return err;
+		}
+		printf("%s\n", build_log);
+		delete[] build_log;
+		return -1;
 	}
+
+	cl_kernel kernel = clCreateKernel(program, "testKernel", &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, *device, 0, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+	const cl_int m = 10;
+
+	float input[m];
+
+	for (int i = 0; i < m; i++)
+		input[i] = i + 1;
+
+	float output[m] = { 0 };
+
+	cl_mem mem1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(input) * m, input, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(output) * m, output, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
+	err = clSetKernelArg(kernel, 1, sizeof(cl_int), &m);
+	err = clSetKernelArg(kernel, 2, sizeof(mem2), &mem2);
+
+	std::size_t work_items = m;
+	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_items, NULL, 0, NULL, NULL);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clEnqueueReadBuffer(command_queue, mem2, CL_TRUE, 0, sizeof(float) * m, output, 0, NULL, NULL);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	for (int i = 0; i < m; i++)
+		std::cout << output[i] << std::endl;
+
+	return 0;
 }
+
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+//{
+//	
+//}
 
 LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -195,6 +267,47 @@ BOOL bSetupPixelFormat(HDC hdc)
 	return TRUE;
 }
 
+void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	MSG        msg;
+	WNDCLASSW   wndclass;
+	ZeroMemory(&wndclass, sizeof(WNDCLASSW));
+	wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	wndclass.lpfnWndProc = (WNDPROC)MainWndProc;
+	wndclass.hInstance = hInstance;
+	wndclass.lpszClassName = L"Win OpenGL";
+
+	if (!RegisterClassW(&wndclass))
+		return;
+
+	ghWnd = CreateWindowW(L"Win OpenGL",
+		L"Generic OpenGL Sample",
+		WS_OVERLAPPEDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		W,
+		H,
+		NULL,
+		NULL,
+		hInstance,
+		NULL);
+
+	if (!ghWnd)
+		return;
+
+	ShowWindow(ghWnd, nCmdShow);
+	UpdateWindow(ghWnd);
+
+	while (GetMessage(&msg, NULL, 0, 0))
+	{
+		if (msg.message == WM_QUIT)
+			break;
+
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+}
+
 void InitOpenCL()
 {
 	cl_uint size1;
@@ -211,8 +324,8 @@ void InitOpenCL()
 
 	cl_context_properties prop[] = {
 		CL_CONTEXT_PLATFORM, (cl_context_properties)platform[0],
-		CL_GL_CONTEXT_KHR, (cl_context_properties)ghRC,
-		CL_WGL_HDC_KHR, (cl_context_properties)ghDC,
+	//	CL_GL_CONTEXT_KHR, (cl_context_properties)ghRC,
+	//	CL_WGL_HDC_KHR, (cl_context_properties)ghDC,
 		0
 	};
 

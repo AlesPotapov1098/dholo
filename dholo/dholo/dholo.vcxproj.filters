@@ -180,9 +180,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\dholo.rc2">
-      <Filter>resources</Filter>
-    </None>
     <None Include="black.cl">
       <Filter>scr\gpgpu\programs</Filter>
     </None>
@@ -191,6 +188,9 @@
     </None>
     <None Include="Psi4Kernel.cl">
       <Filter>scr\gpgpu\programs</Filter>
+    </None>
+    <None Include="dholo.rc2">
+      <Filter>resources</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

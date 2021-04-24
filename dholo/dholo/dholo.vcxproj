@@ -243,9 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="black.cl" />
+    <None Include="dholo.rc2" />
     <None Include="OpenCLFile.cl" />
     <None Include="Psi4Kernel.cl" />
-    <None Include="res\dholo.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

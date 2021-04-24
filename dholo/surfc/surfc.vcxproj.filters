@@ -9,5 +9,6 @@
   <ItemGroup>
     <None Include="simple.cl" />
     <None Include="fft.cl" />
+    <None Include="test.cl" />
   </ItemGroup>
 </Project>
