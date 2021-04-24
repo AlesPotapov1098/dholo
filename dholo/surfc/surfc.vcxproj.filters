@@ -10,5 +10,6 @@
     <None Include="simple.cl" />
     <None Include="fft.cl" />
     <None Include="test.cl" />
+    <None Include="DFT.cl" />
   </ItemGroup>
 </Project>

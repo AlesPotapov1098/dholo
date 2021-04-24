@@ -127,6 +127,7 @@
     <ClInclude Include="std_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DFT.cl" />
     <None Include="fft.cl" />
     <None Include="simple.cl" />
     <None Include="test.cl" />
