@@ -1,3 +1,4 @@
+#pragma OPENCL EXTENSION cl_khr_fp16 : enable
 #define mask_left fft_index
 #define mask_right stage
 #define shift_pos N2
@@ -23,7 +24,7 @@ __kernel void fft_init(__global float2* g_data, __local float2* l_data,
       index = (uint4)(g_addr, g_addr+1, g_addr+2, g_addr+3);
       mask_left = size/2;
       mask_right = 1;
-      shift_pos = log2(size)-1;
+      shift_pos = (int)(log2((float)size) + 0.5f);
       br = (index << shift_pos) & mask_left;
       br |= (index >> shift_pos) & mask_right;
 
@@ -129,13 +130,4 @@ __kernel void fft_stage(__global float2* g_data, uint stage, uint points_per_gro
    }
 }
 
-__kernel void fft_scale(__global float2* g_data, uint points_per_group, uint scale) {
 
-   uint points_per_item, addr, i;
-
-   points_per_item = points_per_group/get_local_size(0);
-   addr = get_group_id(0) * points_per_group + get_local_id(0) * points_per_item;
-
-   for(i=addr; i<addr + points_per_item; i++) {
-      g_data[i] /= scale;
-   }
