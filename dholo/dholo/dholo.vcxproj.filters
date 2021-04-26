@@ -57,9 +57,6 @@
     <ClInclude Include="targetver.h">
       <Filter>scr\etc</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>resources</Filter>
-    </ClInclude>
     <ClInclude Include="dhimgexpr.h">
       <Filter>scr\app\img</Filter>
     </ClInclude>
@@ -110,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="dhoclerr.h">
       <Filter>scr\gpgpu\err</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,17 +180,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\dholo.rc2">
+    <None Include="dholo.rc2">
       <Filter>resources</Filter>
-    </None>
-    <None Include="black.cl">
-      <Filter>scr\gpgpu\programs</Filter>
-    </None>
-    <None Include="OpenCLFile.cl">
-      <Filter>scr\gpgpu\programs</Filter>
-    </None>
-    <None Include="Psi4Kernel.cl">
-      <Filter>scr\gpgpu\programs</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
