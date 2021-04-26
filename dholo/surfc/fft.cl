@@ -12,3 +12,8 @@ int bitReverse(int i, int m)
 
 	return j;
 }
+
+__kernel void dft(__global vec2f * input, __global vec2f * output)
+{
+	int N = get_global_size(0); 
+}
