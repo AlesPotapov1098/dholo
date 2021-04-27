@@ -5,7 +5,7 @@
 #define SCALE_FUNC "fft_scale"
 
 /* Each point contains 2 floats - 1 real, 1 imaginary */
-#define NUM_POINTS 65536
+#define NUM_POINTS 8
 
 /* 1 - forward FFT, -1 - inverse FFT */
 #define DIRECTION 1
@@ -65,20 +65,6 @@ cl_program build_program(cl_context ctx, cl_device_id dev, const char* filename)
     size_t program_size, log_size;
     int err;
 
-    /* Read program file and place content into buffer */
-    //program_handle = fopen(filename, "r");
-    //if (program_handle == NULL) {
-    //    perror("Couldn't find the program file");
-    //    exit(1);
-    //}
-    //fseek(program_handle, 0, SEEK_END);
-    //program_size = ftell(program_handle);
-    //rewind(program_handle);
-    //program_buffer = (char*)malloc(program_size + 1);
-    //program_buffer[program_size] = '\0';
-    //fread(program_buffer, sizeof(char), program_size, program_handle);
-    //fclose(program_handle);
-
     std::ifstream file(filename, std::ios_base::binary);
     std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
 
@@ -92,7 +78,6 @@ cl_program build_program(cl_context ctx, cl_device_id dev, const char* filename)
         perror("Couldn't create the program");
         exit(1);
     }
-    //free(program_buffer);
 
     /* Build program */
     err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
@@ -210,8 +195,6 @@ int main() {
         printf("Couldn't set a kernel argument");
         exit(1);
     };
-
-    cl_queue_properties propq = CL_QUEUE_PROFILING_ENABLE;
 
     /* Create a command queue */
     queue = clCreateCommandQueueWithProperties(context, device, 

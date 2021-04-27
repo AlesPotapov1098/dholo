@@ -1,13 +1,24 @@
-__kernel void testKernel(__global float * input, int m, __global float * output)
+__kernel void testKernel(
+		__global float * input,
+		__global float * output)
 {
-	int id = get_global_id(0);
-	int N = get_global_size(0);
-	float resutl = 0.0f;
-
-	for(int i = 0; i < N; i++)
+	int group = get_group_id(0);
+	int id = get_local_id(0);
+	int index = group * 2 + id;
+	int start = index * 5;
+	__local float arr[5];
+	
+	for(int i = 0; i < 5; i++)
 	{
-		resutl += input[i] * id;
+		arr[i] = input[start + i];
 	}
 
-	output[id] = resutl;
+	float res = 0.0f;
+
+	for(int i = 0; i < 5; i++)
+	{
+		res += arr[i];
+	}
+
+	output[index] = res;
 }

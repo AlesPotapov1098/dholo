@@ -62,7 +62,56 @@ void ortho(float * res, float * vec);
 void mul(float * res, float * a, float * b);
 void fft();
 
+int bit_reversed(int x, int bits) {
+	int y = 0;
+#pragma unroll 
+	for (int i = 0; i < bits; i++) {
+		y <<= 1;
+		y |= x & 1;
+		x >>= 1;
+	}
+	y &= ((1 << bits) - 1);
+	return y;
+}
+
+
 int main()
+{
+	int local[4][8];
+	int global[16];
+
+	for (int i = 0; i < 16; i++)
+	{
+		global[i] = i;
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		int start_index = i * 4;
+		for (int j = 0; j < 4; j++)
+		{
+			int index = bit_reversed(j + start_index, 4);
+			local[i][j] = global[index];
+		}
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int ii = 0; ii < 4; ii++)
+		{
+			std::cout << local[i][ii] << " ";
+		}
+
+		std::cout << std::endl;
+	}
+
+	int t = 0;
+	std::cin >> t;
+
+	return 0;
+}
+
+int main2()
 {
 	std::cout << "Hello OpenCL" << std::endl;
 
@@ -133,14 +182,14 @@ int main()
 	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, *device, 0, &err);
 	if (err != CL_SUCCESS)
 		return -1;
-	const cl_int m = 10;
+	const cl_int m = 30;
 
 	float input[m];
 
 	for (int i = 0; i < m; i++)
 		input[i] = i + 1;
 
-	float output[m] = { 0 };
+	float output[30/5] = { 0 };
 
 	cl_mem mem1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(input) * m, input, &err);
 	if (err != CL_SUCCESS)
@@ -151,11 +200,11 @@ int main()
 		return -1;
 
 	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
-	err = clSetKernelArg(kernel, 1, sizeof(cl_int), &m);
-	err = clSetKernelArg(kernel, 2, sizeof(mem2), &mem2);
+	err = clSetKernelArg(kernel, 1, sizeof(mem2), &mem2);
 
-	std::size_t work_items = m;
-	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_items, NULL, 0, NULL, NULL);
+	std::size_t work_group = 6;
+	std::size_t work_item = 2;
+	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
 
@@ -163,8 +212,17 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
-	for (int i = 0; i < m; i++)
-		std::cout << output[i] << std::endl;
+	for (int i = 0; i < 6; i++)
+	{
+		int index = i * 5;
+		float res = 0.0f;
+		for (int j = index; j < index + 5; j++)
+			res += input[j];
+		std::cout << output[i] << " " << res << std::endl;
+	}
+
+	int t = 0;
+	std::cin >> t;
 
 	return 0;
 }
