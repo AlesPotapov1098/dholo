@@ -42,15 +42,14 @@ float fft_sin[WIDTH];
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL bSetupPixelFormat(HDC);
 
-#define N 65538
-#define M 2048
+#define N 131072
+#define M 4096
 #define G (N / M)
 
 const int bits = int(log2(double(N)));
 const int nlevels = int(log2(double(N)));
 const int nlevels_per_group = int(log2(double(M)));
 
-int local[G][M];
 int global[N];
 
 void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
@@ -74,7 +73,7 @@ int bit_reversed(int x, int bits) {
 }
 
 // Алгоритм перебора бабочка
-	void butterfly();
+	void butterfly(int * right);
 
 // Инициализируем графическое устройство
 	cl_device_id get_device();
@@ -148,29 +147,18 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
-	butterfly();
-
-	bool res = 0;
-	for (int i = 0; i < G; i++)
-	{
-		for (int j = 0; j < M; j++)
-		{
-			res |= (local[i][j] == result[i*M + j]);
-			//std::cout << output[i*M + j] << std::endl;
-		}
-	}
-	
-	if (res)
-		std::cout << "Success" << std::endl;
-	else
-		std::cout << "Fail" << std::endl;
+	butterfly(result);
 
 	return 0;
 }
 
 // Алгоритм перебора бабочка
-	void butterfly()
+	void butterfly(int* right)
 	{
+		int** local = new int*[G];
+		for (int i = 0; i < G; i++)
+			local[i] = new int[M];
+
 		for (int i = 0; i < G; i++)
 		{
 			int start_index = i * M;
@@ -210,6 +198,23 @@ int main()
 			offset = 1;
 			cycles = 1;
 		}
+
+		bool res = 0;
+		for (int i = 0; i < G; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				res |= (local[i][j] == right[i * M + j]);
+				//std::cout << output[i*M + j] << std::endl;
+			}
+		}
+
+		if (res)
+			std::cout << "Success" << std::endl;
+		else
+			std::cout << "Fail" << std::endl;
+
+		delete [] local;
 	}
 
 // Инициализация графического устройства.
@@ -247,7 +252,7 @@ int main()
 			}
 		}
 
-		delete platform;
+		delete[] platform;
 		return nullptr;
 	}
 
@@ -336,17 +341,6 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Render();
 		EndPaint(hWnd, &paint);
 	}
-		break;
-
-	case WM_CLOSE:
-		if (ghRC)
-			wglDeleteContext(ghRC);
-		if (ghDC)
-			ReleaseDC(hWnd, ghDC);
-		ghRC = 0;
-		ghDC = 0;
-
-		DestroyWindow(hWnd);
 		break;
 
 	case WM_DESTROY:
