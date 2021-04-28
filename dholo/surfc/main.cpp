@@ -73,6 +73,7 @@ int bit_reversed(int x, int bits) {
 	return y;
 }
 
+int main2();
 
 int main()
 {
@@ -99,6 +100,16 @@ int main()
 			int index = bit_reversed(j + start_index, bits);
 			local[i][j] = global[index];
 		}
+	}
+
+	for (int i = 0; i < G; i++)
+	{
+		for (int ii = 0; ii < M; ii++)
+		{
+			std::cout << local[i][ii] << " ";
+		}
+
+		std::cout << std::endl;
 	}
 
 	int step = 1;
@@ -139,6 +150,106 @@ int main()
 		}
 
 		std::cout << std::endl;
+	}
+
+	cl_uint size1;
+	err = clGetPlatformIDs(0, nullptr, &size1);
+
+	platform = new cl_platform_id[size1];
+	clGetPlatformIDs(size1, platform, nullptr);
+
+	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
+
+	device = new cl_device_id[size1];
+
+	cl_int err = clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_context context = clCreateContext(NULL, 1, device, NULL, NULL, &err);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_program program;
+	std::ifstream file("test.cl", std::ios_base::binary);
+	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+
+	const char* src = code.c_str();
+	std::size_t len = code.length() + 1;
+
+	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
+
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+	if (err != CL_SUCCESS)
+	{
+		std::size_t size_log = 0;
+		char* build_log;
+		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+		if (err != CL_SUCCESS) {
+			printf("Error (code) - %d\n", err);
+			return err;
+		}
+
+		if (size_log == 0) {
+			printf("Error (mess) - not such size_log\n");
+			return -1;
+		}
+
+		build_log = new char[size_log];
+		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+		if (err != CL_SUCCESS) {
+			printf("Error (code) - %d\n", err);
+			return err;
+		}
+		printf("%s\n", build_log);
+		delete[] build_log;
+		return -1;
+	}
+
+	cl_kernel kernel = clCreateKernel(program, "testKernel", &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, *device, 0, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+	const cl_int m = 30;
+
+	cl_mem mem1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(global) * N, global, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	int output[N];
+
+	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(output) * N, output, &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
+	err |= clSetKernelArg(kernel, 1, sizeof(int), &N);
+	err |= clSetKernelArg(kernel, 2, sizeof(int), &M);
+	err |= clSetKernelArg(kernel, 3, M * 4, NULL);
+	err |= clSetKernelArg(kernel, 4, 4, &bits);
+	err |= clSetKernelArg(kernel, 5, sizeof(mem2), &mem2);
+
+	std::size_t work_group = 2;
+	std::size_t work_item = 1;
+	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	err = clEnqueueReadBuffer(command_queue, mem2, CL_TRUE, 0, sizeof(int) * N, output, 0, NULL, NULL);
+	if (err != CL_SUCCESS)
+		return -1;
+
+	for (int i = 0; i < N; i++)
+	{
+		std::cout << output[i] << std::endl;
 	}
 
 	int t = 0;
