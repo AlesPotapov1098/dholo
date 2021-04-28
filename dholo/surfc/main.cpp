@@ -52,6 +52,16 @@ cl_mem mem[5];
 cl_mem mem1[3];
 cl_int err;
 
+const int N = 16;
+const int M = 8;
+const int G = N / M;
+const int bits = int(log2(double(N)));
+const int nlevels = int(log2(double(N)));
+const int nlevels_per_group = int(log2(double(M)));
+
+int local[G][M];
+int global[N];
+
 void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
 void InitOpenCL();
@@ -75,18 +85,10 @@ int bit_reversed(int x, int bits) {
 
 int main2();
 
+void butterfly();
+
 int main()
 {
-	const int N = 16;
-	const int M = 4;
-	const int G = N / M;
-	const int bits = int(log2(double(N)));
-	const int nlevels = int(log2(double(N)));
-	const int nlevels_per_group = int(log2(double(M)));
-
-	int local[G][M];
-	int global[N];
-
 	for (int i = 0; i < N; i++)
 	{
 		global[i] = i;
@@ -100,56 +102,6 @@ int main()
 			int index = bit_reversed(j + start_index, bits);
 			local[i][j] = global[index];
 		}
-	}
-
-	for (int i = 0; i < G; i++)
-	{
-		for (int ii = 0; ii < M; ii++)
-		{
-			std::cout << local[i][ii] << " ";
-		}
-
-		std::cout << std::endl;
-	}
-
-	int step = 1;
-	int offset = 1;
-	int cycles = 1;
-
-	for (int g = 0; g < G; g++)
-	{
-		for (int l = 1; l <= nlevels_per_group; l++)
-		{
-			step *= 2;
-
-			for (int i = 0; i < M; i += step)
-			{
-				for (int j = 0; j < cycles; j++)
-				{
-					int a = local[g][i + j];
-					int b = local[g][i + j + offset];
-					local[g][i + j] = a + b;
-					local[g][i + j + offset] = a - b;
-				}
-			}
-
-			offset *= 2;
-			cycles *= 2;
-		}
-
-		step = 1;
-		offset = 1;
-		cycles = 1;
-	}
-
-	for (int i = 0; i < G; i++)
-	{
-		for (int ii = 0; ii < M; ii++)
-		{
-			std::cout << local[i][ii] << " ";
-		}
-
-		std::cout << std::endl;
 	}
 
 	cl_uint size1;
@@ -226,7 +178,7 @@ int main()
 
 	int output[N];
 
-	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(output) * N, output, &err);
+	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, sizeof(output) * N, output, &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
@@ -234,8 +186,9 @@ int main()
 	err |= clSetKernelArg(kernel, 1, sizeof(int), &N);
 	err |= clSetKernelArg(kernel, 2, sizeof(int), &M);
 	err |= clSetKernelArg(kernel, 3, M * sizeof(int), NULL);
-	err |= clSetKernelArg(kernel, 4, 4, &bits);
-	err |= clSetKernelArg(kernel, 5, sizeof(mem2), &mem2);
+	err |= clSetKernelArg(kernel, 4, sizeof(int), &bits);
+	err |= clSetKernelArg(kernel, 5, sizeof(int), &nlevels_per_group);
+	err |= clSetKernelArg(kernel, 6, sizeof(mem2), &mem2);
 
 	std::size_t work_group = G;
 	std::size_t work_item = 1;
@@ -243,19 +196,62 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
+
 	err = clEnqueueReadBuffer(command_queue, mem2, CL_TRUE, 0, sizeof(int) * N, output, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	for (int i = 0; i < N; i++)
-	{
-		std::cout << output[i] << std::endl;
-	}
+	butterfly();
 
-	int t = 0;
-	std::cin >> t;
+	bool res = 0;
+	for (int i = 0; i < G; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			res |= (local[i][j] == output[i*M + j]);
+			std::cout << output[i*M + j] << std::endl;
+		}
+	}
+	
+	if (res)
+		std::cout << "Success" << std::endl;
+	else
+		std::cout << "Fail" << std::endl;
 
 	return 0;
+}
+
+void butterfly()
+{
+	int step = 1;
+	int offset = 1;
+	int cycles = 1;
+
+	for (int g = 0; g < G; g++)
+	{
+		for (int l = 1; l <= nlevels_per_group; l++)
+		{
+			step *= 2;
+
+			for (int i = 0; i < M; i += step)
+			{
+				for (int j = 0; j < cycles; j++)
+				{
+					int a = local[g][i + j];
+					int b = local[g][i + j + offset];
+					local[g][i + j] = a + b;
+					local[g][i + j + offset] = a - b;
+				}
+			}
+
+			offset *= 2;
+			cycles *= 2;
+		}
+
+		step = 1;
+		offset = 1;
+		cycles = 1;
+	}
 }
 
 int main2()
