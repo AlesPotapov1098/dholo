@@ -77,7 +77,7 @@ int main2();
 
 int main()
 {
-	const int N = 8;
+	const int N = 16;
 	const int M = 4;
 	const int G = N / M;
 	const int bits = int(log2(double(N)));
@@ -233,11 +233,11 @@ int main()
 	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
 	err |= clSetKernelArg(kernel, 1, sizeof(int), &N);
 	err |= clSetKernelArg(kernel, 2, sizeof(int), &M);
-	err |= clSetKernelArg(kernel, 3, M * 4, NULL);
+	err |= clSetKernelArg(kernel, 3, M * sizeof(int), NULL);
 	err |= clSetKernelArg(kernel, 4, 4, &bits);
 	err |= clSetKernelArg(kernel, 5, sizeof(mem2), &mem2);
 
-	std::size_t work_group = 2;
+	std::size_t work_group = G;
 	std::size_t work_item = 1;
 	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
