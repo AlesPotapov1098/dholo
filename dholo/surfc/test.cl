@@ -1,24 +1,21 @@
+uint bit_reversed(uint x, uint bits) {
+	uint y = 0;
+	for (int i = 0; i < bits; i++) {
+		y <<= 1;
+		y |= x & 1;
+		x >>= 1;
+	}
+	y &= ((1 << bits) - 1);
+	return y;
+}
+
+
 __kernel void testKernel(
-		__global float * input,
-		__global float * output)
+		// ¬ходна€ последовательность
+		__global int * input,
+
+		int N, 
+		__global int * output)
 {
-	int group = get_group_id(0);
-	int id = get_local_id(0);
-	int index = group * 2 + id;
-	int start = index * 5;
-	__local float arr[5];
-	
-	for(int i = 0; i < 5; i++)
-	{
-		arr[i] = input[start + i];
-	}
 
-	float res = 0.0f;
-
-	for(int i = 0; i < 5; i++)
-	{
-		res += arr[i];
-	}
-
-	output[index] = res;
 }

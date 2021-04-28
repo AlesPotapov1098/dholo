@@ -64,7 +64,6 @@ void fft();
 
 int bit_reversed(int x, int bits) {
 	int y = 0;
-#pragma unroll 
 	for (int i = 0; i < bits; i++) {
 		y <<= 1;
 		y |= x & 1;
@@ -77,27 +76,64 @@ int bit_reversed(int x, int bits) {
 
 int main()
 {
-	int local[4][8];
-	int global[16];
+	const int N = 8;
+	const int M = 4;
+	const int G = N / M;
+	const int bits = int(log2(double(N)));
+	const int nlevels = int(log2(double(N)));
+	const int nlevels_per_group = int(log2(double(M)));
 
-	for (int i = 0; i < 16; i++)
+	int local[G][M];
+	int global[N];
+
+	for (int i = 0; i < N; i++)
 	{
 		global[i] = i;
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < G; i++)
 	{
-		int start_index = i * 4;
-		for (int j = 0; j < 4; j++)
+		int start_index = i * M;
+		for (int j = 0; j < M; j++)
 		{
-			int index = bit_reversed(j + start_index, 4);
+			int index = bit_reversed(j + start_index, bits);
 			local[i][j] = global[index];
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	int step = 1;
+	int offset = 1;
+	int cycles = 1;
+
+	for (int g = 0; g < G; g++)
 	{
-		for (int ii = 0; ii < 4; ii++)
+		for (int l = 1; l <= nlevels_per_group; l++)
+		{
+			step *= 2;
+
+			for (int i = 0; i < M; i += step)
+			{
+				for (int j = 0; j < cycles; j++)
+				{
+					int a = local[g][i + j];
+					int b = local[g][i + j + offset];
+					local[g][i + j] = a + b;
+					local[g][i + j + offset] = a - b;
+				}
+			}
+
+			offset *= 2;
+			cycles *= 2;
+		}
+
+		step = 1;
+		offset = 1;
+		cycles = 1;
+	}
+
+	for (int i = 0; i < G; i++)
+	{
+		for (int ii = 0; ii < M; ii++)
 		{
 			std::cout << local[i][ii] << " ";
 		}
