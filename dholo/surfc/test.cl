@@ -10,22 +10,31 @@ uint bit_reversed(uint x, uint bits) {
 	return y;
 }
 
+// Умножение комплексных чисел типа float2 - вектор
+// Тип возвращаемого значеия float2 - вектор
+// complex_mul_float2_float2
+// c1 = a + ib, c2 = c + id
+// result = (ac-bd) + i(ad + bc)
+	float2 cmf2f2(float2 c1, float2 c2)
+	{
+		return (float2)(c1.x * c2.x - c1.y * c2.y, c1.x * c2.y + c1.y * c2.x);
+	}
 
 __kernel void testKernel(
 	// 0 - Входная последовательность.
-		__global int * input,
+		__global float2 * input,
 	// 1 - Количество элементов во входной последовательности.
 		int NUM_POINTS,
 	// 2 - Количество элементов в группе.
 		int NUM_POINTS_PER_GROUP,
 	// 3 - Локальный массив для обработки.
-		__local int * arr,
+		__local float2 * arr,
 	// 4 - Количество бит.
 		uint nbits,
 	// 5 - Количество уровней для бабочки, которые могут быть обработаны одной группой
 		uint nlevels,
 	// 6 - Выходная последовательность (результат перобразования).
-		__global int * output)
+		__global float2 * output)
 {
 	// Номер группы.
 		uint group_id = get_group_id(0);
@@ -63,8 +72,11 @@ __kernel void testKernel(
 					// Считываем необходиые значения, находим их сумму и разность и записываем обратно.
 						for(int j = 0; j < cycles; j++)
 						{
-							int a = arr[i + j];
-							int b = arr[i + j + offset];
+							float2 a = arr[i + j];
+							float2 b = arr[i + j + offset];
+
+							float2 t = (float2)(cos((2 * M_PI_F * j) / cycles),sin((2 * M_PI_F * j) / cycles));
+							b = cmf2f2(b, t);
 
 							arr[i + j] = a + b;
 							arr[i + j + offset] = a - b;
@@ -86,7 +98,7 @@ __kernel void testKernel(
 // который в два раза больше предыдущей, следовательсно и групп в два раза меньше.
 __kernel void merge(
 	// 0 - Входная последовательсноть.
-		__global read_write int * input,
+		__global read_write float2 * input,
 	// 1 - Количество обрабатываемых элементов (размер).
 		int NUM_POINTS)
 {
@@ -102,8 +114,12 @@ __kernel void merge(
 	// Выполняем преобразование исходной последовательсноти по алгоритму бабочки.
 		for(int i = 0; i < num_iter; i++)
 		{
-			int a = input[addr + i];
-			int b = input[addr + i + offset];
+			float2 a = input[addr + i];
+			float2 b = input[addr + i + offset];
+
+			float2 t = (float2)(cos((2 * M_PI_F * i) / num_iter),sin((2 * M_PI_F * i) / num_iter));
+			b = cmf2f2(b, t);
+
 			input[addr + i] = a + b;
 			input[addr + i + offset] = a - b;
 		}

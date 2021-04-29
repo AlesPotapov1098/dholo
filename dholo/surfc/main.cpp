@@ -45,7 +45,7 @@ const int bits = int(log2(double(NUM_POINTS)));
 const int nlevels = int(log2(double(NUM_POINTS)));
 const int nlevels_per_group = int(log2(double(NUM_POINTS_PER_GROUP)));
 
-int global[NUM_POINTS];
+cl_float2 global[NUM_POINTS];
 
 void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
@@ -86,149 +86,154 @@ int main()
 {
 	for (int i = 0; i < NUM_POINTS; i++)
 	{
-		global[i] = i;
+		global[i].x = i;
+		global[i].y = 0;
 	}
 
 	cl_device_id device = get_device();
 	if (device == nullptr)
 		return -1;
-
+	
 	cl_int err = CL_SUCCESS;
 	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, &err);
-
+	
 	if (err != CL_SUCCESS)
 		return -1;
-
+	
 	cl_program program = build_program("test.cl", device, context);
 	if (program == nullptr)
 		return -1;
-
+	
 	cl_kernel kernel = clCreateKernel(program, "testKernel", &err);
 	if (err != CL_SUCCESS)
 		return -1;
-
+	
 	cl_kernel merge_kernel = clCreateKernel(program, "merge", &err);
 	if (err != CL_SUCCESS)
 		return -1;
-
+	
 	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, device, nullptr, &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	cl_mem input = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * NUM_POINTS, global, &err);
+	std::size_t size = sizeof(cl_float2);
+	
+	cl_mem input = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(cl_float2) * NUM_POINTS, global, &err);
 	if (err != CL_SUCCESS)
 		return -1;
-
-	int result[NUM_POINTS];
-
-	cl_mem output = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(int) * NUM_POINTS, result, &err);
+	
+	cl_float2 result[NUM_POINTS];
+	
+	cl_mem output = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(cl_float2) * NUM_POINTS, result, &err);
 	if (err != CL_SUCCESS)
 		return -1;
-
+	
 	int n = NUM_POINTS;
 	int m = NUM_POINTS_PER_GROUP;
-
+	
 	err = clSetKernelArg(kernel, 0, sizeof(input), &input);
 	err |= clSetKernelArg(kernel, 1, sizeof(int), &n);
 	err |= clSetKernelArg(kernel, 2, sizeof(int), &m);
-	err |= clSetKernelArg(kernel, 3, NUM_POINTS_PER_GROUP * sizeof(int), NULL);
+	err |= clSetKernelArg(kernel, 3, NUM_POINTS_PER_GROUP * sizeof(cl_float2), NULL);
 	err |= clSetKernelArg(kernel, 4, sizeof(int), &bits);
 	err |= clSetKernelArg(kernel, 5, sizeof(int), &nlevels_per_group);
 	err |= clSetKernelArg(kernel, 6, sizeof(output), &output);
-
+	
 	std::size_t work_group = NUM_GROUPS;
 	std::size_t work_item = 1;
 	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
-
+	
 	err = clSetKernelArg(merge_kernel, 0, sizeof(output), &output);
-
+	
 	for (int i = nlevels_per_group + 1; i <= nlevels; i++)
 	{
 		m <<= 1;
 		err |= clSetKernelArg(merge_kernel, 1, sizeof(int), &m);
-
+	
 		if (err != CL_SUCCESS)
 			return -1;
-
+	
 		work_group >>= 1;
 		err = clEnqueueNDRangeKernel(command_queue, merge_kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 		if (err != CL_SUCCESS)
 			return -1;
 	}
-
-	err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(int) * NUM_POINTS, result, 0, NULL, NULL);
+	
+	err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(cl_float2) * NUM_POINTS, result, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
+
+	fft();
 
 	return 0;
 }
 
 // Алгоритм перебора бабочка
-	void butterfly(int* right)
-	{
-		int** local = new int*[NUM_GROUPS];
-		for (int i = 0; i < NUM_GROUPS; i++)
-			local[i] = new int[NUM_POINTS_PER_GROUP];
-
-		for (int i = 0; i < NUM_GROUPS; i++)
-		{
-			int start_index = i * NUM_POINTS_PER_GROUP;
-			for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
-			{
-				int index = bit_reversed(j + start_index, bits);
-				local[i][j] = global[index];
-			}
-		}
-
-		int step = 1;
-		int offset = 1;
-		int cycles = 1;
-	
-		for (int g = 0; g < NUM_GROUPS; g++)
-		{
-			for (int l = 1; l <= nlevels_per_group; l++)
-			{
-				step *= 2;
-	
-				for (int i = 0; i < NUM_POINTS_PER_GROUP; i += step)
-				{
-					for (int j = 0; j < cycles; j++)
-					{
-						int a = local[g][i + j];
-						int b = local[g][i + j + offset];
-						local[g][i + j] = a + b;
-						local[g][i + j + offset] = a - b;
-					}
-				}
-	
-				offset *= 2;
-				cycles *= 2;
-			}
-	
-			step = 1;
-			offset = 1;
-			cycles = 1;
-		}
-
-		bool res = 0;
-		for (int i = 0; i < NUM_GROUPS; i++)
-		{
-			for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
-			{
-				res |= (local[i][j] == right[i * NUM_POINTS_PER_GROUP + j]);
-				//std::cout << output[i*M + j] << std::endl;
-			}
-		}
-
-		if (res)
-			std::cout << "Success" << std::endl;
-		else
-			std::cout << "Fail" << std::endl;
-
-		delete [] local;
-	}
+	//void butterfly(int* right)
+	//{
+	//	int** local = new int*[NUM_GROUPS];
+	//	for (int i = 0; i < NUM_GROUPS; i++)
+	//		local[i] = new int[NUM_POINTS_PER_GROUP];
+	//
+	//	for (int i = 0; i < NUM_GROUPS; i++)
+	//	{
+	//		int start_index = i * NUM_POINTS_PER_GROUP;
+	//		for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
+	//		{
+	//			int index = bit_reversed(j + start_index, bits);
+	//			local[i][j] = global[index];
+	//		}
+	//	}
+	//
+	//	int step = 1;
+	//	int offset = 1;
+	//	int cycles = 1;
+	//
+	//	for (int g = 0; g < NUM_GROUPS; g++)
+	//	{
+	//		for (int l = 1; l <= nlevels_per_group; l++)
+	//		{
+	//			step *= 2;
+	//
+	//			for (int i = 0; i < NUM_POINTS_PER_GROUP; i += step)
+	//			{
+	//				for (int j = 0; j < cycles; j++)
+	//				{
+	//					int a = local[g][i + j];
+	//					int b = local[g][i + j + offset];
+	//					local[g][i + j] = a + b;
+	//					local[g][i + j + offset] = a - b;
+	//				}
+	//			}
+	//
+	//			offset *= 2;
+	//			cycles *= 2;
+	//		}
+	//
+	//		step = 1;
+	//		offset = 1;
+	//		cycles = 1;
+	//	}
+	//
+	//	bool res = 0;
+	//	for (int i = 0; i < NUM_GROUPS; i++)
+	//	{
+	//		for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
+	//		{
+	//			res |= (local[i][j] == right[i * NUM_POINTS_PER_GROUP + j]);
+	//			//std::cout << output[i*M + j] << std::endl;
+	//		}
+	//	}
+	//
+	//	if (res)
+	//		std::cout << "Success" << std::endl;
+	//	else
+	//		std::cout << "Fail" << std::endl;
+	//
+	//	delete [] local;
+	//}
 
 // Инициализация графического устройства.
 // Определяем платформы на хосте и ищем платформу (первую),
@@ -629,7 +634,7 @@ void mul(float * res, float * a, float * b)
 
 void fft()
 {
-	int m = 10;
+	int m = 4;
 	int i, j, ip, k, l;
 	int n = (int)pow(2., m); 
 	int n1 = n >> 1;
@@ -638,9 +643,9 @@ void fft()
 	{
 		if (i<j) 
 		{ 
-			float t = sinus[0][j]; 
-			sinus[0][j] = sinus[0][i];
-			sinus[0][i] = t;
+			cl_float2 t = global[j]; 
+			global[j] = global[i];
+			global[i] = t;
 		}
 
 		k = n1;
@@ -656,10 +661,10 @@ void fft()
 	{
 		int ll = (int)pow(2., l);
 		int ll1 = ll >> 1;
-
+	
 		float U_Re = 1.0f;
 		float U_Im = 0.0f;
-
+	
 		float W_Re = cos(CL_M_PI / ll1);
 		float W_Im = sin(CL_M_PI / ll1);
 		
@@ -668,11 +673,17 @@ void fft()
 			for (i = j - 1; i < n; i = i + ll)
 			{
 				ip = i + ll1; 
-				float t = sinus[0][ip] * U_Re; 
-				sinus[0][ip] = sinus[0][i] - t; 
-				sinus[0][i] = sinus[0][i] + t;
+				cl_float2 t;
+				t.x = global[ip].x * U_Re - global[ip].y * U_Im;
+				t.y = global[ip].x * U_Im + global[ip].y * U_Re;
+	
+				global[ip].x = global[i].x - t.x;
+				global[ip].y = global[i].y - t.y;
+	
+				global[i].x = global[i].x + t.x;
+				global[i].y = global[i].y + t.y;
 			}
-
+	
 			U_Re = U_Re * W_Re - U_Im * W_Im;
 			U_Im = U_Re * W_Im + U_Im * W_Re;
 		}
