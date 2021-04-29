@@ -15,13 +15,13 @@ __kernel void testKernel(
 	// 0 - Входная последовательность.
 		__global int * input,
 	// 1 - Количество элементов во входной последовательности.
-		int N,
+		int NUM_POINTS,
 	// 2 - Количество элементов в группе.
-		int Gn,
+		int NUM_POINTS_PER_GROUP,
 	// 3 - Локальный массив для обработки.
 		__local int * arr,
 	// 4 - Количество бит.
-		uint bits,
+		uint nbits,
 	// 5 - Количество уровней для бабочки, которые могут быть обработаны одной группой
 		uint nlevels,
 	// 6 - Выходная последовательность (результат перобразования).
@@ -31,13 +31,13 @@ __kernel void testKernel(
 		uint group_id = get_group_id(0);
 
 	// Начальный индекс для считывания в локальную память из глобальной.
-		uint start_index = get_group_id(0) * Gn;
+		uint start_index = get_group_id(0) * NUM_POINTS_PER_GROUP;
 
 	// Заполняем локальный массив значениями из глобального.
 	// Элементу локального массива соответствует элемент из глобального массива
 	// с инверсией битов относительно текущего индекса для локального массива плюс начальный индекс.
-		for(uint i = 0; i < Gn; i++)
-			arr[i] = input[bit_reversed(i + start_index, bits)];
+		for(uint i = 0; i < NUM_POINTS_PER_GROUP; i++)
+			arr[i] = input[bit_reversed(i + start_index, nbits)];
 
 	// Шаг обхода локального массива, зависит от текущего уровня
 		int step = 1;
@@ -58,7 +58,7 @@ __kernel void testKernel(
 			// Обрабатываем локальны массив.
 			// Количество обработок засисит от значения step, 
 			// которое каждый раз увеличивается в 2 раза.
-				for(int i = 0; i < Gn; i += step)
+				for(int i = 0; i < NUM_POINTS_PER_GROUP; i += step)
 					// Обходим последовательность.
 					// Считываем необходиые значения, находим их сумму и разность и записываем обратно.
 						for(int j = 0; j < cycles; j++)
@@ -76,6 +76,6 @@ __kernel void testKernel(
 		}
 
 	// Заполняем глобальный результирующий массив
-		for(int i = 0; i < Gn; i++)
-			output[group_id * Gn + i] = arr[i];
+		for(int i = 0; i < NUM_POINTS_PER_GROUP; i++)
+			output[group_id * NUM_POINTS_PER_GROUP + i] = arr[i];
 }

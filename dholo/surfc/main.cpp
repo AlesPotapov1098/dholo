@@ -1,22 +1,21 @@
 #include <Windows.h> 
 #include <GL/gl.h> 
-
 #include <CL/cl.h>
-
-
 #include <string>
 #include <fstream>
 #include <iostream>
 #include <cstdio>
+#define _USE_MATH_DEFINES
 #include <cmath>
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "std_image.h"
 
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "OpenGL32.lib")
 
-# define PI           3.14159265358979323846
+#define NUM_POINTS				131072
+#define NUM_POINTS_PER_GROUP	4096
+#define NUM_GROUPS				(NUM_POINTS / NUM_POINTS_PER_GROUP)
 
 using texture_t = GLuint;
 
@@ -41,10 +40,6 @@ float fft_sin[WIDTH];
 
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL bSetupPixelFormat(HDC);
-
-#define NUM_POINTS				131072
-#define NUM_POINTS_PER_GROUP	4096
-#define NUM_GROUPS				(NUM_POINTS / NUM_POINTS_PER_GROUP)
 
 const int bits = int(log2(double(NUM_POINTS)));
 const int nlevels = int(log2(double(NUM_POINTS)));
@@ -165,7 +160,7 @@ int main()
 			for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
 			{
 				int index = bit_reversed(j + start_index, bits);
-				local[i][j] = right[index];
+				local[i][j] = global[index];
 			}
 		}
 
@@ -436,76 +431,6 @@ void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCm
 	}
 }
 
-//void InitOpenCL()
-//{
-//	cl_uint size1;
-//	err = clGetPlatformIDs(0, nullptr, &size1);
-//
-//	platform = new cl_platform_id[size1];
-//	clGetPlatformIDs(size1, platform, nullptr);
-//
-//	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
-//
-//	device = new cl_device_id[size1];
-//
-//	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
-//
-//	cl_context_properties prop[] = {
-//		CL_CONTEXT_PLATFORM, (cl_context_properties)platform[0],
-//	//	CL_GL_CONTEXT_KHR, (cl_context_properties)ghRC,
-//	//	CL_WGL_HDC_KHR, (cl_context_properties)ghDC,
-//		0
-//	};
-//
-//	context = clCreateContext(prop, 1, device, nullptr, nullptr, &err);
-//	if (err != CL_SUCCESS)
-//		return;
-//
-//	std::ifstream file("simple.cl", std::ios_base::binary);
-//	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-//
-//	const char* src = code.c_str();
-//	std::size_t len = code.length() + 1;
-//
-//	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
-//	if (err != CL_SUCCESS)
-//		return;
-//
-//	cl_int res = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-//
-//	if (res != CL_SUCCESS)
-//	{
-//		std::size_t size_log = 0;
-//		char* build_log;
-//		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
-//		if (res != CL_SUCCESS) {
-//			printf("Error (code) - %d\n", res);
-//			return;
-//		}
-//
-//		if (size_log == 0) {
-//			printf("Error (mess) - not such size_log\n");
-//			return;
-//		}
-//
-//		build_log = new char[size_log];
-//		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-//		if (res != CL_SUCCESS) {
-//			printf("Error (code) - %d\n", res);
-//			return;
-//		}
-//	}
-//
-//
-//	kernel = clCreateKernel(program, "psi4Kernel", &err);
-//	if (err != CL_SUCCESS)
-//		return;
-//
-//	command_queue = clCreateCommandQueueWithProperties(context, device[0], NULL, &err);
-//	if (err != CL_SUCCESS)
-//		return;
-//}
-
 void Render()
 {
 	glEnable(GL_TEXTURE_2D);
@@ -614,9 +539,9 @@ void Render()
 void GenSinus()
 {
 	float phi1 = 0,
-		phi2 = PI / 2,
-		phi3 = PI,
-		phi4 = 3 * PI / 2;
+		phi2 = CL_M_PI / 2,
+		phi3 = CL_M_PI,
+		phi4 = 3 * CL_M_PI / 2;
 
 	int K = 10;
 
@@ -624,10 +549,10 @@ void GenSinus()
 
 	for (int i = 0; i < WIDTH; i++)
 	{
-		sinus[0][i] = (sinf((2 * PI * K / WIDTH) * i + phi1) + 1) / 2;
-		sinus[1][i] = (sinf((2 * PI * K / WIDTH) * i + phi2) + 1) / 2;
-		sinus[2][i] = (sinf((2 * PI * K / WIDTH) * i + phi3) + 1) / 2;
-		sinus[3][i] = (sinf((2 * PI * K / WIDTH) * i + phi4) + 1) / 2;
+		sinus[0][i] = (sinf((2 * CL_M_PI * K / WIDTH) * i + phi1) + 1) / 2;
+		sinus[1][i] = (sinf((2 * CL_M_PI * K / WIDTH) * i + phi2) + 1) / 2;
+		sinus[2][i] = (sinf((2 * CL_M_PI * K / WIDTH) * i + phi3) + 1) / 2;
+		sinus[3][i] = (sinf((2 * CL_M_PI * K / WIDTH) * i + phi4) + 1) / 2;
 	}
 
 	fft();
