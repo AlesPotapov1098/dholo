@@ -42,29 +42,18 @@ float fft_sin[WIDTH];
 LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL bSetupPixelFormat(HDC);
 
-cl_platform_id * platform;
-cl_device_id * device;
-cl_context context;
-cl_kernel kernel;
-cl_command_queue command_queue;
-cl_program program;
-cl_mem mem[5];
-cl_mem mem1[3];
-cl_int err;
+#define NUM_POINTS				131072
+#define NUM_POINTS_PER_GROUP	4096
+#define NUM_GROUPS				(NUM_POINTS / NUM_POINTS_PER_GROUP)
 
-const int N = 128;
-const int M = 32;
-const int G = N / M;
-const cl_uint bits = cl_uint(log2(double(N)));
-const cl_uint nlevels = cl_uint(log2(double(N)));
-const cl_uint nlevels_per_group = cl_uint(log2(double(M)));
+const int bits = int(log2(double(NUM_POINTS)));
+const int nlevels = int(log2(double(NUM_POINTS)));
+const int nlevels_per_group = int(log2(double(NUM_POINTS_PER_GROUP)));
 
-int local[G][M];
-int global[N];
+int global[NUM_POINTS];
 
 void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow);
 
-void InitOpenCL();
 void Render();
 void GenSinus();
 
@@ -83,292 +72,241 @@ int bit_reversed(int x, int bits) {
 	return y;
 }
 
-int main2();
+// Алгоритм перебора бабочка
+	void butterfly(int * right);
 
-void butterfly();
+// Инициализируем графическое устройство
+	cl_device_id get_device();
+
+// Компиляция программы
+	cl_program build_program(
+		// Путь или имя файла в текущем каталоге
+			std::string filename, 
+		// ID устройства
+			cl_device_id device, 
+		// Указатель на контекст устройства
+			cl_context context);
 
 int main()
 {
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < NUM_POINTS; i++)
 	{
 		global[i] = i;
 	}
 
-	for (int i = 0; i < G; i++)
-	{
-		int start_index = i * M;
-		for (int j = 0; j < M; j++)
-		{
-			int index = bit_reversed(j + start_index, bits);
-			local[i][j] = global[index];
-		}
-	}
+	cl_device_id device = get_device();
+	if (device == nullptr)
+		return -1;
 
-	cl_uint size1;
-	err = clGetPlatformIDs(0, nullptr, &size1);
-
-	platform = new cl_platform_id[size1];
-	clGetPlatformIDs(size1, platform, nullptr);
-
-	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
-
-	device = new cl_device_id[size1];
-
-	cl_int err = clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
+	cl_int err = CL_SUCCESS;
+	cl_context context = clCreateContext(NULL, 1, &device, NULL, NULL, &err);
 
 	if (err != CL_SUCCESS)
 		return -1;
 
-	cl_context context = clCreateContext(NULL, 1, device, NULL, NULL, &err);
-
-	if (err != CL_SUCCESS)
+	cl_program program = build_program("test.cl", device, context);
+	if (program == nullptr)
 		return -1;
-
-	cl_program program;
-	std::ifstream file("test.cl", std::ios_base::binary);
-	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-
-	const char* src = code.c_str();
-	std::size_t len = code.length() + 1;
-
-	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
-
-	if (err != CL_SUCCESS)
-		return -1;
-
-	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	if (err != CL_SUCCESS)
-	{
-		std::size_t size_log = 0;
-		char* build_log;
-		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
-		if (err != CL_SUCCESS) {
-			printf("Error (code) - %d\n", err);
-			return err;
-		}
-
-		if (size_log == 0) {
-			printf("Error (mess) - not such size_log\n");
-			return -1;
-		}
-
-		build_log = new char[size_log];
-		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-		if (err != CL_SUCCESS) {
-			printf("Error (code) - %d\n", err);
-			return err;
-		}
-		printf("%s\n", build_log);
-		delete[] build_log;
-		return -1;
-	}
 
 	cl_kernel kernel = clCreateKernel(program, "testKernel", &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, *device, 0, &err);
-	if (err != CL_SUCCESS)
-		return -1;
-	const cl_int m = 30;
-
-	cl_mem mem1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(global) * N, global, &err);
+	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, device, nullptr, &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	int output[N];
-
-	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, sizeof(output) * N, output, &err);
+	cl_mem input = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int) * NUM_POINTS, global, &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
-	err |= clSetKernelArg(kernel, 1, sizeof(int), &N);
-	err |= clSetKernelArg(kernel, 2, sizeof(int), &M);
-	err |= clSetKernelArg(kernel, 3, M * sizeof(int), NULL);
-	err |= clSetKernelArg(kernel, 4, 4, &bits);
-	err |= clSetKernelArg(kernel, 5, 4, &nlevels_per_group);
-	err |= clSetKernelArg(kernel, 6, sizeof(mem2), &mem2);
+	int result[NUM_POINTS];
 
-	butterfly();
+	cl_mem output = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, sizeof(int) * NUM_POINTS, result, &err);
+	if (err != CL_SUCCESS)
+		return -1;
 
-	std::size_t work_group = G;
+	int n = NUM_POINTS;
+	int m = NUM_POINTS_PER_GROUP;
+
+	err = clSetKernelArg(kernel, 0, sizeof(input), &input);
+	err |= clSetKernelArg(kernel, 1, sizeof(int), &n);
+	err |= clSetKernelArg(kernel, 2, sizeof(int), &m);
+	err |= clSetKernelArg(kernel, 3, NUM_POINTS_PER_GROUP * sizeof(int), NULL);
+	err |= clSetKernelArg(kernel, 4, sizeof(int), &bits);
+	err |= clSetKernelArg(kernel, 5, sizeof(int), &nlevels_per_group);
+	err |= clSetKernelArg(kernel, 6, sizeof(output), &output);
+
+	std::size_t work_group = NUM_GROUPS;
 	std::size_t work_item = 1;
 	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
 
-
-	err = clEnqueueReadBuffer(command_queue, mem2, CL_TRUE, 0, sizeof(int) * N, output, 0, NULL, NULL);
+	err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(int) * NUM_POINTS, result, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
 
-	bool res = 0;
-	for (int i = 0; i < G; i++)
-	{
-		for (int j = 0; j < M; j++)
-		{
-			res |= (local[i][j] == output[i*M + j]);
-			//std::cout << output[i*M + j] << std::endl;
-		}
-	}
-	
-	if (res)
-		std::cout << "Success" << std::endl;
-	else
-		std::cout << "Fail" << std::endl;
+	butterfly(result);
 
 	return 0;
 }
 
-void butterfly()
-{
-	int step = 1;
-	int offset = 1;
-	int cycles = 1;
-
-	for (int g = 0; g < G; g++)
+// Алгоритм перебора бабочка
+	void butterfly(int* right)
 	{
-		for (int l = 1; l <= nlevels_per_group; l++)
-		{
-			step *= 2;
+		int** local = new int*[NUM_GROUPS];
+		for (int i = 0; i < NUM_GROUPS; i++)
+			local[i] = new int[NUM_POINTS_PER_GROUP];
 
-			for (int i = 0; i < M; i += step)
+		for (int i = 0; i < NUM_GROUPS; i++)
+		{
+			int start_index = i * NUM_POINTS_PER_GROUP;
+			for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
 			{
-				for (int j = 0; j < cycles; j++)
+				int index = bit_reversed(j + start_index, bits);
+				local[i][j] = right[index];
+			}
+		}
+
+		int step = 1;
+		int offset = 1;
+		int cycles = 1;
+	
+		for (int g = 0; g < NUM_GROUPS; g++)
+		{
+			for (int l = 1; l <= nlevels_per_group; l++)
+			{
+				step *= 2;
+	
+				for (int i = 0; i < NUM_POINTS_PER_GROUP; i += step)
 				{
-					int a = local[g][i + j];
-					int b = local[g][i + j + offset];
-					local[g][i + j] = a + b;
-					local[g][i + j + offset] = a - b;
+					for (int j = 0; j < cycles; j++)
+					{
+						int a = local[g][i + j];
+						int b = local[g][i + j + offset];
+						local[g][i + j] = a + b;
+						local[g][i + j + offset] = a - b;
+					}
+				}
+	
+				offset *= 2;
+				cycles *= 2;
+			}
+	
+			step = 1;
+			offset = 1;
+			cycles = 1;
+		}
+
+		bool res = 0;
+		for (int i = 0; i < NUM_GROUPS; i++)
+		{
+			for (int j = 0; j < NUM_POINTS_PER_GROUP; j++)
+			{
+				res |= (local[i][j] == right[i * NUM_POINTS_PER_GROUP + j]);
+				//std::cout << output[i*M + j] << std::endl;
+			}
+		}
+
+		if (res)
+			std::cout << "Success" << std::endl;
+		else
+			std::cout << "Fail" << std::endl;
+
+		delete [] local;
+	}
+
+// Инициализация графического устройства.
+// Определяем платформы на хосте и ищем платформу (первую),
+// которая управляет графическим устройством.
+	cl_device_id get_device()
+	{
+		cl_uint num_platforms = 0;
+		cl_int err = clGetPlatformIDs(0, nullptr, &num_platforms);
+		if (err != CL_SUCCESS)
+			return nullptr;
+	
+		cl_platform_id * platform = new cl_platform_id[num_platforms];
+		err = clGetPlatformIDs(num_platforms, platform, nullptr);
+		if (err != CL_SUCCESS)
+		{
+			delete platform;
+			return nullptr;
+		}
+
+		for (int i = 0; i < num_platforms; i++)
+		{
+			cl_uint num_devices = 0;
+			err = clGetDeviceIDs(platform[i], CL_DEVICE_TYPE_GPU, 0, nullptr, &num_devices);
+			if (err == CL_SUCCESS && num_devices > 0)
+			{
+				cl_device_id device;
+				num_devices = 1;
+				err = clGetDeviceIDs(platform[i], CL_DEVICE_TYPE_GPU, num_devices, &device, nullptr);
+				if (err == CL_SUCCESS)
+				{
+					delete platform;
+					return device;
 				}
 			}
-
-			offset *= 2;
-			cycles *= 2;
 		}
 
-		step = 1;
-		offset = 1;
-		cycles = 1;
+		delete[] platform;
+		return nullptr;
 	}
-}
 
-int main2()
-{
-	std::cout << "Hello OpenCL" << std::endl;
-
-	cl_uint size1;
-	err = clGetPlatformIDs(0, nullptr, &size1);
-
-	platform = new cl_platform_id[size1];
-	clGetPlatformIDs(size1, platform, nullptr);
-
-	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
-
-	device = new cl_device_id[size1];
-
-	cl_int err = clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
-
-	if (err != CL_SUCCESS)
-		return -1;
-
-	cl_context context = clCreateContext(NULL, 1, device, NULL, NULL, &err);
-
-	if (err != CL_SUCCESS)
-		return -1;
-
-	cl_program program;
-	std::ifstream file("test.cl", std::ios_base::binary);
-	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-
-
-	const char* src = code.c_str();
-	std::size_t len = code.length() + 1;
-
-	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
-
-	if (err != CL_SUCCESS)
-		return -1;
-
-	err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-	if (err != CL_SUCCESS)
+// Компиляция программы
+	cl_program build_program(
+		// Путь или имя файла в текущем каталоге
+		std::string filename,
+		// ID устройства
+		cl_device_id device,
+		// Указатель на контекст устройства
+		cl_context context)
 	{
-		std::size_t size_log = 0;
-		char* build_log;
-		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
-		if (err != CL_SUCCESS) {
-			printf("Error (code) - %d\n", err);
-			return err;
+		cl_program program;
+		std::ifstream file(filename, std::ios_base::binary);
+		std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+
+		const char* src = code.c_str();
+		std::size_t len = code.length() + 1;
+
+		cl_int err;
+		program = clCreateProgramWithSource(context, 1, &src, &len, &err);
+
+		if (err != CL_SUCCESS)
+			return nullptr;
+
+		err = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+		if (err != CL_SUCCESS)
+		{
+			std::size_t size_log = 0;
+			char* build_log;
+			err = clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+			if (err != CL_SUCCESS) {
+				std::cout << "Error (code) - " << err << std::endl;
+				return nullptr;
+			}
+
+			if (size_log == 0) {
+				std::cout << "Error (mess) - not such size_log" << std::endl;
+				return nullptr;
+			}
+
+			build_log = new char[size_log];
+			err = clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+			if (err != CL_SUCCESS) {
+				std::cout << "Error (code) - " << err << std::endl;
+				return nullptr;
+			}
+			std::cout << build_log << std::endl;
+			delete[] build_log;
+			return nullptr;
 		}
 
-		if (size_log == 0) {
-			printf("Error (mess) - not such size_log\n");
-			return -1;
-		}
-
-		build_log = new char[size_log];
-		err = clGetProgramBuildInfo(program, *device, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-		if (err != CL_SUCCESS) {
-			printf("Error (code) - %d\n", err);
-			return err;
-		}
-		printf("%s\n", build_log);
-		delete[] build_log;
-		return -1;
+		return program;
 	}
-
-	cl_kernel kernel = clCreateKernel(program, "testKernel", &err);
-	if (err != CL_SUCCESS)
-		return -1;
-
-	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, *device, 0, &err);
-	if (err != CL_SUCCESS)
-		return -1;
-	const cl_int m = 30;
-
-	float input[m];
-
-	for (int i = 0; i < m; i++)
-		input[i] = i + 1;
-
-	float output[30/5] = { 0 };
-
-	cl_mem mem1 = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(input) * m, input, &err);
-	if (err != CL_SUCCESS)
-		return -1;
-
-	cl_mem mem2 = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(output) * m, output, &err);
-	if (err != CL_SUCCESS)
-		return -1;
-
-	err = clSetKernelArg(kernel, 0, sizeof(mem1), &mem1);
-	err = clSetKernelArg(kernel, 1, sizeof(mem2), &mem2);
-
-	std::size_t work_group = 6;
-	std::size_t work_item = 2;
-	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
-	if (err != CL_SUCCESS)
-		return -1;
-
-	err = clEnqueueReadBuffer(command_queue, mem2, CL_TRUE, 0, sizeof(float) * m, output, 0, NULL, NULL);
-	if (err != CL_SUCCESS)
-		return -1;
-
-	for (int i = 0; i < 6; i++)
-	{
-		int index = i * 5;
-		float res = 0.0f;
-		for (int j = index; j < index + 5; j++)
-			res += input[j];
-		std::cout << output[i] << " " << res << std::endl;
-	}
-
-	int t = 0;
-	std::cin >> t;
-
-	return 0;
-}
 
 //int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 //{
@@ -403,17 +341,6 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		Render();
 		EndPaint(hWnd, &paint);
 	}
-		break;
-
-	case WM_CLOSE:
-		if (ghRC)
-			wglDeleteContext(ghRC);
-		if (ghDC)
-			ReleaseDC(hWnd, ghDC);
-		ghRC = 0;
-		ghDC = 0;
-
-		DestroyWindow(hWnd);
 		break;
 
 	case WM_DESTROY:
@@ -509,75 +436,75 @@ void Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCm
 	}
 }
 
-void InitOpenCL()
-{
-	cl_uint size1;
-	err = clGetPlatformIDs(0, nullptr, &size1);
-
-	platform = new cl_platform_id[size1];
-	clGetPlatformIDs(size1, platform, nullptr);
-
-	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
-
-	device = new cl_device_id[size1];
-
-	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
-
-	cl_context_properties prop[] = {
-		CL_CONTEXT_PLATFORM, (cl_context_properties)platform[0],
-	//	CL_GL_CONTEXT_KHR, (cl_context_properties)ghRC,
-	//	CL_WGL_HDC_KHR, (cl_context_properties)ghDC,
-		0
-	};
-
-	context = clCreateContext(prop, 1, device, nullptr, nullptr, &err);
-	if (err != CL_SUCCESS)
-		return;
-
-	std::ifstream file("simple.cl", std::ios_base::binary);
-	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
-
-	const char* src = code.c_str();
-	std::size_t len = code.length() + 1;
-
-	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
-	if (err != CL_SUCCESS)
-		return;
-
-	cl_int res = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
-
-	if (res != CL_SUCCESS)
-	{
-		std::size_t size_log = 0;
-		char* build_log;
-		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
-		if (res != CL_SUCCESS) {
-			printf("Error (code) - %d\n", res);
-			return;
-		}
-
-		if (size_log == 0) {
-			printf("Error (mess) - not such size_log\n");
-			return;
-		}
-
-		build_log = new char[size_log];
-		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-		if (res != CL_SUCCESS) {
-			printf("Error (code) - %d\n", res);
-			return;
-		}
-	}
-
-
-	kernel = clCreateKernel(program, "psi4Kernel", &err);
-	if (err != CL_SUCCESS)
-		return;
-
-	command_queue = clCreateCommandQueueWithProperties(context, device[0], NULL, &err);
-	if (err != CL_SUCCESS)
-		return;
-}
+//void InitOpenCL()
+//{
+//	cl_uint size1;
+//	err = clGetPlatformIDs(0, nullptr, &size1);
+//
+//	platform = new cl_platform_id[size1];
+//	clGetPlatformIDs(size1, platform, nullptr);
+//
+//	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, 0, nullptr, &size1);
+//
+//	device = new cl_device_id[size1];
+//
+//	clGetDeviceIDs(platform[0], CL_DEVICE_TYPE_GPU, size1, device, nullptr);
+//
+//	cl_context_properties prop[] = {
+//		CL_CONTEXT_PLATFORM, (cl_context_properties)platform[0],
+//	//	CL_GL_CONTEXT_KHR, (cl_context_properties)ghRC,
+//	//	CL_WGL_HDC_KHR, (cl_context_properties)ghDC,
+//		0
+//	};
+//
+//	context = clCreateContext(prop, 1, device, nullptr, nullptr, &err);
+//	if (err != CL_SUCCESS)
+//		return;
+//
+//	std::ifstream file("simple.cl", std::ios_base::binary);
+//	std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+//
+//	const char* src = code.c_str();
+//	std::size_t len = code.length() + 1;
+//
+//	program = clCreateProgramWithSource(context, 1, &src, &len, &err);
+//	if (err != CL_SUCCESS)
+//		return;
+//
+//	cl_int res = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
+//
+//	if (res != CL_SUCCESS)
+//	{
+//		std::size_t size_log = 0;
+//		char* build_log;
+//		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+//		if (res != CL_SUCCESS) {
+//			printf("Error (code) - %d\n", res);
+//			return;
+//		}
+//
+//		if (size_log == 0) {
+//			printf("Error (mess) - not such size_log\n");
+//			return;
+//		}
+//
+//		build_log = new char[size_log];
+//		res = clGetProgramBuildInfo(program, device[0], CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+//		if (res != CL_SUCCESS) {
+//			printf("Error (code) - %d\n", res);
+//			return;
+//		}
+//	}
+//
+//
+//	kernel = clCreateKernel(program, "psi4Kernel", &err);
+//	if (err != CL_SUCCESS)
+//		return;
+//
+//	command_queue = clCreateCommandQueueWithProperties(context, device[0], NULL, &err);
+//	if (err != CL_SUCCESS)
+//		return;
+//}
 
 void Render()
 {
@@ -686,8 +613,6 @@ void Render()
 
 void GenSinus()
 {
-	int N = WIDTH * HEIGHT;
-
 	float phi1 = 0,
 		phi2 = PI / 2,
 		phi3 = PI,

@@ -24,10 +24,10 @@
 #define TWO_PI (6.2831853071795864769252867665590057683943L)
 
 /* function prototypes */
-void fft(int N, double(*x)[2], double(*X)[2]);
-void fft_rec(int N, int offset, int delta,
+void fft(int NUM_POINTS, double(*x)[2], double(*X)[2]);
+void fft_rec(int NUM_POINTS, int offset, int delta,
     double(*x)[2], double(*X)[2], double(*XX)[2]);
-void ifft(int N, double(*x)[2], double(*X)[2]);
+void ifft(int NUM_POINTS, double(*x)[2], double(*X)[2]);
 
 /* Find a GPU or CPU associated with the first available platform */
 cl_device_id create_device() {
@@ -293,29 +293,29 @@ int main() {
 }
 
 /* FFT */
-void fft(int N, double(*x)[2], double(*X)[2])
+void fft(int NUM_POINTS, double(*x)[2], double(*X)[2])
 {
     /* Declare a pointer to scratch space. */
-    double(*XX)[2] = (double(*)[2])malloc(2 * N * sizeof(double));
+    double(*XX)[2] = (double(*)[2])malloc(2 * NUM_POINTS * sizeof(double));
 
     /* Calculate FFT by a recursion. */
-    fft_rec(N, 0, 1, x, X, XX);
+    fft_rec(NUM_POINTS, 0, 1, x, X, XX);
 
     /* Free memory. */
     free(XX);
 }
 
 /* FFT recursion */
-void fft_rec(int N, int offset, int delta,
+void fft_rec(int NUM_POINTS, int offset, int delta,
     double(*x)[2], double(*X)[2], double(*XX)[2])
 {
-    int N2 = N / 2;            /* half the number of points in FFT */
+    int N2 = NUM_POINTS / 2;            /* half the number of points in FFT */
     int k;                   /* generic index */
     double cs, sn;           /* cosine and sine */
     int k00, k01, k10, k11;  /* indices for butterflies */
     double tmp0, tmp1;       /* temporary storage */
 
-    if (N != 2)  /* Perform recursive step. */
+    if (NUM_POINTS != 2)  /* Perform recursive step. */
     {
         /* Calculate two (N/2)-point DFT's. */
         fft_rec(N2, offset, 2 * delta, x, XX, X);
@@ -326,7 +326,7 @@ void fft_rec(int N, int offset, int delta,
         {
             k00 = offset + k * delta;    k01 = k00 + N2 * delta;
             k10 = offset + 2 * k * delta;  k11 = k10 + delta;
-            cs = cos(TWO_PI * k / (double)N); sn = sin(TWO_PI * k / (double)N);
+            cs = cos(TWO_PI * k / (double)NUM_POINTS); sn = sin(TWO_PI * k / (double)NUM_POINTS);
             tmp0 = cs * XX[k11][0] + sn * XX[k11][1];
             tmp1 = cs * XX[k11][1] - sn * XX[k11][0];
             X[k01][0] = XX[k10][0] - tmp0;
@@ -346,20 +346,20 @@ void fft_rec(int N, int offset, int delta,
 }
 
 /* IFFT */
-void ifft(int N, double(*x)[2], double(*X)[2])
+void ifft(int NUM_POINTS, double(*x)[2], double(*X)[2])
 {
-    int N2 = N / 2;       /* half the number of points in IFFT */
+    int N2 = NUM_POINTS / 2;       /* half the number of points in IFFT */
     int i;              /* generic index */
     double tmp0, tmp1;  /* temporary storage */
 
     /* Calculate IFFT via reciprocity property of DFT. */
-    fft(N, X, x);
-    x[0][0] = x[0][0] / N;    x[0][1] = x[0][1] / N;
-    x[N2][0] = x[N2][0] / N;  x[N2][1] = x[N2][1] / N;
+    fft(NUM_POINTS, X, x);
+    x[0][0] = x[0][0] / NUM_POINTS;    x[0][1] = x[0][1] / NUM_POINTS;
+    x[N2][0] = x[N2][0] / NUM_POINTS;  x[N2][1] = x[N2][1] / NUM_POINTS;
     for (i = 1; i < N2; i++)
     {
-        tmp0 = x[i][0] / N;       tmp1 = x[i][1] / N;
-        x[i][0] = x[N - i][0] / N;  x[i][1] = x[N - i][1] / N;
-        x[N - i][0] = tmp0;       x[N - i][1] = tmp1;
+        tmp0 = x[i][0] / NUM_POINTS;       tmp1 = x[i][1] / NUM_POINTS;
+        x[i][0] = x[NUM_POINTS - i][0] / NUM_POINTS;  x[i][1] = x[NUM_POINTS - i][1] / NUM_POINTS;
+        x[NUM_POINTS - i][0] = tmp0;       x[NUM_POINTS - i][1] = tmp1;
     }
 }
