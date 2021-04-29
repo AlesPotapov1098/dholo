@@ -52,12 +52,12 @@ cl_mem mem[5];
 cl_mem mem1[3];
 cl_int err;
 
-const int N = 16;
-const int M = 8;
+const int N = 128;
+const int M = 32;
 const int G = N / M;
-const int bits = int(log2(double(N)));
-const int nlevels = int(log2(double(N)));
-const int nlevels_per_group = int(log2(double(M)));
+const cl_uint bits = cl_uint(log2(double(N)));
+const cl_uint nlevels = cl_uint(log2(double(N)));
+const cl_uint nlevels_per_group = cl_uint(log2(double(M)));
 
 int local[G][M];
 int global[N];
@@ -186,9 +186,11 @@ int main()
 	err |= clSetKernelArg(kernel, 1, sizeof(int), &N);
 	err |= clSetKernelArg(kernel, 2, sizeof(int), &M);
 	err |= clSetKernelArg(kernel, 3, M * sizeof(int), NULL);
-	err |= clSetKernelArg(kernel, 4, sizeof(int), &bits);
-	err |= clSetKernelArg(kernel, 5, sizeof(int), &nlevels_per_group);
+	err |= clSetKernelArg(kernel, 4, 4, &bits);
+	err |= clSetKernelArg(kernel, 5, 4, &nlevels_per_group);
 	err |= clSetKernelArg(kernel, 6, sizeof(mem2), &mem2);
+
+	butterfly();
 
 	std::size_t work_group = G;
 	std::size_t work_item = 1;
@@ -201,15 +203,13 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
-	butterfly();
-
 	bool res = 0;
 	for (int i = 0; i < G; i++)
 	{
 		for (int j = 0; j < M; j++)
 		{
 			res |= (local[i][j] == output[i*M + j]);
-			std::cout << output[i*M + j] << std::endl;
+			//std::cout << output[i*M + j] << std::endl;
 		}
 	}
 	
