@@ -13,8 +13,8 @@
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "OpenGL32.lib")
 
-#define NUM_POINTS				131072
-#define NUM_POINTS_PER_GROUP	4096
+#define NUM_POINTS				16
+#define NUM_POINTS_PER_GROUP	4
 #define NUM_GROUPS				(NUM_POINTS / NUM_POINTS_PER_GROUP)
 
 using texture_t = GLuint;
@@ -107,6 +107,10 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
+	cl_kernel merge_kernel = clCreateKernel(program, "merge", &err);
+	if (err != CL_SUCCESS)
+		return -1;
+
 	cl_command_queue command_queue = clCreateCommandQueueWithProperties(context, device, nullptr, &err);
 	if (err != CL_SUCCESS)
 		return -1;
@@ -117,7 +121,7 @@ int main()
 
 	int result[NUM_POINTS];
 
-	cl_mem output = clCreateBuffer(context, CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR, sizeof(int) * NUM_POINTS, result, &err);
+	cl_mem output = clCreateBuffer(context, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(int) * NUM_POINTS, result, &err);
 	if (err != CL_SUCCESS)
 		return -1;
 
@@ -138,11 +142,25 @@ int main()
 	if (err != CL_SUCCESS)
 		return -1;
 
+	err = clSetKernelArg(merge_kernel, 0, sizeof(output), &output);
+
+	for (int i = nlevels_per_group + 1; i <= nlevels; i++)
+	{
+		m <<= 1;
+		err |= clSetKernelArg(merge_kernel, 1, sizeof(int), &m);
+
+		if (err != CL_SUCCESS)
+			return -1;
+
+		work_group >>= 1;
+		err = clEnqueueNDRangeKernel(command_queue, merge_kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
+		if (err != CL_SUCCESS)
+			return -1;
+	}
+
 	err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(int) * NUM_POINTS, result, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
-
-	butterfly(result);
 
 	return 0;
 }
