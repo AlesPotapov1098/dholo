@@ -180,6 +180,11 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <None Include="dholo.rc2">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ResourceCompile Include="dholo.rc">
       <Filter>resources</Filter>
     </ResourceCompile>
