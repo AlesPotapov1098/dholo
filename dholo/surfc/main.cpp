@@ -13,8 +13,8 @@
 #pragma comment(lib, "OpenCL.lib")
 #pragma comment(lib, "OpenGL32.lib")
 
-#define NUM_POINTS				16
-#define NUM_POINTS_PER_GROUP	4
+#define NUM_POINTS				65536
+#define NUM_POINTS_PER_GROUP	4096
 #define NUM_GROUPS				(NUM_POINTS / NUM_POINTS_PER_GROUP)
 
 using texture_t = GLuint;
@@ -86,9 +86,11 @@ int main()
 {
 	for (int i = 0; i < NUM_POINTS; i++)
 	{
-		global[i].x = i;
+		global[i].x = sin((2 * CL_M_PI_F * 5 / NUM_POINTS) * i);
 		global[i].y = 0;
 	}
+
+	//fft();
 
 	cl_device_id device = get_device();
 	if (device == nullptr)
@@ -144,6 +146,10 @@ int main()
 	err = clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
 	if (err != CL_SUCCESS)
 		return -1;
+
+	err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(cl_float2) * NUM_POINTS, result, 0, NULL, NULL);
+	if (err != CL_SUCCESS)
+		return -1;
 	
 	err = clSetKernelArg(merge_kernel, 0, sizeof(output), &output);
 	
@@ -157,6 +163,10 @@ int main()
 	
 		work_group >>= 1;
 		err = clEnqueueNDRangeKernel(command_queue, merge_kernel, 1, NULL, &work_group, &work_item, 0, NULL, NULL);
+		if (err != CL_SUCCESS)
+			return -1;
+
+		err = clEnqueueReadBuffer(command_queue, output, CL_TRUE, 0, sizeof(cl_float2) * NUM_POINTS, result, 0, NULL, NULL);
 		if (err != CL_SUCCESS)
 			return -1;
 	}
@@ -634,7 +644,7 @@ void mul(float * res, float * a, float * b)
 
 void fft()
 {
-	int m = 4;
+	int m = 16;
 	int i, j, ip, k, l;
 	int n = (int)pow(2., m); 
 	int n1 = n >> 1;
