@@ -11,7 +11,7 @@ namespace dholo
 		}
 
 		DHOCLTest::DHOCLTest(const ocl::DHOCLHost & host, const std::string & progpath)
-		:	DHOCLCalc::DHOCLCalc(host, progpath)
+		:	DHOCLTransform::DHOCLTransform(host, progpath)
 		{
 		}
 

@@ -9,7 +9,7 @@ namespace dholo
 {
 	namespace test
 	{
-		class DHOCLTest : public ocl::DHOCLCalc
+		class DHOCLTest : public ocl::DHOCLTransform
 		{
 		public:
 			DHOCLTest();

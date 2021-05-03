@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{90d48bf4-8183-4d8a-8460-731ad42aff8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{bb288e54-85b9-4b3e-ad6c-967c9a4b3557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gpgpu">
+      <UniqueIdentifier>{39d8a2cb-8831-4634-b4ed-38ac76911edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\app">
+      <UniqueIdentifier>{17894656-f317-41d4-9413-0edefe045a39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\etc">
+      <UniqueIdentifier>{d25e4346-cae9-4ce8-bd5a-ada2720a2d86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\img">
+      <UniqueIdentifier>{37fd4d70-b011-445e-9bb1-61300d881933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gpgpu\ocl">
+      <UniqueIdentifier>{a759b7c4-7e99-4948-af21-7c5749077ea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\toolbar">
+      <UniqueIdentifier>{dbc65f47-4ee8-4057-8c8e-c2033cf0bdd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\app\wnd">
+      <UniqueIdentifier>{20f58c0a-e10a-4ea9-a0f2-e3cfb56b7941}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DHImgExpr.h">
+      <Filter>src\img</Filter>
+    </ClInclude>
+    <ClInclude Include="DHImgList.h">
+      <Filter>src\img</Filter>
+    </ClInclude>
+    <ClInclude Include="DHImgLoader.h">
+      <Filter>src\img</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>resources</Filter>
+    </ClInclude>
+    <ClInclude Include="DHOCLTransform.h">
+      <Filter>src\gpgpu\ocl</Filter>
+    </ClInclude>
+    <ClInclude Include="DHOCLInit.h">
+      <Filter>src\gpgpu\ocl</Filter>
+    </ClInclude>
+    <ClInclude Include="DHToolbar.h">
+      <Filter>src\toolbar</Filter>
+    </ClInclude>
+    <ClInclude Include="holo.h">
+      <Filter>src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="DHWnd.h">
+      <Filter>src\app\wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="DHMainFrm.h">
+      <Filter>src\app\wnd</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DHImgExpr.cpp">
+      <Filter>src\img</Filter>
+    </ClCompile>
+    <ClCompile Include="DHImgList.cpp">
+      <Filter>src\img</Filter>
+    </ClCompile>
+    <ClCompile Include="DHImgLoader.cpp">
+      <Filter>src\img</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>src\etc</Filter>
+    </ClCompile>
+    <ClCompile Include="DHOCLTransform.cpp">
+      <Filter>src\gpgpu\ocl</Filter>
+    </ClCompile>
+    <ClCompile Include="DHOCLInit.cpp">
+      <Filter>src\gpgpu\ocl</Filter>
+    </ClCompile>
+    <ClCompile Include="DHToolbar.cpp">
+      <Filter>src\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="holo.cpp">
+      <Filter>src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="DHWnd.cpp">
+      <Filter>src\app\wnd</Filter>
+    </ClCompile>
+    <ClCompile Include="DHMainFrm.cpp">
+      <Filter>src\app\wnd</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\holo.ico">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\Toolbar.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\toolbar1.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\Toolbar256.bmp">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="res\userimages.bmp">
+      <Filter>resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="holo.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\holo.rc2">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+</Project>

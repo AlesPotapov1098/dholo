@@ -8,8 +8,7 @@
 #include <fstream>
 #include <vector>
 
-#include "idhcalculate.h"
-#include "dhoclinit.h"
+#include "DHOCLInit.h"
 
 #include <CL\cl.h>
 #include <CL\cl_gl.h>
