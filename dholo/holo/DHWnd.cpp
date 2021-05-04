@@ -4,7 +4,7 @@
 
 #include "pch.h"
 #include "framework.h"
-#include "holo.h"
+#include "DHApp.h"
 #include "DHWnd.h"
 
 #ifdef _DEBUG

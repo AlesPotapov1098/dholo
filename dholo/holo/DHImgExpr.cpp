@@ -2,7 +2,7 @@
 #include "DHImgExpr.h"
 #include "resource.h"
 #include "DHMainFrm.h"
-#include "holo.h"
+#include "DHApp.h"
 
 namespace dholo
 {

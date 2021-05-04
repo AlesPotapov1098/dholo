@@ -6,7 +6,7 @@
 #include "framework.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
-#include "holo.h"
+#include "DHApp.h"
 #include "DHMainFrm.h"
 
 #include <vector>

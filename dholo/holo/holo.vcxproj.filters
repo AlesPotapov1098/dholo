@@ -60,7 +60,7 @@
     <ClInclude Include="DHToolbar.h">
       <Filter>src\toolbar</Filter>
     </ClInclude>
-    <ClInclude Include="holo.h">
+    <ClInclude Include="DHApp.h">
       <Filter>src\app</Filter>
     </ClInclude>
     <ClInclude Include="DHWnd.h">
@@ -95,7 +95,7 @@
     <ClCompile Include="DHToolbar.cpp">
       <Filter>src\toolbar</Filter>
     </ClCompile>
-    <ClCompile Include="holo.cpp">
+    <ClCompile Include="DHApp.cpp">
       <Filter>src\app</Filter>
     </ClCompile>
     <ClCompile Include="DHWnd.cpp">
