@@ -126,47 +126,47 @@ namespace dholo
 			return m_Device;
 		}
 
-		std::wstring DHOCLInfo::GetPlatformName(cl_platform_id pl) const
+		std::wstring DHOCLInfo::GetPlatformName(cl_platform_id pl)
 		{
 			return GetPlatformInfo(pl, CL_PLATFORM_NAME);
 		}
 
-		std::wstring DHOCLInfo::GetPlatformVendor(cl_platform_id pl) const
+		std::wstring DHOCLInfo::GetPlatformVendor(cl_platform_id pl)
 		{
 			return GetPlatformInfo(pl, CL_PLATFORM_VENDOR);
 		}
 
-		std::wstring DHOCLInfo::GetPlatformVersion(cl_platform_id pl) const
+		std::wstring DHOCLInfo::GetPlatformVersion(cl_platform_id pl)
 		{
 			return GetPlatformInfo(pl, CL_PLATFORM_VERSION);
 		}
 
-		std::wstring DHOCLInfo::GetPlatformExtensions(cl_platform_id pl) const
+		std::wstring DHOCLInfo::GetPlatformExtensions(cl_platform_id pl)
 		{
 			return GetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceName(cl_device_id dev) const
+		std::wstring DHOCLInfo::GetDeviceName(cl_device_id dev)
 		{
 			return GetDeviceInfo(dev, CL_DEVICE_NAME);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceVendor(cl_device_id dev) const
+		std::wstring DHOCLInfo::GetDeviceVendor(cl_device_id dev)
 		{
 			return GetDeviceInfo(dev, CL_DEVICE_VENDOR);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceVersion(cl_device_id dev) const
+		std::wstring DHOCLInfo::GetDeviceVersion(cl_device_id dev)
 		{
 			return GetDeviceInfo(dev, CL_DEVICE_VERSION);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceExtensions(cl_device_id dev) const
+		std::wstring DHOCLInfo::GetDeviceExtensions(cl_device_id dev)
 		{
 			return GetDeviceInfo(dev, CL_DEVICE_EXTENSIONS);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceType(cl_device_id dev) const
+		std::wstring DHOCLInfo::GetDeviceType(cl_device_id dev)
 		{
 			std::size_t size = 0;
 			cl_device_type* type = nullptr;
@@ -189,7 +189,7 @@ namespace dholo
 			}
 		}
 
-		std::wstring DHOCLInfo::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf) const
+		std::wstring DHOCLInfo::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf)
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
 
@@ -208,7 +208,7 @@ namespace dholo
 			return conv.from_bytes(info);
 		}
 
-		std::wstring DHOCLInfo::GetDeviceInfo(cl_device_id dev, cl_device_info inf) const
+		std::wstring DHOCLInfo::GetDeviceInfo(cl_device_id dev, cl_device_info inf)
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
 			std::size_t size = 0;
