@@ -13,9 +13,6 @@
     <Filter Include="src\app">
       <UniqueIdentifier>{17894656-f317-41d4-9413-0edefe045a39}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\etc">
-      <UniqueIdentifier>{d25e4346-cae9-4ce8-bd5a-ada2720a2d86}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\img">
       <UniqueIdentifier>{37fd4d70-b011-445e-9bb1-61300d881933}</UniqueIdentifier>
     </Filter>
@@ -31,6 +28,9 @@
     <Filter Include="src\app\dlg">
       <UniqueIdentifier>{7f6c54d3-0355-478d-8911-a6b5e0c64b68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\etc">
+      <UniqueIdentifier>{d4f3e6af-734c-490f-a67a-ce78ef1791ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -41,15 +41,6 @@
     </ClInclude>
     <ClInclude Include="DHImgLoader.h">
       <Filter>src\img</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>src\etc</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>src\etc</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>src\etc</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>resources</Filter>
@@ -72,11 +63,20 @@
     <ClInclude Include="DHMainFrm.h">
       <Filter>src\app\wnd</Filter>
     </ClInclude>
+    <ClInclude Include="DHOCLTransDlg.h">
+      <Filter>src\app\dlg</Filter>
+    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>src\etc</Filter>
     </ClInclude>
-    <ClInclude Include="DHOCLTransDlg.h">
-      <Filter>src\app\dlg</Filter>
+    <ClInclude Include="pch.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>src\etc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,9 +88,6 @@
     </ClCompile>
     <ClCompile Include="DHImgLoader.cpp">
       <Filter>src\img</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>src\etc</Filter>
     </ClCompile>
     <ClCompile Include="DHOCLTransform.cpp">
       <Filter>src\gpgpu\ocl</Filter>
@@ -112,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="DHOCLTransDlg.cpp">
       <Filter>src\app\dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>src\etc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
