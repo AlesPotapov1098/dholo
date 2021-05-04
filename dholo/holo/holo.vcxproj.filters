@@ -28,6 +28,9 @@
     <Filter Include="src\app\wnd">
       <UniqueIdentifier>{20f58c0a-e10a-4ea9-a0f2-e3cfb56b7941}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\app\dlg">
+      <UniqueIdentifier>{7f6c54d3-0355-478d-8911-a6b5e0c64b68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -72,6 +75,9 @@
     <ClInclude Include="framework.h">
       <Filter>src\etc</Filter>
     </ClInclude>
+    <ClInclude Include="DHOCLTransDlg.h">
+      <Filter>src\app\dlg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="DHMainFrm.cpp">
       <Filter>src\app\wnd</Filter>
+    </ClCompile>
+    <ClCompile Include="DHOCLTransDlg.cpp">
+      <Filter>src\app\dlg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

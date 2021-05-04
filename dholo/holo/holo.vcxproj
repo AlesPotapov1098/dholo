@@ -191,6 +191,7 @@
     <ClInclude Include="DHImgLoader.h" />
     <ClInclude Include="DHMainFrm.h" />
     <ClInclude Include="DHOCLInit.h" />
+    <ClInclude Include="DHOCLTransDlg.h" />
     <ClInclude Include="DHOCLTransform.h" />
     <ClInclude Include="DHToolbar.h" />
     <ClInclude Include="DHWnd.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="DHImgLoader.cpp" />
     <ClCompile Include="DHMainFrm.cpp" />
     <ClCompile Include="DHOCLInit.cpp" />
+    <ClCompile Include="DHOCLTransDlg.cpp" />
     <ClCompile Include="DHOCLTransform.cpp" />
     <ClCompile Include="DHToolbar.cpp" />
     <ClCompile Include="DHWnd.cpp" />
