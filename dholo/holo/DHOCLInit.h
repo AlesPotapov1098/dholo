@@ -57,6 +57,16 @@ namespace dholo
 			const DHOCLHard& GetHardware(unsigned int index) const;
 			const DHOCLHard& operator[](int index) const;
 
+		private:
+			std::vector<DHOCLHard> m_Hardware;
+		};
+
+		class DHOCLInfo
+		{
+		public:
+			DHOCLInfo() = default;
+			~DHOCLInfo() = default;
+
 			std::wstring GetPlatformName(cl_platform_id) const;
 			std::wstring GetPlatformVendor(cl_platform_id) const;
 			std::wstring GetPlatformVersion(cl_platform_id) const;
@@ -70,9 +80,6 @@ namespace dholo
 
 			std::wstring GetPlatformInfo(cl_platform_id, cl_platform_info) const;
 			std::wstring GetDeviceInfo(cl_device_id, cl_device_info) const;
-
-		private:
-			std::vector<DHOCLHard> m_Hardware;
 		};
 	}
 }

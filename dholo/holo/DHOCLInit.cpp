@@ -88,106 +88,6 @@ namespace dholo
 			return m_Hardware[index];
 		}
 
-		std::wstring DHOCLInit::GetPlatformName(cl_platform_id pl) const
-		{
-			return GetPlatformInfo(pl, CL_PLATFORM_NAME);
-		}
-
-		std::wstring DHOCLInit::GetPlatformVendor(cl_platform_id pl) const
-		{
-			return GetPlatformInfo(pl, CL_PLATFORM_VENDOR);
-		}
-
-		std::wstring DHOCLInit::GetPlatformVersion(cl_platform_id pl) const
-		{
-			return GetPlatformInfo(pl, CL_PLATFORM_VERSION);
-		}
-
-		std::wstring DHOCLInit::GetPlatformExtensions(cl_platform_id pl) const
-		{
-			return GetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS);
-		}
-
-		std::wstring DHOCLInit::GetDeviceName(cl_device_id dev) const
-		{
-			return GetDeviceInfo(dev, CL_DEVICE_NAME);
-		}
-
-		std::wstring DHOCLInit::GetDeviceVendor(cl_device_id dev) const
-		{
-			return GetDeviceInfo(dev, CL_DEVICE_VENDOR);
-		}
-
-		std::wstring DHOCLInit::GetDeviceVersion(cl_device_id dev) const
-		{
-			return GetDeviceInfo(dev, CL_DEVICE_VERSION);
-		}
-
-		std::wstring DHOCLInit::GetDeviceExtensions(cl_device_id dev) const
-		{
-			return GetDeviceInfo(dev, CL_DEVICE_EXTENSIONS);
-		}
-
-		std::wstring DHOCLInit::GetDeviceType(cl_device_id dev) const
-		{
-			std::size_t size = 0;
-			cl_device_type* type = nullptr;
-			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, 0, NULL, &size);
-
-			type = new cl_device_type();
-
-			err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, size, (void*)type, NULL);
-
-			switch (*type)
-			{
-			case CL_DEVICE_TYPE_CPU:
-				return L"CPU";
-
-			case CL_DEVICE_TYPE_GPU:
-				return L"GPU";
-
-			default:
-				return L"NONE";
-			}
-		}
-
-		std::wstring DHOCLInit::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf) const
-		{
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-
-			std::size_t size = 0;
-
-			cl_int err = clGetPlatformInfo(pl, inf, 0, NULL, &size);
-			if (err != CL_SUCCESS || size == 0)
-				return std::wstring();
-
-			char* info = new char[size];
-
-			err = clGetPlatformInfo(pl, inf, size, (void*)info, NULL);
-			if (err != CL_SUCCESS)
-				return std::wstring();
-
-			return conv.from_bytes(info);
-		}
-
-		std::wstring DHOCLInit::GetDeviceInfo(cl_device_id dev, cl_device_info inf) const
-		{
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
-			std::size_t size = 0;
-
-			cl_int err = clGetDeviceInfo(dev, inf, 0, NULL, &size);
-			if (err != CL_SUCCESS || size == 0)
-				return std::wstring();
-
-			char* info = new char[size];
-
-			err = clGetDeviceInfo(dev, inf, size, (void*)info, NULL);
-			if (err != CL_SUCCESS)
-				return std::wstring();
-
-			return conv.from_bytes(info);
-		}
-
 		DHOCLHost::DHOCLHost()
 		{
 			m_Platform = NULL;
@@ -224,6 +124,106 @@ namespace dholo
 		cl_device_id DHOCLHost::GetDevice() const
 		{
 			return m_Device;
+		}
+
+		std::wstring DHOCLInfo::GetPlatformName(cl_platform_id pl) const
+		{
+			return GetPlatformInfo(pl, CL_PLATFORM_NAME);
+		}
+
+		std::wstring DHOCLInfo::GetPlatformVendor(cl_platform_id pl) const
+		{
+			return GetPlatformInfo(pl, CL_PLATFORM_VENDOR);
+		}
+
+		std::wstring DHOCLInfo::GetPlatformVersion(cl_platform_id pl) const
+		{
+			return GetPlatformInfo(pl, CL_PLATFORM_VERSION);
+		}
+
+		std::wstring DHOCLInfo::GetPlatformExtensions(cl_platform_id pl) const
+		{
+			return GetPlatformInfo(pl, CL_PLATFORM_EXTENSIONS);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceName(cl_device_id dev) const
+		{
+			return GetDeviceInfo(dev, CL_DEVICE_NAME);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceVendor(cl_device_id dev) const
+		{
+			return GetDeviceInfo(dev, CL_DEVICE_VENDOR);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceVersion(cl_device_id dev) const
+		{
+			return GetDeviceInfo(dev, CL_DEVICE_VERSION);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceExtensions(cl_device_id dev) const
+		{
+			return GetDeviceInfo(dev, CL_DEVICE_EXTENSIONS);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceType(cl_device_id dev) const
+		{
+			std::size_t size = 0;
+			cl_device_type* type = nullptr;
+			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, 0, NULL, &size);
+
+			type = new cl_device_type();
+
+			err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, size, (void*)type, NULL);
+
+			switch (*type)
+			{
+			case CL_DEVICE_TYPE_CPU:
+				return L"CPU";
+
+			case CL_DEVICE_TYPE_GPU:
+				return L"GPU";
+
+			default:
+				return L"NONE";
+			}
+		}
+
+		std::wstring DHOCLInfo::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf) const
+		{
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+
+			std::size_t size = 0;
+
+			cl_int err = clGetPlatformInfo(pl, inf, 0, NULL, &size);
+			if (err != CL_SUCCESS || size == 0)
+				return std::wstring();
+
+			char* info = new char[size];
+
+			err = clGetPlatformInfo(pl, inf, size, (void*)info, NULL);
+			if (err != CL_SUCCESS)
+				return std::wstring();
+
+			return conv.from_bytes(info);
+		}
+
+		std::wstring DHOCLInfo::GetDeviceInfo(cl_device_id dev, cl_device_info inf) const
+		{
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;
+			std::size_t size = 0;
+
+			cl_int err = clGetDeviceInfo(dev, inf, 0, NULL, &size);
+			if (err != CL_SUCCESS || size == 0)
+				return std::wstring();
+
+			char* info = new char[size];
+
+			err = clGetDeviceInfo(dev, inf, size, (void*)info, NULL);
+			if (err != CL_SUCCESS)
+				return std::wstring();
+
+			return conv.from_bytes(info);
 		}
 	}
 }
