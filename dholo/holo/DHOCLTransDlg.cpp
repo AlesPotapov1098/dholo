@@ -90,15 +90,14 @@ namespace dholo
 			comboBox->ResetContent();
 
 		int countHard = m_Init.GetSize();
-		ocl::DHOCLHard hard;
 
 		for (int i = 0; i < countHard; i++)
 		{
-			hard = m_Init.GetHardware(i);
-			int countDevs = hard.GetCountDevices();
+			int countDevs = m_Init.GetHardware(i).GetCountDevices();
 
 			for (int j = 0; j < countDevs; j++)
-				comboBox->AddString(ocl::DHOCLInfo::GetPlatformName(hard.GetPlatform()).c_str());
+				comboBox->AddString(ocl::DHOCLInfo::GetPlatformName(m_Init.GetHardware(i).
+					GetPlatform()).c_str());
 		}
 
 		comboBox->SetCurSel(0);

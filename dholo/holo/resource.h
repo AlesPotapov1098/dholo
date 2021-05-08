@@ -7,6 +7,7 @@
 #define IDS_IMAGE_LIST_COLUMN_IMAGE     101
 #define IDS_IMAGE_LIST_COLUMN_PATH      102
 #define IDS_IMAGE_LIST                  103
+#define IDS_IMAGE_CONVERTER             104
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
@@ -22,6 +23,7 @@
 #define IDR_EXPLORER                    310
 #define IDR_MENU1                       312
 #define IDD_OCL_TRANSFORM               314
+#define IDR_MENU2                       316
 #define IDC_OPENCL_PLATFORM_SETTINGS    1000
 #define IDC_OPENCL_DEVICE_SETTINGS      1001
 #define IDC_STATIC_PLATFORM_NAME        1002
@@ -43,7 +45,6 @@
 #define IDC_STATIC_GLOBAL_MEM           1018
 #define IDC_EDIT_GLOBAL_MEM             1019
 #define IDC_STATIC_LOCAL_MEM            1020
-#define IDC_EDIT5                       1021
 #define IDC_EDIT_LOCAL_MEM              1021
 #define ID_32771                        32771
 #define ID_32772                        32772
@@ -54,13 +55,22 @@
 #define ID_DELETE_IMAGE                 32777
 #define ID_PSI_TRANSFORM                32778
 #define ID_IMAGE_PANEL                  32779
+#define ID_32781                        32781
+#define ID_32782                        32782
+#define ID_32783                        32783
+#define ID_32784                        32784
+#define ID_MENU_ADD_IMAGE               32785
+#define ID_MENU_DELETE_IMAGE            32786
+#define ID_MENU_LOAD_GP                 32787
+#define ID_MENU_PSI_TRANS               32788
+#define ID_MENU_IMG                     32789
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        316
-#define _APS_NEXT_COMMAND_VALUE         32781
+#define _APS_NEXT_RESOURCE_VALUE        317
+#define _APS_NEXT_COMMAND_VALUE         32790
 #define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

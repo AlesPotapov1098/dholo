@@ -23,12 +23,10 @@ namespace dholo
 			ON_WM_CONTEXTMENU()
 			ON_WM_PAINT()
 			ON_WM_SETFOCUS()
-			ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnLoadImage)
-			ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
-			//ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
-			//ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
-			//ON_COMMAND(ID_LOAD_INTO_GP, &DHImgExpr::OnLoadIntoGp)
-			//ON_COMMAND(ID_SHOW_IMAGE, &DHImgExpr::OnSelectImage)
+			ON_COMMAND(ID_MENU_ADD_IMAGE, &DHImgExpr::OnLoadImage)
+			ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
+			ON_COMMAND(ID_MENU_LOAD_GP, &DHImgExpr::OnLoadIntoGp)
+			ON_COMMAND(ID_MENU_PSI_TRANS, &DHImgExpr::OnPSITransform)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -152,7 +150,7 @@ namespace dholo
 			}
 
 			pdhImgList->SetFocus();
-			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU1, point.x, point.y, this, TRUE);
+			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU2, point.x, point.y, this, TRUE);
 		}
 
 		void DHImgExpr::AdjustLayout()
@@ -195,7 +193,7 @@ namespace dholo
 			m_dhImgList.SetFocus();
 		}
 
-		void DHImgExpr::OnSelectImage()
+		void DHImgExpr::OnPSITransform()
 		{
 			if (!m_dhImgList.GetItemCount())
 				return;

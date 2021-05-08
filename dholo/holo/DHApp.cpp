@@ -1,8 +1,4 @@
-﻿
-// holo.cpp: определяет поведение классов для приложения.
-//
-
-#include "pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
@@ -15,44 +11,24 @@
 #define new DEBUG_NEW
 #endif
 
-
-// DHApp
-
 BEGIN_MESSAGE_MAP(DHApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &DHApp::OnAppAbout)
 END_MESSAGE_MAP()
-
-
-// Создание DHApp
 
 DHApp::DHApp() noexcept
 {
 	m_bHiColorIcons = TRUE;
 
-
 	// поддержка диспетчера перезагрузки
 	m_dwRestartManagerSupportFlags = AFX_RESTART_MANAGER_SUPPORT_ALL_ASPECTS;
-#ifdef _MANAGED
-	// Если приложение построено с поддержкой среды Common Language Runtime (/clr):
-	//     1) Этот дополнительный параметр требуется для правильной поддержки работы диспетчера перезагрузки.
-	//   2) В своем проекте для сборки необходимо добавить ссылку на System.Windows.Forms.
-	System::Windows::Forms::Application::SetUnhandledExceptionMode(System::Windows::Forms::UnhandledExceptionMode::ThrowException);
-#endif
-
 	// TODO: замените ниже строку идентификатора приложения строкой уникального идентификатора; рекомендуемый
 	// формат для строки: ИмяКомпании.ИмяПродукта.СубПродукт.СведенияОВерсии
 	SetAppID(_T("holo.AppID.NoVersion"));
-
 	// TODO: добавьте код создания,
 	// Размещает весь важный код инициализации в InitInstance
 }
 
-// Единственный объект DHApp
-
 DHApp theApp;
-
-
-// Инициализация DHApp
 
 BOOL DHApp::InitInstance()
 {
@@ -186,6 +162,9 @@ void DHApp::PreLoadState()
 	bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+	bNameValid = strName.LoadString(IDS_IMAGE_CONVERTER);
+	ASSERT(bNameValid);
+	GetContextMenuManager()->AddMenu(strName, IDR_MENU2);
 }
 
 void DHApp::LoadCustomState()

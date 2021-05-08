@@ -30,7 +30,6 @@ namespace dholo
 		class DHOCLHard
 		{
 		public:
-			DHOCLHard() = default;
 			DHOCLHard(cl_platform_id);
 			~DHOCLHard();
 
