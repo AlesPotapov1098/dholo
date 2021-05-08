@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "DHOCLInit.h"
+#include "DHImgLoader.h"
 
 #include <CL\cl.h>
 #include <CL\cl_gl.h>
@@ -63,6 +64,16 @@ namespace dholo
 
 		class DHGPGPUPSITransform : public DHGPGPUTransform
 		{
+		public:
+			DHGPGPUPSITransform();
+			virtual ~DHGPGPUPSITransform();
+
+			void Init(const CDC&, const DHOCLHost&) override;
+			void SetImages(const std::vector<dholo::img::DHImgLoader>&);
+			void GenerateTexture() override;
+			void Calculate() override;
+			void Release() override;
+			void RenderScene() override;
 		};
 	}
 }
