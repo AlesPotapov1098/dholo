@@ -173,18 +173,18 @@ namespace dholo
 			if (dc == nullptr)
 				return;
 
-			m_DC = dc.m_hDC;
+			m_hDC = dc.m_hDC;
 
-			if (!SetPixelFormat(m_DC,
-				ChoosePixelFormat(m_DC, &m_Desc),
+			if (!SetPixelFormat(m_hDC,
+				ChoosePixelFormat(m_hDC, &m_Desc),
 				&m_Desc))
 				return;
 
-			m_hRC = wglCreateContext(m_DC);
+			m_hRC = wglCreateContext(m_hDC);
 			if (!m_hRC)
 				return;
 
-			if (!wglMakeCurrent(m_DC, m_hRC))
+			if (!wglMakeCurrent(m_hDC, m_hRC))
 				return;
 
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -215,7 +215,146 @@ namespace dholo
 		void DHGPGPUTransform::RenderScene()
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			SwapBuffers(m_DC);
+			SwapBuffers(m_hDC);
+		}
+
+		void DHGPGPUTransform::InitOpenCL(const DHOCLHost& host)
+		{
+			cl_int err = CL_SUCCESS;
+			cl_context_properties prop[] = {
+				CL_CONTEXT_PLATFORM, (cl_context_properties)host.GetPlatform(),
+				CL_GL_CONTEXT_KHR, (cl_context_properties)m_hRC,
+				CL_WGL_HDC_KHR, (cl_context_properties)m_hDC,
+				0 };
+			
+			cl_device_id dev = host.GetDevice();
+			m_Context = clCreateContext(prop, 1, &dev, NULL, NULL, &err);
+			
+			if (err != CL_SUCCESS)
+				return;
+			
+			std::ifstream file(m_ProgramPath, std::ios_base::binary);
+			std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
+			
+			const char* src = code.c_str();
+			std::size_t len = code.length() + 1;
+			
+			m_Program = clCreateProgramWithSource(m_Context, 1, &src, &len, &err);
+			
+			if (err != CL_SUCCESS)
+				return;
+			
+			cl_int res = clBuildProgram(m_Program, 0, NULL, NULL, NULL, NULL);
+			
+			if (res != CL_SUCCESS)
+			{
+				std::size_t size_log = 0;
+				char* build_log;
+				res = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+				if (res != CL_SUCCESS) {
+					/// TODO : обработка ошибок
+					return;
+				}
+
+				if (size_log == 0) {
+					/// TODO : обработка ошибок
+					return;
+				}
+
+				build_log = new char[size_log];
+				res = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+				if (res != CL_SUCCESS) {
+					/// TODO : обработка ошибок
+					return;
+				}
+			}
+
+			m_Kernel = clCreateKernel(m_Program, "psi4Kernel", &err);
+			if (err != CL_SUCCESS)
+				/// TODO : обработка ошибок
+				return;
+			
+			m_CommandQueue = clCreateCommandQueueWithProperties(m_Context, dev, NULL, &err);
+			if (err != CL_SUCCESS)
+				/// TODO : обработка ошибок
+				return;
+		}
+
+		DHGPGPUPSITransform::DHGPGPUPSITransform()
+		{
+			DHGPGPUTransform::DHGPGPUTransform();
+		}
+
+		DHGPGPUPSITransform::~DHGPGPUPSITransform()
+		{
+			DHGPGPUTransform::~DHGPGPUTransform();
+		}
+
+		void DHGPGPUPSITransform::Init(const CDC& dc, const DHOCLHost& host)
+		{
+			DHGPGPUTransform::Init(dc, host);
+			InitOpenCL(host);
+		}
+
+		void DHGPGPUPSITransform::SetImages(const std::vector<dholo::img::DHImgLoader>& imgs)
+		{
+			m_Images = imgs;
+		}
+
+		void DHGPGPUPSITransform::GenerateTexture()
+		{
+			glEnable(GL_TEXTURE_2D);
+			glGenTextures(5, m_Textures);
+
+			cl_int error_code = CL_SUCCESS;
+
+			for (int i = 0; i < 5; i++)
+			{
+				glBindTexture(GL_TEXTURE_2D, m_Textures[i]);
+
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+				if (m_Images[i].GetChannels() == 3)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGB,
+						m_Images[i].GetWidth(),
+						m_Images[i].GetHeight(),
+						0, GL_RGB, GL_FLOAT,
+						m_Images[i].GetPixelsData());
+				else if (m_Images[i].GetChannels() == 4)
+					glTexImage2D(
+						GL_TEXTURE_2D, 0, GL_RGBA,
+						m_Images[i].GetWidth(),
+						m_Images[i].GetHeight(),
+						0, GL_RGBA, GL_FLOAT,
+						m_Images[i].GetPixelsData());
+
+				m_Mem[i] = clCreateFromGLTexture(
+					m_Context, 
+					CL_MEM_READ_ONLY, 
+					GL_TEXTURE_2D, 
+					0, m_Textures[i], 
+					&error_code);
+
+				if (error_code != CL_SUCCESS)
+					/// TODO: обработка ошибок
+					return;
+			}
+		}
+
+		void DHGPGPUPSITransform::Calculate()
+		{
+		}
+
+		void DHGPGPUPSITransform::Release()
+		{
+		}
+
+		void DHGPGPUPSITransform::RenderScene()
+		{
 		}
 	}
 }

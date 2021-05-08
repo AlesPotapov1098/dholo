@@ -24,20 +24,32 @@ namespace dholo
 			DHGPGPUTransform();
 			virtual ~DHGPGPUTransform();
 
-			// Инициализация OpenGL и OpenCL
+			/// <summary>
+			/// Инициализация OpenGL и OpenCL
+			/// </summary>
 				virtual void Init(const CDC&, const DHOCLHost&);
 			
-			// Генерация текстур
+			/// <summary>
+			/// Генерация текстур
+			/// </summary>
 				virtual void GenerateTexture();
 
-			// Преобразование
+			/// <summary>
+			/// Преобразование
+			/// </summary>
 				virtual void Calculate();
 
-			// Освобождение ресурсов
+			/// <summary>
+			/// Освобождение ресурсов
+			/// </summary>
 				virtual void Release();
 
-			// Отрисовка сцены
+			/// <summary>
+			/// Отрисовка сцены
+			/// </summary>
 				virtual void RenderScene();
+		protected:
+			void InitOpenCL(const DHOCLHost&);
 
 		protected:
 			cl_program m_Program;
@@ -46,14 +58,15 @@ namespace dholo
 			cl_mem m_InOutMem;
 			cl_command_queue m_CommandQueue;
 			HGLRC m_hRC;
-			HDC m_DC;
+			HDC m_hDC;
 			PIXELFORMATDESCRIPTOR m_Desc;
+			std::string m_ProgramPath;
 		};
 
 		class test : public DHGPGPUTransform
 		{
 		public:
-			test() = default;// { DHOCLTestTransform::DHOCLTestTransform(); }
+			test() = default;
 			~test() = default;
 			void RenderScene() override
 			{
@@ -74,6 +87,11 @@ namespace dholo
 			void Calculate() override;
 			void Release() override;
 			void RenderScene() override;
+
+		private:
+			std::vector<dholo::img::DHImgLoader> m_Images;
+			GLuint m_Textures[5];
+			cl_mem m_Mem[5];
 		};
 	}
 }
