@@ -9,11 +9,11 @@ namespace dholo
 {
 	namespace test
 	{
-		class DHOCLTest : public ocl::DHOCLTransform
+		class DHOCLTest : public gpgpu::DHGPGPUTransform
 		{
 		public:
 			DHOCLTest();
-			DHOCLTest(const ocl::DHOCLHost& host, const std::string& progpath);
+			DHOCLTest(const gpgpu::DHOCLHost& host, const std::string& progpath);
 			~DHOCLTest();
 
 			void LoadImg(const ogl::DHOGLRender& scene);

@@ -38,7 +38,7 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 	if (CWnd::OnCreate(lpcst) != 0)
 		return -1;
 		
-
+	m_Transform = new dholo::gpgpu::DHGPGPUTransform;
 
 	return 0;
 }
@@ -46,10 +46,10 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 void DHWnd::OnPaint() 
 {
 	CDC * dc = GetDC();
-	m_Transform.Init(*dc,dholo::ocl::DHOCLHost());
-	m_Transform.GenerateTexture();
-	m_Transform.Calculate();
-	m_Transform.RenderScene();
+	m_Transform->Init(*dc,dholo::gpgpu::DHOCLHost());
+	m_Transform->GenerateTexture();
+	m_Transform->Calculate();
+	m_Transform->RenderScene();
 }
 
 void DHWnd::LoadTexture(const std::vector<CStringA>& path)

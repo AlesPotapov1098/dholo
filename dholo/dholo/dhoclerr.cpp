@@ -2,7 +2,7 @@
 
 #include "dhoclerr.h"
 
-dholo::ocl::err::DHOCLErr::DHOCLErr(cl_int error_code)
+dholo::gpgpu::err::DHOCLErr::DHOCLErr(cl_int error_code)
 {
 	CStringW errorMsg;
 	if(errorMsg.LoadStringW(error_code))
@@ -12,11 +12,11 @@ dholo::ocl::err::DHOCLErr::DHOCLErr(cl_int error_code)
 	
 }
 
-dholo::ocl::err::DHOCLErr::~DHOCLErr()
+dholo::gpgpu::err::DHOCLErr::~DHOCLErr()
 {
 }
 
-char const* dholo::ocl::err::DHOCLErr::what() const
+char const* dholo::gpgpu::err::DHOCLErr::what() const
 {
 	AfxMessageBox(CStringW(exception::what()), MB_OK);
 	return exception::what();

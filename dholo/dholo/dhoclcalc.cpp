@@ -3,9 +3,9 @@
 
 namespace dholo
 {
-	namespace ocl
+	namespace gpgpu
 	{
-		DHOCLTransform::DHOCLTransform()
+		DHGPGPUTransform::DHGPGPUTransform()
 		{
 			m_Program = NULL;
 			m_Kernel = NULL;
@@ -14,7 +14,7 @@ namespace dholo
 			m_CommandQueue = NULL;
 		}
 
-		DHOCLTransform::DHOCLTransform(const DHOCLHost& host, const std::string& progpath)
+		DHGPGPUTransform::DHGPGPUTransform(const DHOCLHost& host, const std::string& progpath)
 		{
 			if (progpath.empty())
 				return;
@@ -78,7 +78,7 @@ namespace dholo
 				return;
 		}
 
-		DHOCLTransform::~DHOCLTransform()
+		DHGPGPUTransform::~DHGPGPUTransform()
 		{
 			if (m_Program)
 				clReleaseProgram(m_Program);
@@ -96,7 +96,7 @@ namespace dholo
 				clReleaseMemObject(m_InOutMem);
 		}
 
-		void DHOCLTransform::LoadImg(const GLuint& texture)
+		void DHGPGPUTransform::LoadImg(const GLuint& texture)
 		{
 			cl_int error_code = CL_SUCCESS;
 			m_InOutMem = clCreateFromGLTexture(m_Context, CL_MEM_WRITE_ONLY, GL_TEXTURE_2D, 0, texture, &error_code);
@@ -105,31 +105,31 @@ namespace dholo
 				return;
 		}
 
-		void DHOCLTransform::SetGlobalSize(std::size_t global_x = 0, std::size_t global_y = 0)
+		void DHGPGPUTransform::SetGlobalSize(std::size_t global_x = 0, std::size_t global_y = 0)
 		{
 			m_GlobalSize[0] = global_x;
 			m_GlobalSize[1] = global_y;
 		}
 
-		void DHOCLTransform::SetGlobalSize(std::size_t globalSize[2])
+		void DHGPGPUTransform::SetGlobalSize(std::size_t globalSize[2])
 		{
 			m_GlobalSize[0] = globalSize[0];
 			m_GlobalSize[1] = globalSize[1];
 		}
 
-		void DHOCLTransform::SetLocalSize(std::size_t local_x = 1, std::size_t local_y = 1)
+		void DHGPGPUTransform::SetLocalSize(std::size_t local_x = 1, std::size_t local_y = 1)
 		{
 			m_LocalSize[0] = local_x;
 			m_LocalSize[1] = local_y;
 		}
 
-		void DHOCLTransform::SetLocalSize(std::size_t localSize[2])
+		void DHGPGPUTransform::SetLocalSize(std::size_t localSize[2])
 		{
 			m_LocalSize[0] = localSize[0];
 			m_LocalSize[1] = localSize[1];
 		}
 
-		void DHOCLTransform::Calculate()
+		void DHGPGPUTransform::Calculate()
 		{
 			clEnqueueAcquireGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 			cl_int res = clSetKernelArg(m_Kernel, 0, sizeof(m_InOutMem), &m_InOutMem);

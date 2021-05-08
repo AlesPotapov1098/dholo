@@ -10,8 +10,8 @@ namespace dholo
 		{
 		}
 
-		DHOCLTest::DHOCLTest(const ocl::DHOCLHost & host, const std::string & progpath)
-		:	DHOCLTransform::DHOCLTransform(host, progpath)
+		DHOCLTest::DHOCLTest(const gpgpu::DHOCLHost & host, const std::string & progpath)
+		:	DHGPGPUTransform::DHGPGPUTransform(host, progpath)
 		{
 		}
 

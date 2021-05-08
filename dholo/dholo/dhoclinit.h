@@ -7,7 +7,7 @@
 
 namespace dholo
 {
-	namespace ocl
+	namespace gpgpu
 	{
 		class DHOCLHost
 		{

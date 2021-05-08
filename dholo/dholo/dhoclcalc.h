@@ -16,14 +16,14 @@
 
 namespace dholo
 {
-	namespace ocl
+	namespace gpgpu
 	{
-		class DHOCLTransform
+		class DHGPGPUTransform
 		{
 		public:
-			DHOCLTransform();
-			DHOCLTransform(const DHOCLHost& host, const std::string& progpath);
-			~DHOCLTransform();
+			DHGPGPUTransform();
+			DHGPGPUTransform(const DHOCLHost& host, const std::string& progpath);
+			~DHGPGPUTransform();
 
 			/// <summary>
 			/// Загрузка текстуры OpenGL.

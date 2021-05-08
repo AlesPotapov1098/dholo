@@ -3,7 +3,7 @@
 
 namespace dholo
 {
-	namespace ocl
+	namespace gpgpu
 	{
 		DHOCLHard::DHOCLHard(cl_platform_id platform)
 		{

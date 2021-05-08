@@ -5,7 +5,7 @@
 
 namespace dholo
 {
-	namespace ocl
+	namespace gpgpu
 	{
 		namespace err
 		{

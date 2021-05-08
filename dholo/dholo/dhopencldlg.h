@@ -18,7 +18,7 @@ namespace dholo
 			DHOpenCLDlg(CWnd* pParent = nullptr);   // стандартный конструктор
 			virtual ~DHOpenCLDlg();
 
-			ocl::DHOCLHost GetOpenCLHost() const;
+			gpgpu::DHOCLHost GetOpenCLHost() const;
 
 		protected:
 			virtual void DoDataExchange(CDataExchange* pDX);    // поддержка DDX/DDV
@@ -40,8 +40,8 @@ namespace dholo
 			DECLARE_MESSAGE_MAP()
 
 		private:
-			ocl::DHOCLInit m_Init;
-			ocl::DHOCLHost m_Host;
+			gpgpu::DHOCLInit m_Init;
+			gpgpu::DHOCLHost m_Host;
 		};
 	}
 }

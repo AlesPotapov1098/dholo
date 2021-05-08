@@ -28,7 +28,7 @@ namespace dholo
 		{
 		}
 		
-		ocl::DHOCLHost DHOpenCLDlg::GetOpenCLHost() const
+		gpgpu::DHOCLHost DHOpenCLDlg::GetOpenCLHost() const
 		{
 			return m_Host;
 		}
@@ -94,7 +94,7 @@ namespace dholo
 				comboBox->ResetContent();
 		
 			int countHard = m_Init.GetSize();
-			ocl::DHOCLHard hard;
+			gpgpu::DHOCLHard hard;
 		
 			for (int i = 0; i < countHard; i++)
 			{
@@ -113,7 +113,7 @@ namespace dholo
 			auto comboBox = static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFROMS));
 		
 			int CurSell = comboBox->GetCurSel();
-			ocl::DHOCLHard hard = m_Init.GetHardware(CurSell);
+			gpgpu::DHOCLHard hard = m_Init.GetHardware(CurSell);
 		
 			auto editPlatformVendor =
 				static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VENDOR));
@@ -130,7 +130,7 @@ namespace dholo
 				static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFROMS));
 		
 			int curSell = comboBox->GetCurSel();
-			ocl::DHOCLHard hard = m_Init.GetHardware(curSell);
+			gpgpu::DHOCLHard hard = m_Init.GetHardware(curSell);
 		
 			auto comboDevices =
 				static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_DEVICE));
@@ -148,7 +148,7 @@ namespace dholo
 				static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFROMS));
 		
 			int curSell = comboBox->GetCurSel();
-			ocl::DHOCLHard hard = m_Init.GetHardware(curSell);
+			gpgpu::DHOCLHard hard = m_Init.GetHardware(curSell);
 		
 			auto comboDevice =
 				static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_DEVICE));

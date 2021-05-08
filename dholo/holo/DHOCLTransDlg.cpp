@@ -96,7 +96,7 @@ namespace dholo
 			int countDevs = m_Init.GetHardware(i).GetCountDevices();
 
 			for (int j = 0; j < countDevs; j++)
-				comboBox->AddString(ocl::DHOCLInfo::GetPlatformName(m_Init.GetHardware(i).
+				comboBox->AddString(gpgpu::DHOCLInfo::GetPlatformName(m_Init.GetHardware(i).
 					GetPlatform()).c_str());
 		}
 
@@ -108,17 +108,17 @@ namespace dholo
 		auto comboBox = static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFORM_NAME));
 
 		int CurSell = comboBox->GetCurSel();
-		ocl::DHOCLHard hard = m_Init.GetHardware(CurSell);
+		gpgpu::DHOCLHard hard = m_Init.GetHardware(CurSell);
 
 		auto editPlatformVendor =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VENDOR));
 		editPlatformVendor->SetWindowTextW(
-			ocl::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()).c_str());
+			gpgpu::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()).c_str());
 
 		auto editPlatformVersion =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VERSION));
 		editPlatformVersion->SetWindowTextW(
-			ocl::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()).c_str());
+			gpgpu::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()).c_str());
 	}
 
 	void DHOCLTransDlg::FillInComboDevice()
@@ -127,7 +127,7 @@ namespace dholo
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFORM_NAME));
 
 		int curSell = comboBox->GetCurSel();
-		ocl::DHOCLHard hard = m_Init.GetHardware(curSell);
+		gpgpu::DHOCLHard hard = m_Init.GetHardware(curSell);
 
 		auto comboDevices =
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_DEVICE_NAME));
@@ -135,7 +135,7 @@ namespace dholo
 
 		for (int i = 0; i < countDevs; i++)
 			comboDevices->AddString(
-				ocl::DHOCLInfo::GetDeviceName(hard[i]).c_str());
+				gpgpu::DHOCLInfo::GetDeviceName(hard[i]).c_str());
 
 		comboDevices->SetCurSel(0);
 	}
@@ -146,7 +146,7 @@ namespace dholo
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFORM_NAME));
 
 		int curSell = comboBox->GetCurSel();
-		ocl::DHOCLHard hard = m_Init.GetHardware(curSell);
+		gpgpu::DHOCLHard hard = m_Init.GetHardware(curSell);
 
 		auto comboDevice =
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_DEVICE_NAME));
@@ -156,17 +156,17 @@ namespace dholo
 		auto editDeviceVendor =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VENDOR));
 		editDeviceVendor->SetWindowTextW(
-			ocl::DHOCLInfo::GetDeviceVendor(hard[curSellComboDevices]).c_str());
+			gpgpu::DHOCLInfo::GetDeviceVendor(hard[curSellComboDevices]).c_str());
 
 		auto editDeviceVersion =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VERSION));
 		editDeviceVersion->SetWindowTextW(
-			ocl::DHOCLInfo::GetDeviceVersion(hard[curSellComboDevices]).c_str());
+			gpgpu::DHOCLInfo::GetDeviceVersion(hard[curSellComboDevices]).c_str());
 
 		auto editDeviceType =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_TYPE));
 		editDeviceType->SetWindowTextW(
-			ocl::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
+			gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
 	}
 
 }

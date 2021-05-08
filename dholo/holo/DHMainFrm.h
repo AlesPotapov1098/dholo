@@ -39,7 +39,7 @@ private:  // встроенные члены панели элементов у�
 
 	dholo::img::DHImgExpr m_imgExpr;
 
-	dholo::ocl::DHOCLTestTransform m_transform;
+	dholo::gpgpu::DHGPGPUTransform m_transform;
 
 // Созданные функции схемы сообщений
 protected:
