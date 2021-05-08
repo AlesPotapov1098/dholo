@@ -1,8 +1,4 @@
-﻿
-// DHWnd.cpp: реализация класса DHWnd
-//
-
-#include "pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "DHApp.h"
 #include "DHWnd.h"
@@ -10,9 +6,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
-// DHWnd
 
 DHWnd::DHWnd()
 {
@@ -22,14 +15,10 @@ DHWnd::~DHWnd()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(DHWnd, CWnd)
+	ON_WM_CREATE()
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
-
-
-
-// Обработчики сообщений DHWnd
 
 BOOL DHWnd::PreCreateWindow(CREATESTRUCT& cs) 
 {
@@ -38,10 +27,20 @@ BOOL DHWnd::PreCreateWindow(CREATESTRUCT& cs)
 
 	cs.dwExStyle |= WS_EX_CLIENTEDGE;
 	cs.style &= ~WS_BORDER;
-	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
+	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS|CS_OWNDC, 
 		::LoadCursor(nullptr, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), nullptr);
 
 	return TRUE;
+}
+
+int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
+{
+	if (CWnd::OnCreate(lpcst) != 0)
+		return -1;
+		
+
+
+	return 0;
 }
 
 void DHWnd::OnPaint() 

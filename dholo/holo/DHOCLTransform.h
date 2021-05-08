@@ -17,6 +17,37 @@ namespace dholo
 {
 	namespace ocl
 	{
+		class DHOCLTestTransform
+		{
+		public:
+			DHOCLTestTransform();
+			virtual ~DHOCLTestTransform();
+
+			// Инициализация OpenGL и OpenCL
+				void Init(HDC, const DHOCLHost&);
+			
+			// Генерация текстур
+				virtual void GenerateTexture();
+
+			// Преобразование
+				virtual void Calculate();
+
+			// Освобождение ресурсов
+				virtual void Release();
+
+			// Отрисовка сцены
+				virtual void RenderScene();
+
+		private:
+			cl_program m_Program;
+			cl_kernel m_Kernel;
+			cl_context m_Context;
+			cl_mem m_InOutMem;
+			cl_command_queue m_CommandQueue;
+			HGLRC m_hRC;
+			PIXELFORMATDESCRIPTOR m_Desc;
+		};
+
 		class DHOCLTransform
 		{
 		public:

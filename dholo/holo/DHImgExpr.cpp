@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "DHImgExpr.h"
-#include "resource.h"
 #include "DHMainFrm.h"
 #include "DHApp.h"
+
+#include "resource.h"
 
 namespace dholo
 {
@@ -23,10 +24,14 @@ namespace dholo
 			ON_WM_CONTEXTMENU()
 			ON_WM_PAINT()
 			ON_WM_SETFOCUS()
+			// Обработка сообщений от всплывающего меню
 			ON_COMMAND(ID_MENU_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 			ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_MENU_LOAD_GP, &DHImgExpr::OnLoadIntoGp)
 			ON_COMMAND(ID_MENU_PSI_TRANS, &DHImgExpr::OnPSITransform)
+			// Обработка сообщения от toolbar
+			ON_COMMAND(ID_TOOLBAR_ADD_IMAGE, &DHImgExpr::OnLoadImage)
+			ON_COMMAND(ID_TOOLBAR_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -47,7 +52,7 @@ namespace dholo
 			}
 
 			m_ImageList.Create(64, 64, ILC_COLOR24 | ILC_MASK, 8, 4);
-
+			
 			m_FunctionalToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_EXPLORER);
 			m_FunctionalToolBar.LoadToolBar(IDR_EXPLORER, 0, 0, TRUE /* Заблокирован */);
 

@@ -142,5 +142,57 @@ namespace dholo
 			clEnqueueReleaseGLObjects(m_CommandQueue, 1, &m_InOutMem, 0, 0, NULL);
 			cl_int err = clFinish(m_CommandQueue);
 		}
-	}
+
+		DHOCLTestTransform::DHOCLTestTransform()
+		{
+			m_Program = nullptr;
+			m_Kernel = nullptr;
+			m_InOutMem = nullptr;
+			m_Context = nullptr;
+			m_CommandQueue = nullptr;
+		}
+
+		DHOCLTestTransform::~DHOCLTestTransform()
+		{
+			Release();
+		}
+
+		void DHOCLTestTransform::Init(HDC hDC, const DHOCLHost& host)
+		{
+
+		}
+		
+		void DHOCLTestTransform::GenerateTexture()
+		{
+
+		}
+
+		void DHOCLTestTransform::Calculate()
+		{
+
+		}
+
+		void DHOCLTestTransform::Release()
+		{
+			if (m_Program)
+				clReleaseProgram(m_Program);
+
+			if (m_Kernel)
+				clReleaseKernel(m_Kernel);
+
+			if (m_Context)
+				clReleaseContext(m_Context);
+
+			if (m_CommandQueue)
+				clReleaseCommandQueue(m_CommandQueue);
+
+			if (m_InOutMem)
+				clReleaseMemObject(m_InOutMem);
+		}
+
+		void DHOCLTestTransform::RenderScene()
+		{
+
+		}
+}
 }

@@ -27,6 +27,7 @@ public:
 	void GenerateTest();
 	void LoadImg(const CStringA& imgPath);
 	void LoadImg(const std::vector<CStringA>& imgPaths);
+	afx_msg int OnCreate(LPCREATESTRUCT lpcst);
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 
