@@ -150,6 +150,17 @@ namespace dholo
 			m_InOutMem = nullptr;
 			m_Context = nullptr;
 			m_CommandQueue = nullptr;
+
+			m_hRC = nullptr;
+			ZeroMemory(&m_Desc, sizeof(m_Desc));
+
+			m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+			m_Desc.nVersion = 1;
+			m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+			m_Desc.iPixelType = PFD_TYPE_RGBA;
+			m_Desc.cColorBits = 32;
+			m_Desc.cDepthBits = 24;
+			m_Desc.iLayerType = PFD_MAIN_PLANE;
 		}
 
 		DHOCLTestTransform::~DHOCLTestTransform()
@@ -157,9 +168,26 @@ namespace dholo
 			Release();
 		}
 
-		void DHOCLTestTransform::Init(HDC hDC, const DHOCLHost& host)
+		void DHOCLTestTransform::Init(const CDC& dc, const DHOCLHost& host)
 		{
+			if (dc == nullptr)
+				return;
 
+			m_DC = dc.m_hDC;
+
+			if (!SetPixelFormat(m_DC,
+				ChoosePixelFormat(m_DC, &m_Desc),
+				&m_Desc))
+				return;
+
+			m_hRC = wglCreateContext(m_DC);
+			if (!m_hRC)
+				return;
+
+			if (!wglMakeCurrent(m_DC, m_hRC))
+				return;
+
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		}
 		
 		void DHOCLTestTransform::GenerateTexture()
@@ -192,7 +220,8 @@ namespace dholo
 
 		void DHOCLTestTransform::RenderScene()
 		{
-
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			SwapBuffers(m_DC);
 		}
 }
 }

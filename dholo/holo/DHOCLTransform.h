@@ -24,7 +24,7 @@ namespace dholo
 			virtual ~DHOCLTestTransform();
 
 			// Инициализация OpenGL и OpenCL
-				void Init(HDC, const DHOCLHost&);
+				void Init(const CDC&, const DHOCLHost&);
 			
 			// Генерация текстур
 				virtual void GenerateTexture();
@@ -38,13 +38,14 @@ namespace dholo
 			// Отрисовка сцены
 				virtual void RenderScene();
 
-		private:
+		protected:
 			cl_program m_Program;
 			cl_kernel m_Kernel;
 			cl_context m_Context;
 			cl_mem m_InOutMem;
 			cl_command_queue m_CommandQueue;
 			HGLRC m_hRC;
+			HDC m_DC;
 			PIXELFORMATDESCRIPTOR m_Desc;
 		};
 

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "DHImgLoader.h"
+#include "DHOCLTransform.h"
 
 enum class OperationType
 {
@@ -41,6 +42,7 @@ private:
 
 	int m_GlobalSizeX, m_GlobalSizeY;
 	int m_LocalSizeX, m_LocalSizeY;
+	dholo::ocl::DHOCLTestTransform m_Transform;
 
 	PAINTSTRUCT m_Paint;
 	CDC* m_pDC;

@@ -45,11 +45,11 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 
 void DHWnd::OnPaint() 
 {
-	CPaintDC dc(this); // контекст устройства для рисования
-	
-	// TODO: Добавьте код обработки сообщений
-	
-	// Не вызывайте CWnd::OnPaint() для сообщений рисования
+	CDC * dc = GetDC();
+	m_Transform.Init(*dc,dholo::ocl::DHOCLHost());
+	m_Transform.GenerateTexture();
+	m_Transform.Calculate();
+	m_Transform.RenderScene();
 }
 
 void DHWnd::LoadTexture(const std::vector<CStringA>& path)

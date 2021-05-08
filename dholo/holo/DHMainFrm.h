@@ -2,6 +2,7 @@
 #include "DHWnd.h"
 #include "DHToolbar.h"
 #include "DHImgExpr.h"
+#include "DHOCLTransform.h"
 
 #include <vector>
 
@@ -37,6 +38,8 @@ private:  // встроенные члены панели элементов у�
 	DHWnd    m_wndView;
 
 	dholo::img::DHImgExpr m_imgExpr;
+
+	dholo::ocl::DHOCLTestTransform m_transform;
 
 // Созданные функции схемы сообщений
 protected:
