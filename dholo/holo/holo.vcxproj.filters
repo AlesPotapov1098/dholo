@@ -78,6 +78,9 @@
     <ClInclude Include="targetver.h">
       <Filter>src\etc</Filter>
     </ClInclude>
+    <ClInclude Include="DHGLGSinus.h">
+      <Filter>src\app\dlg</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -113,6 +116,9 @@
     <ClCompile Include="pch.cpp">
       <Filter>src\etc</Filter>
     </ClCompile>
+    <ClCompile Include="DHGLGSinus.cpp">
+      <Filter>src\app\dlg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\holo.ico">
@@ -130,6 +136,7 @@
     <Image Include="res\userimages.bmp">
       <Filter>resources</Filter>
     </Image>
+    <Image Include="res\bmp00001.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="holo.rc">

@@ -7,6 +7,7 @@
 #include <gl\GL.h>
 #include <fstream>
 #include <vector>
+#include <cmath>
 
 #include "DHOCLInit.h"
 #include "DHImgLoader.h"
@@ -92,6 +93,27 @@ namespace dholo
 			std::vector<dholo::img::DHImgLoader> m_Images;
 			GLuint m_Textures[5];
 			cl_mem m_Mem[5];
+		};
+
+		class DHGPGPUGenSinus : public DHGPGPUTransform
+		{
+		public:
+			DHGPGPUGenSinus(int width, int height, float ampl, float phi, int T);
+			virtual ~DHGPGPUGenSinus();
+
+			void GenerateTexture() override;
+			void Calculate() override;
+			void Release() override;
+			void RenderScene() override;
+
+		private:
+			float m_amp;
+			float m_phase;
+			int m_width;
+			int m_height;
+			int m_T;
+
+			GLuint m_SinTexture;
 		};
 	}
 }

@@ -24,6 +24,8 @@
 #define IDR_MENU1                       312
 #define IDD_OCL_TRANSFORM               314
 #define IDR_MENU2                       316
+#define IDD_DLG_GEN_SIN                 317
+#define IDR_TOOLBAR1                    319
 #define IDC_OPENCL_PLATFORM_SETTINGS    1000
 #define IDC_OPENCL_DEVICE_SETTINGS      1001
 #define IDC_STATIC_PLATFORM_NAME        1002
@@ -46,6 +48,22 @@
 #define IDC_EDIT_GLOBAL_MEM             1019
 #define IDC_STATIC_LOCAL_MEM            1020
 #define IDC_EDIT_LOCAL_MEM              1021
+#define IDC_EDIT_GEN_SIN_W              1022
+#define IDC_EDIT_GEN_SIN_H              1023
+#define IDC_EDIT_GEN_SIN_AMPL           1024
+#define IDC_COMBO_PHASES                1025
+#define IDC_EDIT_SIN_PHASE              1026
+#define IDC_STATIC_IMG_RANGE            1029
+#define IDC_STATIC_GEN_SIN_W            1030
+#define IDC_STATIC_GEN_SIN_H            1031
+#define IDC_STATIC_COLOR_SCHEME         1032
+#define IDC_COMBO_COLOR_MODEL           1033
+#define IDC_STATIC_GEN_SIN_AMPL         1034
+#define IDC_STATIC_GEN_SIN_SETTINGS     1035
+#define IDC_STATIC_GEN_SIN_PHASE        1036
+#define IDC_CHECK_PHASE_RANDOM          1037
+#define IDC_EDIT1                       1038
+#define IDC_EDIT_GEN_SIN_NUM_PERIODS    1038
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -66,14 +84,15 @@
 #define ID_MENU_IMG                     32789
 #define ID_TOOLBAR_ADD_IMAGE            32790
 #define ID_TOOLBAR_DELETE_IMAGE         32791
+#define ID_TOOLBAR_GEN_SIN              32792
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        317
-#define _APS_NEXT_COMMAND_VALUE         32792
-#define _APS_NEXT_CONTROL_VALUE         1022
+#define _APS_NEXT_RESOURCE_VALUE        321
+#define _APS_NEXT_COMMAND_VALUE         32793
+#define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

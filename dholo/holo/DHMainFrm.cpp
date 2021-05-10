@@ -1,8 +1,4 @@
-﻿
-// DHMainFrm.cpp: реализация класса DHMainFrm
-//
-
-#include "pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "DHApp.h"
 
@@ -11,8 +7,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-// DHMainFrm
 
 IMPLEMENT_DYNAMIC(DHMainFrm, CFrameWndEx)
 
@@ -25,17 +19,16 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &DHMainFrm::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &DHMainFrm::OnToolbarCreateNew)
+	ON_COMMAND(ID_TOOLBAR_GEN_SIN, &DHMainFrm::OnGenSin)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
 {
-	ID_SEPARATOR,           // индикатор строки состояния
+	ID_SEPARATOR,
 	ID_INDICATOR_CAPS,
 	ID_INDICATOR_NUM,
 	ID_INDICATOR_SCRL,
 };
-
-// Создание или уничтожение DHMainFrm
 
 DHMainFrm::DHMainFrm() noexcept
 {
@@ -78,6 +71,13 @@ int DHMainFrm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // не удалось создать
 	}
 
+	if (!m_TransformToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
+		!m_TransformToolBar.LoadToolBar(IDR_TOOLBAR1))
+	{
+		TRACE0("Не удалось создать панель инструментов\n");
+		return -1;      // не удалось создать
+	}
+
 	CString strToolBarName;
 	bNameValid = strToolBarName.LoadString(IDS_TOOLBAR_STANDARD);
 	ASSERT(bNameValid);
@@ -101,9 +101,11 @@ int DHMainFrm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// TODO: удалите эти пять строк, если панель инструментов и строка меню не должны быть закрепляемыми
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
+	m_TransformToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndMenuBar);
 	DockPane(&m_wndToolBar);
+	DockPane(&m_TransformToolBar);
 
 	CString strImgPanel;
 	bNameValid = strImgPanel.LoadStringW(IDS_IMAGE_LIST);
@@ -185,9 +187,6 @@ void DHMainFrm::Dump(CDumpContext& dc) const
 }
 #endif //_DEBUG
 
-
-// Обработчики сообщений DHMainFrm
-
 void DHMainFrm::OnSetFocus(CWnd* /*pOldWnd*/)
 {
 	// передача фокуса окну представления
@@ -231,6 +230,10 @@ LRESULT DHMainFrm::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
 	return lres;
 }
 
+void DHMainFrm::OnGenSin()
+{
+	m_wndView.GenSin();
+}
 
 BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
 {
@@ -240,7 +243,6 @@ BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentW
 	{
 		return FALSE;
 	}
-
 
 	// включить кнопку настройки для всех пользовательских панелей инструментов
 	BOOL bNameValid;

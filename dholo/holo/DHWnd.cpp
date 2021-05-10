@@ -2,6 +2,7 @@
 #include "framework.h"
 #include "DHApp.h"
 #include "DHWnd.h"
+#include "DHGLGSinus.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -45,11 +46,13 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 
 void DHWnd::OnPaint() 
 {
-	CDC * dc = GetDC();
+	CDC* dc = BeginPaint(&m_Paint);
 	m_Transform->Init(*dc,dholo::gpgpu::DHOCLHost());
 	m_Transform->GenerateTexture();
 	m_Transform->Calculate();
 	m_Transform->RenderScene();
+	m_Transform->Release();
+	EndPaint(&m_Paint);
 }
 
 void DHWnd::LoadTexture(const std::vector<CStringA>& path)
@@ -111,5 +114,22 @@ void DHWnd::LoadImg(const std::vector<CStringA>& imgPaths)
 
 	for (int i = 0; i < 4; i++)
 		m_ImgLoader[i].Load(imgPaths[i]);
+}
+
+void DHWnd::GenSin()
+{
+	DHGENSinus dlg;
+	if (dlg.DoModal() != IDOK)
+		return;
+
+	m_Transform = new dholo::gpgpu::DHGPGPUGenSinus(
+		dlg.GetWidth(),
+		dlg.GetHeight(),
+		dlg.GetAmpl(),
+		dlg.GetPhase(),
+		dlg.GetT());
+
+	Invalidate();
+	UpdateWindow();
 }
 

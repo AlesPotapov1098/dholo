@@ -33,6 +33,7 @@ private:  // встроенные члены панели элементов у�
 
 	CMFCMenuBar       m_wndMenuBar;
 	dholo::toolbar::DHToolBar       m_FunctionalToolBar;
+	dholo::toolbar::DHToolBar m_TransformToolBar;
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
 	DHWnd    m_wndView;
@@ -47,6 +48,7 @@ protected:
 	afx_msg void OnSetFocus(CWnd *pOldWnd);
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
+	afx_msg void OnGenSin();
 	DECLARE_MESSAGE_MAP()
 
 };

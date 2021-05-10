@@ -186,6 +186,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DHGLGSinus.h" />
     <ClInclude Include="DHImgExpr.h" />
     <ClInclude Include="DHImgList.h" />
     <ClInclude Include="DHImgLoader.h" />
@@ -203,6 +204,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DHGLGSinus.cpp" />
     <ClCompile Include="DHImgExpr.cpp" />
     <ClCompile Include="DHImgList.cpp" />
     <ClCompile Include="DHImgLoader.cpp" />
@@ -224,6 +226,7 @@
     <ResourceCompile Include="holo.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\bmp00001.bmp" />
     <Image Include="res\holo.ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\toolbar1.bmp" />
