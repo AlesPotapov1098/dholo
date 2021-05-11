@@ -43,11 +43,27 @@ BOOL DHGENSinus::OnInitDialog()
 	comboPhase->AddString(L"pi/2");
 	comboPhase->AddString(L"pi");
 	comboPhase->AddString(L"3pi/2");
+	
+	comboPhase->SetCurSel(0);
 
 	auto colorModel = static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_COLOR_MODEL));
 	
 	colorModel->AddString(L"RGB");
 	colorModel->AddString(L"RGBA");
+
+	colorModel->SetCurSel(0);
+
+	auto editWidth = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_GEN_SIN_W));
+	editWidth->SetWindowTextW(L"1024");
+
+	auto editHeight = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_GEN_SIN_H));
+	editHeight->SetWindowTextW(L"1024");
+
+	auto editAmpl = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_GEN_SIN_AMPL));
+	editAmpl->SetWindowTextW(L"1");
+
+	auto editNumPeriods = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_GEN_SIN_NUM_PERIODS));
+	editNumPeriods->SetWindowTextW(L"10");
 
 	return TRUE;
 }
