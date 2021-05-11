@@ -62,7 +62,6 @@
 #define IDC_STATIC_GEN_SIN_SETTINGS     1035
 #define IDC_STATIC_GEN_SIN_PHASE        1036
 #define IDC_CHECK_PHASE_RANDOM          1037
-#define IDC_EDIT1                       1038
 #define IDC_EDIT_GEN_SIN_NUM_PERIODS    1038
 #define ID_32771                        32771
 #define ID_32772                        32772
@@ -85,13 +84,15 @@
 #define ID_TOOLBAR_ADD_IMAGE            32790
 #define ID_TOOLBAR_DELETE_IMAGE         32791
 #define ID_TOOLBAR_GEN_SIN              32792
+#define ID_32793                        32793
+#define ID_SAVE_IMG                     32794
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        321
-#define _APS_NEXT_COMMAND_VALUE         32793
+#define _APS_NEXT_COMMAND_VALUE         32795
 #define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

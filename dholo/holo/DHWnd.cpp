@@ -19,6 +19,8 @@ DHWnd::~DHWnd()
 BEGIN_MESSAGE_MAP(DHWnd, CWnd)
 	ON_WM_CREATE()
 	ON_WM_PAINT()
+	ON_WM_SIZE()
+	ON_COMMAND(ID_SAVE_IMG, &DHWnd::OnSaveImg)
 END_MESSAGE_MAP()
 
 BOOL DHWnd::PreCreateWindow(CREATESTRUCT& cs) 
@@ -46,13 +48,19 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 
 void DHWnd::OnPaint() 
 {
-	CDC* dc = BeginPaint(&m_Paint);
-	m_Transform->Init(*dc,dholo::gpgpu::DHOCLHost());
+	m_pDC = BeginPaint(&m_Paint);
+	m_Transform->Init(*m_pDC,dholo::gpgpu::DHOCLHost());
 	m_Transform->GenerateTexture();
 	m_Transform->Calculate();
 	m_Transform->RenderScene();
 	m_Transform->Release();
 	EndPaint(&m_Paint);
+}
+
+void DHWnd::OnSize(UINT nType, int cx, int cy)
+{
+	GetWindowRect(&m_Rect);
+	m_CRect.CopyRect(&m_Rect);
 }
 
 void DHWnd::LoadTexture(const std::vector<CStringA>& path)
@@ -133,3 +141,21 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
+void DHWnd::OnSaveImg()
+{
+	CString filter = L"PNG File (*.png) || BMP File (*.bmp) || JPEG File (*.jpg)";
+	CFileDialog openFileDlg(TRUE, L"png", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
+	INT_PTR result = openFileDlg.DoModal();
+	if (result != IDOK)
+		return;
+
+	CString filePath = openFileDlg.GetPathName();
+	GUID guid = Gdiplus::ImageFormatBMP;
+
+	CImage image;
+	image.Create(m_CRect.Width(), m_CRect.Height(), 32);
+	BitBlt(image.GetDC(), 0, 0, m_CRect.Width(), m_CRect.Height(), GetWindowDC()->m_hDC, 0, 0, SRCCOPY);
+	image.Save(filePath);
+	image.ReleaseDC();
+	image.Destroy();
+}

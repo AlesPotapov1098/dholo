@@ -31,15 +31,13 @@ public:
 	void GenSin();
 	afx_msg int OnCreate(LPCREATESTRUCT lpcst);
 	afx_msg void OnPaint();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSaveImg();
 	DECLARE_MESSAGE_MAP()
 
 private:
 	OperationType m_OperType;
-
 	std::vector<dholo::img::DHImgLoader> m_ImgLoader;
-	//gpgpu::ocl::DHOCLHost m_Host;
-	//
-	//test::DHTest m_Test;
 
 	int m_GlobalSizeX, m_GlobalSizeY;
 	int m_LocalSizeX, m_LocalSizeY;
@@ -48,5 +46,6 @@ private:
 	PAINTSTRUCT m_Paint;
 	CDC* m_pDC;
 	RECT m_Rect;
+	CRect m_CRect;
 };
 
