@@ -86,13 +86,15 @@
 #define ID_TOOLBAR_GEN_SIN              32792
 #define ID_32793                        32793
 #define ID_SAVE_IMG                     32794
+#define ID_32795                        32795
+#define ID_SAVE_AND_ADD_IMG             32796
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        321
-#define _APS_NEXT_COMMAND_VALUE         32795
+#define _APS_NEXT_COMMAND_VALUE         32797
 #define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

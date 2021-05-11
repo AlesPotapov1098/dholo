@@ -21,6 +21,7 @@ BEGIN_MESSAGE_MAP(DHWnd, CWnd)
 	ON_WM_PAINT()
 	ON_WM_SIZE()
 	ON_COMMAND(ID_SAVE_IMG, &DHWnd::OnSaveImg)
+	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHWnd::OnSaveAndAddImg)
 END_MESSAGE_MAP()
 
 BOOL DHWnd::PreCreateWindow(CREATESTRUCT& cs) 
@@ -149,13 +150,17 @@ void DHWnd::OnSaveImg()
 	if (result != IDOK)
 		return;
 
-	CString filePath = openFileDlg.GetPathName();
 	GUID guid = Gdiplus::ImageFormatBMP;
 
 	CImage image;
 	image.Create(m_CRect.Width(), m_CRect.Height(), 32);
 	BitBlt(image.GetDC(), 0, 0, m_CRect.Width(), m_CRect.Height(), GetWindowDC()->m_hDC, 0, 0, SRCCOPY);
-	image.Save(filePath);
+	image.Save(openFileDlg.GetPathName());
 	image.ReleaseDC();
 	image.Destroy();
+}
+
+void DHWnd::OnSaveAndAddImg()
+{
+	// TODO: добавьте свой код обработчика команд
 }

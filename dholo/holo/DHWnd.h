@@ -47,5 +47,7 @@ private:
 	CDC* m_pDC;
 	RECT m_Rect;
 	CRect m_CRect;
+public:
+	afx_msg void OnSaveAndAddImg();
 };
 
