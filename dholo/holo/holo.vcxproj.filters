@@ -16,9 +16,6 @@
     <Filter Include="src\img">
       <UniqueIdentifier>{37fd4d70-b011-445e-9bb1-61300d881933}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\gpgpu\ocl">
-      <UniqueIdentifier>{a759b7c4-7e99-4948-af21-7c5749077ea7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\toolbar">
       <UniqueIdentifier>{dbc65f47-4ee8-4057-8c8e-c2033cf0bdd5}</UniqueIdentifier>
     </Filter>
@@ -31,7 +28,7 @@
     <Filter Include="src\etc">
       <UniqueIdentifier>{d4f3e6af-734c-490f-a67a-ce78ef1791ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\gpgpu\ocl\transform">
+    <Filter Include="src\gpgpu\transform">
       <UniqueIdentifier>{4ab2f863-fd06-404a-b3ca-2ee23e8ea9f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -47,12 +44,6 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>resources</Filter>
-    </ClInclude>
-    <ClInclude Include="DHOCLTransform.h">
-      <Filter>src\gpgpu\ocl</Filter>
-    </ClInclude>
-    <ClInclude Include="DHOCLInit.h">
-      <Filter>src\gpgpu\ocl</Filter>
     </ClInclude>
     <ClInclude Include="DHToolbar.h">
       <Filter>src\toolbar</Filter>
@@ -85,10 +76,16 @@
       <Filter>src\app\dlg</Filter>
     </ClInclude>
     <ClInclude Include="DHGPGPUGenSinus.h">
-      <Filter>src\gpgpu\ocl\transform</Filter>
+      <Filter>src\gpgpu\transform</Filter>
     </ClInclude>
     <ClInclude Include="DHGPGPUPSITransform.h">
-      <Filter>src\gpgpu\ocl\transform</Filter>
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="DHOCLInit.h">
+      <Filter>src\gpgpu</Filter>
+    </ClInclude>
+    <ClInclude Include="DHOCLTransform.h">
+      <Filter>src\gpgpu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -100,12 +97,6 @@
     </ClCompile>
     <ClCompile Include="DHImgLoader.cpp">
       <Filter>src\img</Filter>
-    </ClCompile>
-    <ClCompile Include="DHOCLTransform.cpp">
-      <Filter>src\gpgpu\ocl</Filter>
-    </ClCompile>
-    <ClCompile Include="DHOCLInit.cpp">
-      <Filter>src\gpgpu\ocl</Filter>
     </ClCompile>
     <ClCompile Include="DHToolbar.cpp">
       <Filter>src\toolbar</Filter>
@@ -129,10 +120,16 @@
       <Filter>src\app\dlg</Filter>
     </ClCompile>
     <ClCompile Include="DHGPGPUGenSinus.cpp">
-      <Filter>src\gpgpu\ocl\transform</Filter>
+      <Filter>src\gpgpu\transform</Filter>
     </ClCompile>
     <ClCompile Include="DHGPGPUPSITransform.cpp">
-      <Filter>src\gpgpu\ocl\transform</Filter>
+      <Filter>src\gpgpu\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHOCLInit.cpp">
+      <Filter>src\gpgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="DHOCLTransform.cpp">
+      <Filter>src\gpgpu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
