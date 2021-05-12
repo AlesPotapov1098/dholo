@@ -76,6 +76,9 @@ namespace dholo
 			}
 		};
 
+		/// <summary>
+		/// Реализация PSI преобразования
+		/// </summary>
 		class DHGPGPUPSITransform : public DHGPGPUTransform
 		{
 		public:
@@ -95,6 +98,9 @@ namespace dholo
 			cl_mem m_Mem[5];
 		};
 
+		/// <summary>
+		/// Генерация синусоидального сигнала
+		/// </summary>
 		class DHGPGPUGenSinus : public DHGPGPUTransform
 		{
 		public:
