@@ -20,8 +20,6 @@ BEGIN_MESSAGE_MAP(DHWnd, CWnd)
 	ON_WM_CREATE()
 	ON_WM_PAINT()
 	ON_WM_SIZE()
-	ON_COMMAND(ID_SAVE_IMG, &DHWnd::OnSaveImg)
-	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHWnd::OnSaveAndAddImg)
 END_MESSAGE_MAP()
 
 BOOL DHWnd::PreCreateWindow(CREATESTRUCT& cs) 
@@ -142,13 +140,13 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
-void DHWnd::OnSaveImg()
+ImageFile DHWnd::OnSaveImg()
 {
 	CString filter = L"PNG File (*.png) || BMP File (*.bmp) || JPEG File (*.jpg)";
 	CFileDialog openFileDlg(TRUE, L"png", NULL, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
 	INT_PTR result = openFileDlg.DoModal();
 	if (result != IDOK)
-		return;
+		return { false };
 
 	GUID guid = Gdiplus::ImageFormatBMP;
 
@@ -158,9 +156,6 @@ void DHWnd::OnSaveImg()
 	image.Save(openFileDlg.GetPathName());
 	image.ReleaseDC();
 	image.Destroy();
-}
 
-void DHWnd::OnSaveAndAddImg()
-{
-	// TODO: добавьте свой код обработчика команд
+	return { true, openFileDlg.GetPathName(), openFileDlg.GetFileExt(), openFileDlg.GetFileName() };
 }

@@ -20,6 +20,8 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &DHMainFrm::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &DHMainFrm::OnToolbarCreateNew)
 	ON_COMMAND(ID_TOOLBAR_GEN_SIN, &DHMainFrm::OnGenSin)
+	ON_COMMAND(ID_SAVE_IMG, &DHMainFrm::OnSaveImg)
+	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHMainFrm::OnSaveAndAddImg)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -292,3 +294,23 @@ void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
 	m_wndView.UpdateWindow();
 }
 
+
+
+void DHMainFrm::OnSaveImg()
+{
+	ImageFile imgFile = m_wndView.OnSaveImg();
+	if (!imgFile.isOK)
+		/// TODO : обработка ошибок!!!
+		return;
+}
+
+
+void DHMainFrm::OnSaveAndAddImg()
+{
+	ImageFile imgFile = m_wndView.OnSaveImg();
+	if (!imgFile.isOK)
+		/// TODO : обработка ошибок!!!
+		return;
+
+	m_imgExpr.AddImage(imgFile.path, imgFile.name, imgFile.ext);
+}

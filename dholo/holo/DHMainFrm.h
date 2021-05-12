@@ -51,6 +51,9 @@ protected:
 	afx_msg void OnGenSin();
 	DECLARE_MESSAGE_MAP()
 
+public:
+	afx_msg void OnSaveImg();
+	afx_msg void OnSaveAndAddImg();
 };
 
 

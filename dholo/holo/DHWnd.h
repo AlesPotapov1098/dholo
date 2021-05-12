@@ -17,6 +17,14 @@ enum class OperationType
 	DH_OPERATION_TEST = 3
 };
 
+struct ImageFile
+{
+	bool isOK;
+	CString path;
+	CString ext;
+	CString name;
+};
+
 class DHWnd : public CWnd
 {
 public:
@@ -29,10 +37,13 @@ public:
 	void LoadImg(const CStringA& imgPath);
 	void LoadImg(const std::vector<CStringA>& imgPaths);
 	void GenSin();
+
+	ImageFile OnSaveImg();
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpcst);
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnSaveImg();
+
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -47,7 +58,5 @@ private:
 	CDC* m_pDC;
 	RECT m_Rect;
 	CRect m_CRect;
-public:
-	afx_msg void OnSaveAndAddImg();
 };
 
