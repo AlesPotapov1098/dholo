@@ -54,11 +54,11 @@ namespace dholo
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 				glTexImage2D(
-					GL_TEXTURE_2D, 0, 
+					GL_TEXTURE_2D, 0,
 					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA,
 					m_Images[i].GetWidth(),
 					m_Images[i].GetHeight(),
-					0, 
+					0,
 					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA, 
 					GL_FLOAT,
 					m_Images[i].GetPixelsData());
@@ -82,6 +82,7 @@ namespace dholo
 
 		void DHGPGPUPSITransform::Release()
 		{
+			DHGPGPUTransform::Release();
 		}
 
 		void DHGPGPUPSITransform::RenderScene()
