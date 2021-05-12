@@ -13,6 +13,7 @@ namespace dholo
 		{
 		public:
 			DHGPGPUPSITransform();
+			DHGPGPUPSITransform(const std::vector<dholo::img::DHImgLoader>& imgs, float phases[4], float B);
 			virtual ~DHGPGPUPSITransform();
 
 			void Init(const CDC&, const DHOCLHost&) override;
@@ -24,6 +25,8 @@ namespace dholo
 
 		private:
 			std::vector<dholo::img::DHImgLoader> m_Images;
+			float m_Phases[4];
+			float m_B;
 			GLuint m_Textures[5];
 			cl_mem m_Mem[5];
 		};

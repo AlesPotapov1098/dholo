@@ -31,6 +31,9 @@
     <Filter Include="src\gpgpu\transform">
       <UniqueIdentifier>{4ab2f863-fd06-404a-b3ca-2ee23e8ea9f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\gpgpu\programs">
+      <UniqueIdentifier>{3640bf4b-42b1-4664-b8d1-9ec659939f9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -158,6 +161,15 @@
   <ItemGroup>
     <None Include="res\holo.rc2">
       <Filter>resources</Filter>
+    </None>
+    <None Include="PSI.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
+    <None Include="FFT.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
+    <None Include="Frenel.cl">
+      <Filter>src\gpgpu\programs</Filter>
     </None>
   </ItemGroup>
 </Project>

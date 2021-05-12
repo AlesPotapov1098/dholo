@@ -10,6 +10,17 @@ namespace dholo
 			DHGPGPUTransform::DHGPGPUTransform();
 		}
 
+		DHGPGPUPSITransform::DHGPGPUPSITransform(const std::vector<dholo::img::DHImgLoader>& imgs, float phases[4], float B)
+		{
+			m_B = B;
+
+			for (int i = 0; i < 4; i++)
+			{
+				m_Images[i] = imgs[i];
+				m_Phases[i] = phases[i];
+			}
+		}
+
 		DHGPGPUPSITransform::~DHGPGPUPSITransform()
 		{
 			DHGPGPUTransform::~DHGPGPUTransform();
@@ -42,20 +53,15 @@ namespace dholo
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-				if (m_Images[i].GetChannels() == 3)
-					glTexImage2D(
-						GL_TEXTURE_2D, 0, GL_RGB,
-						m_Images[i].GetWidth(),
-						m_Images[i].GetHeight(),
-						0, GL_RGB, GL_FLOAT,
-						m_Images[i].GetPixelsData());
-				else if (m_Images[i].GetChannels() == 4)
-					glTexImage2D(
-						GL_TEXTURE_2D, 0, GL_RGBA,
-						m_Images[i].GetWidth(),
-						m_Images[i].GetHeight(),
-						0, GL_RGBA, GL_FLOAT,
-						m_Images[i].GetPixelsData());
+				glTexImage2D(
+					GL_TEXTURE_2D, 0, 
+					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA,
+					m_Images[i].GetWidth(),
+					m_Images[i].GetHeight(),
+					0, 
+					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA, 
+					GL_FLOAT,
+					m_Images[i].GetPixelsData());
 
 				m_Mem[i] = clCreateFromGLTexture(
 					m_Context,

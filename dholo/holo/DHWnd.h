@@ -4,6 +4,8 @@
 
 #include "DHImgLoader.h"
 #include "DHOCLTransform.h"
+#include "DHGPGPUGenSinus.h"
+#include "DHGPGPUPSITransform.h"
 
 enum class OperationType
 {

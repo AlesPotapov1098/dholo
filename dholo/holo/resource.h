@@ -53,16 +53,27 @@
 #define IDC_EDIT_GEN_SIN_AMPL           1024
 #define IDC_COMBO_PHASES                1025
 #define IDC_EDIT_SIN_PHASE              1026
+#define IDC_COMBO_PHASES2               1027
+#define IDC_EDIT_SIN_PHASE2             1028
 #define IDC_STATIC_IMG_RANGE            1029
+#define IDC_COMBO_PHASES3               1029
 #define IDC_STATIC_GEN_SIN_W            1030
+#define IDC_EDIT_SIN_PHASE3             1030
 #define IDC_STATIC_GEN_SIN_H            1031
+#define IDC_COMBO_PHASES4               1031
 #define IDC_STATIC_COLOR_SCHEME         1032
+#define IDC_EDIT_SIN_PHASE4             1032
 #define IDC_COMBO_COLOR_MODEL           1033
 #define IDC_STATIC_GEN_SIN_AMPL         1034
 #define IDC_STATIC_GEN_SIN_SETTINGS     1035
 #define IDC_STATIC_GEN_SIN_PHASE        1036
 #define IDC_CHECK_PHASE_RANDOM          1037
 #define IDC_EDIT_GEN_SIN_NUM_PERIODS    1038
+#define IDC_CHECK_PHASE_RANDOM2         1038
+#define IDC_STATIC_PSI_SETTINGS         1039
+#define IDC_CHECK_PHASE_RANDOM3         1040
+#define IDC_CHECK_PHASE_RANDOM4         1041
+#define IDC_TAB1                        1042
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID_32773                        32773
@@ -95,7 +106,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32797
-#define _APS_NEXT_CONTROL_VALUE         1039
+#define _APS_NEXT_CONTROL_VALUE         1043
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

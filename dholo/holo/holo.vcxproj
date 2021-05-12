@@ -238,6 +238,9 @@
     <Image Include="res\userimages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FFT.cl" />
+    <None Include="Frenel.cl" />
+    <None Include="PSI.cl" />
     <None Include="res\holo.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
