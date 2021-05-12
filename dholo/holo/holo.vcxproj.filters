@@ -31,6 +31,9 @@
     <Filter Include="src\etc">
       <UniqueIdentifier>{d4f3e6af-734c-490f-a67a-ce78ef1791ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\gpgpu\ocl\transform">
+      <UniqueIdentifier>{4ab2f863-fd06-404a-b3ca-2ee23e8ea9f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -81,6 +84,12 @@
     <ClInclude Include="DHGLGSinus.h">
       <Filter>src\app\dlg</Filter>
     </ClInclude>
+    <ClInclude Include="DHGPGPUGenSinus.h">
+      <Filter>src\gpgpu\ocl\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUPSITransform.h">
+      <Filter>src\gpgpu\ocl\transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -118,6 +127,12 @@
     </ClCompile>
     <ClCompile Include="DHGLGSinus.cpp">
       <Filter>src\app\dlg</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGenSinus.cpp">
+      <Filter>src\gpgpu\ocl\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUPSITransform.cpp">
+      <Filter>src\gpgpu\ocl\transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

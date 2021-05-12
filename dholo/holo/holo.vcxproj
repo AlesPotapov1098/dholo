@@ -187,6 +187,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DHGLGSinus.h" />
+    <ClInclude Include="DHGPGPUGenSinus.h" />
+    <ClInclude Include="DHGPGPUPSITransform.h" />
     <ClInclude Include="DHImgExpr.h" />
     <ClInclude Include="DHImgList.h" />
     <ClInclude Include="DHImgLoader.h" />
@@ -205,6 +207,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHGLGSinus.cpp" />
+    <ClCompile Include="DHGPGPUGenSinus.cpp" />
+    <ClCompile Include="DHGPGPUPSITransform.cpp" />
     <ClCompile Include="DHImgExpr.cpp" />
     <ClCompile Include="DHImgList.cpp" />
     <ClCompile Include="DHImgLoader.cpp" />
