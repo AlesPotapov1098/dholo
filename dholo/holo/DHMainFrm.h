@@ -36,13 +36,10 @@ private:  // встроенные члены панели элементов у�
 	dholo::toolbar::DHToolBar m_TransformToolBar;
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
-	DHWnd    m_wndView;
+	DHWnd    m_targetWnd;
 
-	dholo::img::DHImgExpr m_imgExpr;
+	dholo::img::DHImgExpr m_imgList;
 
-	dholo::gpgpu::DHGPGPUTransform m_transform;
-
-// Созданные функции схемы сообщений
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSetFocus(CWnd *pOldWnd);

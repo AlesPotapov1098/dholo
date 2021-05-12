@@ -60,7 +60,7 @@ int DHMainFrm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	// создать представление для размещения рабочей области рамки
-	if (!m_wndView.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
+	if (!m_targetWnd.Create(nullptr, nullptr, AFX_WS_DEFAULT_VIEW, CRect(0, 0, 0, 0), this, AFX_IDW_PANE_FIRST, nullptr))
 	{
 		TRACE0("Не удалось создать окно представлений\n");
 		return -1;
@@ -113,14 +113,14 @@ int DHMainFrm::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	bNameValid = strImgPanel.LoadStringW(IDS_IMAGE_LIST);
 	ASSERT(bNameValid);
 
-	if (!m_imgExpr.Create(strImgPanel, this, CRect(0, 0, 200, 200), TRUE, ID_IMAGE_PANEL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
+	if (!m_imgList.Create(strImgPanel, this, CRect(0, 0, 200, 200), TRUE, ID_IMAGE_PANEL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("Не удалось создать окно \"Представление файлов\"\n");
 		return FALSE;
 	}
 
-	m_imgExpr.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_imgExpr);
+	m_imgList.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_imgList);
 
 	// включить режим работы закрепляемых окон стилей Visual Studio 2005
 	CDockingManager::SetDockingMode(DT_SMART);
@@ -192,13 +192,13 @@ void DHMainFrm::Dump(CDumpContext& dc) const
 void DHMainFrm::OnSetFocus(CWnd* /*pOldWnd*/)
 {
 	// передача фокуса окну представления
-	m_wndView.SetFocus();
+	m_targetWnd.SetFocus();
 }
 
 BOOL DHMainFrm::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	// разрешить ошибки в представлении при выполнении команды
-	if (m_wndView.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
+	if (m_targetWnd.OnCmdMsg(nID, nCode, pExtra, pHandlerInfo))
 		return TRUE;
 
 	// в противном случае выполняется обработка по умолчанию
@@ -234,7 +234,7 @@ LRESULT DHMainFrm::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
 
 void DHMainFrm::OnGenSin()
 {
-	m_wndView.GenSin();
+	m_targetWnd.GenSin();
 }
 
 BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)
@@ -266,39 +266,39 @@ BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentW
 
 void DHMainFrm::SelectImage(const std::vector<CStringA>& imgPath)
 {
-	if (!m_wndView)
+	if (!m_targetWnd)
 		return;
 
-	m_wndView.LoadTexture(imgPath);
-	m_wndView.Invalidate();
-	m_wndView.UpdateWindow();
+	m_targetWnd.LoadTexture(imgPath);
+	m_targetWnd.Invalidate();
+	m_targetWnd.UpdateWindow();
 }
 void DHMainFrm::LoadImg(const CStringA& imgPath)
 {
-	if (!m_wndView)
+	if (!m_targetWnd)
 		/// TODO : обработка ошибок
 		return;
 
-	m_wndView.LoadImg(imgPath);
-	m_wndView.Invalidate();
-	m_wndView.UpdateWindow();
+	m_targetWnd.LoadImg(imgPath);
+	m_targetWnd.Invalidate();
+	m_targetWnd.UpdateWindow();
 }
 void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
 {
-	if (!m_wndView)
+	if (!m_targetWnd)
 		/// TODO : обработка ошибок
 		return;
 
-	m_wndView.LoadImg(imgPaths);
-	m_wndView.Invalidate();
-	m_wndView.UpdateWindow();
+	m_targetWnd.LoadImg(imgPaths);
+	m_targetWnd.Invalidate();
+	m_targetWnd.UpdateWindow();
 }
 
 
 
 void DHMainFrm::OnSaveImg()
 {
-	ImageFile imgFile = m_wndView.OnSaveImg();
+	ImageFile imgFile = m_targetWnd.OnSaveImg();
 	if (!imgFile.isOK)
 		/// TODO : обработка ошибок!!!
 		return;
@@ -307,10 +307,10 @@ void DHMainFrm::OnSaveImg()
 
 void DHMainFrm::OnSaveAndAddImg()
 {
-	ImageFile imgFile = m_wndView.OnSaveImg();
+	ImageFile imgFile = m_targetWnd.OnSaveImg();
 	if (!imgFile.isOK)
 		/// TODO : обработка ошибок!!!
 		return;
 
-	m_imgExpr.AddImage(imgFile.path, imgFile.name, imgFile.ext);
+	m_imgList.AddImage(imgFile.path, imgFile.name, imgFile.ext);
 }
