@@ -231,7 +231,7 @@ namespace dholo
 			m_Context = clCreateContext(prop, 1, &dev, NULL, NULL, &err);
 			
 			if (err != CL_SUCCESS)
-				return;
+				throw dholo::exp::DHGPGPUExp(err);
 			
 			std::ifstream file(m_ProgramPath, std::ios_base::binary);
 			std::string code(std::istreambuf_iterator<char>(file), (std::istreambuf_iterator<char>()));
@@ -242,42 +242,34 @@ namespace dholo
 			m_Program = clCreateProgramWithSource(m_Context, 1, &src, &len, &err);
 			
 			if (err != CL_SUCCESS)
-				return;
+				throw dholo::exp::DHGPGPUExp(err);
 			
-			cl_int res = clBuildProgram(m_Program, 0, NULL, NULL, NULL, NULL);
+			err = clBuildProgram(m_Program, 0, NULL, NULL, NULL, NULL);
 			
-			if (res != CL_SUCCESS)
+			if (err != CL_SUCCESS)
 			{
 				std::size_t size_log = 0;
 				char* build_log;
-				res = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
-				if (res != CL_SUCCESS) {
-					/// TODO : обработка ошибок
-					return;
-				}
+				err = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
+				if (err != CL_SUCCESS) 
+					throw dholo::exp::DHGPGPUExp(err);
 
-				if (size_log == 0) {
-					/// TODO : обработка ошибок
-					return;
-				}
+				if (size_log == 0)
+					throw dholo::exp::DHAppExp("Can't load compiler log");
 
 				build_log = new char[size_log];
-				res = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-				if (res != CL_SUCCESS) {
-					/// TODO : обработка ошибок
-					return;
-				}
+				err = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
+				if (err != CL_SUCCESS)
+					throw dholo::exp::DHGPGPUExp(err, build_log);
 			}
 
 			m_Kernel = clCreateKernel(m_Program, "psi4Kernel", &err);
 			if (err != CL_SUCCESS)
-				/// TODO : обработка ошибок
-				return;
+				throw dholo::exp::DHGPGPUExp(err);
 			
 			m_CommandQueue = clCreateCommandQueueWithProperties(m_Context, dev, NULL, &err);
 			if (err != CL_SUCCESS)
-				/// TODO : обработка ошибок
-				return;
+				throw dholo::exp::DHGPGPUExp(err);
 		}
 	}
 }

@@ -24,28 +24,13 @@ namespace dholo
 
 		bool DHImgLoader::Load(const CStringA& imgPath)
 		{
-			if (!imgPath)
-				return false;
-
 			stbi_set_flip_vertically_on_load(true);
 			m_PixelsData = stbi_loadf(imgPath.GetString(), &m_width, &m_height, &m_nrChannels, 0);
 
 			if (!m_PixelsData)
-				return false;
+				throw dholo::exp::DHAppExp("Fail to load pixels");
 
 			return true;
-		}
-
-		bool DHImgLoader::OpenDialog()
-		{
-			CFileDialog dlg(true);
-			if (dlg.DoModal() == IDOK)
-			{
-				Load(CStringA(dlg.GetPathName()));
-				return true;
-			}
-
-			return false;
 		}
 
 		int DHImgLoader::GetWidth() const

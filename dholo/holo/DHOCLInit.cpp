@@ -9,16 +9,17 @@ namespace dholo
 		{
 			m_Platform = platform;
 			m_Size = 0;
+			m_Devices = nullptr;
 
 			cl_int err = clGetDeviceIDs(m_Platform, CL_DEVICE_TYPE_ALL, 0, nullptr, &m_Size);
 			if (err != CL_SUCCESS || m_Size == 0)
-				m_Devices = nullptr;
+				throw dholo::exp::DHGPGPUExp(err);
 
 			m_Devices = new cl_device_id[m_Size];
 
 			err = clGetDeviceIDs(m_Platform, CL_DEVICE_TYPE_ALL, m_Size, m_Devices, nullptr);
 			if (err != CL_SUCCESS)
-				m_Devices = nullptr;
+				throw dholo::exp::DHGPGPUExp(err);
 		}
 
 		DHOCLHard::~DHOCLHard()
@@ -56,13 +57,13 @@ namespace dholo
 
 			cl_int err = clGetPlatformIDs(0, platfroms, &num_platfroms);
 			if (err != CL_SUCCESS || num_platfroms == 0)
-				return false;
+				throw dholo::exp::DHGPGPUExp(err);
 
 			platfroms = new cl_platform_id[num_platfroms];
 
 			err = clGetPlatformIDs(num_platfroms, platfroms, NULL);
 			if (err != CL_SUCCESS)
-				return false;
+				throw dholo::exp::DHGPGPUExp(err);
 
 			for (int i = 0; i < num_platfroms; i++)
 			{
@@ -172,9 +173,15 @@ namespace dholo
 			cl_device_type* type = nullptr;
 			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, 0, NULL, &size);
 
+			if(err != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(err);
+
 			type = new cl_device_type();
 
 			err = clGetDeviceInfo(dev, CL_DEVICE_TYPE, size, (void*)type, NULL);
+
+			if (err != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(err);
 
 			switch (*type)
 			{
@@ -197,13 +204,13 @@ namespace dholo
 
 			cl_int err = clGetPlatformInfo(pl, inf, 0, NULL, &size);
 			if (err != CL_SUCCESS || size == 0)
-				return std::wstring();
+				throw dholo::exp::DHGPGPUExp(err);
 
 			char* info = new char[size];
 
 			err = clGetPlatformInfo(pl, inf, size, (void*)info, NULL);
 			if (err != CL_SUCCESS)
-				return std::wstring();
+				throw dholo::exp::DHGPGPUExp(err);
 
 			return conv.from_bytes(info);
 		}
@@ -215,13 +222,13 @@ namespace dholo
 
 			cl_int err = clGetDeviceInfo(dev, inf, 0, NULL, &size);
 			if (err != CL_SUCCESS || size == 0)
-				return std::wstring();
+				throw dholo::exp::DHGPGPUExp(err);
 
 			char* info = new char[size];
 
 			err = clGetDeviceInfo(dev, inf, size, (void*)info, NULL);
 			if (err != CL_SUCCESS)
-				return std::wstring();
+				throw dholo::exp::DHGPGPUExp(err);
 
 			return conv.from_bytes(info);
 		}

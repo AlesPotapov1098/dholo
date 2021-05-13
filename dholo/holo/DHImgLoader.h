@@ -6,6 +6,8 @@
 #include <codecvt>
 #include <vector>
 
+#include "DHAppExp.h"
+
 namespace dholo
 {
 	namespace img
@@ -17,7 +19,6 @@ namespace dholo
 			~DHImgLoader();
 
 			bool Load(const CStringA& imgPath);
-			bool OpenDialog();
 
 			int GetWidth() const;
 			int GetHeight() const;

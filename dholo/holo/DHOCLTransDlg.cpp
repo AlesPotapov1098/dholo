@@ -22,7 +22,6 @@ namespace dholo
 		CDialogEx::DoDataExchange(pDX);
 	}
 
-
 	BEGIN_MESSAGE_MAP(DHOCLTransDlg, CDialogEx)
 		ON_CBN_SELCHANGE(IDC_COMBO_PLATFORM_NAME,
 			&DHOCLTransDlg::OnCbnSelchangeComboPlatformName)
@@ -31,20 +30,26 @@ namespace dholo
 			&DHOCLTransDlg::OnCbnSelchangeComboDeviceName)
 	END_MESSAGE_MAP()
 
-
 	BOOL DHOCLTransDlg::OnInitDialog()
 	{
-		if (!CDialogEx::OnInitDialog())
-			return FALSE;
+		try
+		{
+			if (!CDialogEx::OnInitDialog())
+				return FALSE;
 
-		//if (!m_Init.Init())
-		//	return FALSE;
+			if (!m_Init.Init())
+				return FALSE;
 
-		FillInComboPlatforms();
-		FillInPlatformPanel();
+			FillInComboPlatforms();
+			FillInPlatformPanel();
 
-		FillInComboDevice();
-		FillInDevicePanel();
+			FillInComboDevice();
+			FillInDevicePanel();
+		}
+		catch (const dholo::exp::DHGPGPUExp& ex)
+		{
+			ex.what();
+		}
 
 		return TRUE;
 	}
@@ -68,13 +73,18 @@ namespace dholo
 		CDialogEx::OnCancel();
 	}
 
-
 	void DHOCLTransDlg::OnCbnSelchangeComboPlatformName()
 	{
-		FillInPlatformPanel();
-		FillInDevicePanel();
+		try
+		{
+			FillInPlatformPanel();
+			FillInDevicePanel();
+		}
+		catch (const dholo::exp::DHGPGPUExp& ex)
+		{
+			ex.what();
+		}
 	}
-
 
 	void DHOCLTransDlg::OnCbnSelchangeComboDeviceName()
 	{

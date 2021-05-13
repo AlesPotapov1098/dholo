@@ -3,6 +3,7 @@
 #include "DHToolbar.h"
 #include "DHImgExpr.h"
 #include "DHOCLTransform.h"
+#include "DHAppExp.h"
 
 #include <vector>
 

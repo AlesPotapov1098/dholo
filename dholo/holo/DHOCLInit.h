@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "DHGPGPUExp.h"
+
 namespace dholo
 {
 	namespace gpgpu

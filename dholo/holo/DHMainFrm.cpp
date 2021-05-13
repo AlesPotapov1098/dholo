@@ -266,51 +266,73 @@ BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentW
 
 void DHMainFrm::SelectImage(const std::vector<CStringA>& imgPath)
 {
-	if (!m_targetWnd)
-		return;
+	try
+	{
+		if (!m_targetWnd)
+			return;
 
-	m_targetWnd.LoadTexture(imgPath);
-	m_targetWnd.Invalidate();
-	m_targetWnd.UpdateWindow();
+		m_targetWnd.LoadTexture(imgPath);
+		m_targetWnd.Invalidate();
+		m_targetWnd.UpdateWindow();
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
 void DHMainFrm::LoadImg(const CStringA& imgPath)
 {
-	if (!m_targetWnd)
-		/// TODO : обработка ошибок
-		return;
+	try 
+	{
+		if (!m_targetWnd)
+			/// TODO : обработка ошибок
+			return;
 
-	m_targetWnd.LoadImg(imgPath);
-	m_targetWnd.Invalidate();
-	m_targetWnd.UpdateWindow();
+		m_targetWnd.LoadImg(imgPath);
+		m_targetWnd.Invalidate();
+		m_targetWnd.UpdateWindow();
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
 void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
 {
-	if (!m_targetWnd)
-		/// TODO : обработка ошибок
-		return;
+	try
+	{
+		if (!m_targetWnd)
+			throw dholo::exp::DHAppExp("Not created a m_targetWnd");
 
-	m_targetWnd.LoadImg(imgPaths);
-	m_targetWnd.Invalidate();
-	m_targetWnd.UpdateWindow();
+		m_targetWnd.LoadImg(imgPaths);
+		m_targetWnd.Invalidate();
+		m_targetWnd.UpdateWindow();
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
-
-
 
 void DHMainFrm::OnSaveImg()
 {
 	ImageFile imgFile = m_targetWnd.OnSaveImg();
 	if (!imgFile.isOK)
-		/// TODO : обработка ошибок!!!
 		return;
 }
 
-
 void DHMainFrm::OnSaveAndAddImg()
 {
-	ImageFile imgFile = m_targetWnd.OnSaveImg();
-	if (!imgFile.isOK)
-		/// TODO : обработка ошибок!!!
-		return;
+	try
+	{
+		ImageFile imgFile = m_targetWnd.OnSaveImg();
+		if (!imgFile.isOK)
+			return;
 
-	m_imgList.AddImage(imgFile.path, imgFile.name, imgFile.ext);
+		m_imgList.AddImage(imgFile.path, imgFile.name, imgFile.ext);
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }

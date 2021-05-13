@@ -6,18 +6,7 @@
 #include "DHOCLTransform.h"
 #include "DHGPGPUGenSinus.h"
 #include "DHGPGPUPSITransform.h"
-
-enum class OperationType
-{
-	/// Рисуем только одно изображение из буфера
-	DH_OPERATION_NONE = 0,
-	/// Рисуем красный квадрат
-	DH_OPERATION_PAINT_IT_RED = 1,
-	/// Обрабатываем 4 изображения
-	DH_OPERATION_COMPLEX_CALCULATION = 2,
-	/// Проводим тестовый запуск
-	DH_OPERATION_TEST = 3
-};
+#include "DHAppExp.h"
 
 struct ImageFile
 {
@@ -49,7 +38,6 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	OperationType m_OperType;
 	std::vector<dholo::img::DHImgLoader> m_ImgLoader;
 
 	int m_GlobalSizeX, m_GlobalSizeY;

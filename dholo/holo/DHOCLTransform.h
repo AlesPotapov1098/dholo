@@ -11,6 +11,7 @@
 
 #include "DHOCLInit.h"
 #include "DHImgLoader.h"
+#include "DHGPGPUExp.h"
 
 #include <CL\cl.h>
 #include <CL\cl_gl.h>

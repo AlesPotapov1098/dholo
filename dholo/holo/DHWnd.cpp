@@ -64,20 +64,24 @@ void DHWnd::OnSize(UINT nType, int cx, int cy)
 
 void DHWnd::LoadTexture(const std::vector<CStringA>& path)
 {
-	if (!m_ImgLoader.empty())
-		m_ImgLoader.clear();
+	try {
+		if (!m_ImgLoader.empty())
+			m_ImgLoader.clear();
 
-	if (path.size() > 1)
-		m_OperType = OperationType::DH_OPERATION_COMPLEX_CALCULATION;
-	else if (path.size() == 1)
-		m_OperType = OperationType::DH_OPERATION_NONE;
+		if (path.empty())
+			throw dholo::exp::DHAppExp("Not such filenames");
 
-	int len = path.size();
+		int len = path.size();
 
-	m_ImgLoader.resize(len);
+		m_ImgLoader.resize(len);
 
-	for (int i = 0; i < len; i++)
-		m_ImgLoader[i].Load(path[i]);
+		for (int i = 0; i < len; i++)
+			m_ImgLoader[i].Load(path[i]);
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
 
 void DHWnd::GenerateTest()
@@ -98,10 +102,7 @@ void DHWnd::GenerateTest()
 void DHWnd::LoadImg(const CStringA& imgPath)
 {
 	if (imgPath.IsEmpty())
-		/// TODO: обработка ошибок
-		return;
-
-	m_OperType = OperationType::DH_OPERATION_NONE;
+		throw dholo::exp::DHAppExp("Invalid filename");
 
 	m_ImgLoader.clear();
 	m_ImgLoader.resize(1);
@@ -111,10 +112,7 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 void DHWnd::LoadImg(const std::vector<CStringA>& imgPaths)
 {
 	if (imgPaths.empty())
-		/// TODO: обработка ошибок
-		return;
-
-	m_OperType = OperationType::DH_OPERATION_COMPLEX_CALCULATION;
+		throw dholo::exp::DHAppExp("Invalid filename");
 
 	m_ImgLoader.clear();
 	m_ImgLoader.resize(4);

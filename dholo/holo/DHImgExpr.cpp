@@ -103,7 +103,7 @@ namespace dholo
 		void DHImgExpr::AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt)
 		{
 			if (!pathImage || !imageName || !imageExt)
-				return;
+				throw dholo::exp::DHAppExp("Invalid image file paramter(-s)");
 
 			HRESULT res;
 			CImage m_LoaderImageObject;
@@ -243,10 +243,13 @@ namespace dholo
 
 		void DHImgExpr::OnLoadImage()
 		{
-			CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
-
-			if (dlg.DoModal() == IDOK)
+			try
 			{
+				CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
+
+				if (dlg.DoModal() != IDOK)
+					return;
+
 				POSITION ps = dlg.GetStartPosition();
 				while (ps)
 				{
@@ -256,6 +259,11 @@ namespace dholo
 					AddImage(pathName, fileName, fileExt);
 				}
 			}
+			catch (const dholo::exp::DHAppExp& ex)
+			{
+				ex.what();
+			}
+			
 		}
 
 		void DHImgExpr::OnLoadIntoGp()
