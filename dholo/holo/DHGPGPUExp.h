@@ -12,6 +12,7 @@ namespace dholo
 		{
 		public:
 			DHGPGPUExp(cl_int error_code);
+			DHGPGPUExp(cl_int error_code, const std::string &mess);
 			~DHGPGPUExp();
 		};
 	}
