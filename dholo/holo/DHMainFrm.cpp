@@ -22,6 +22,7 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_COMMAND(ID_TOOLBAR_GEN_SIN, &DHMainFrm::OnGenSin)
 	ON_COMMAND(ID_SAVE_IMG, &DHMainFrm::OnSaveImg)
 	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHMainFrm::OnSaveAndAddImg)
+	ON_COMMAND(ID_MENU_PSI_TRANS, &DHMainFrm::OnPSITransform)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -235,6 +236,12 @@ LRESULT DHMainFrm::OnToolbarCreateNew(WPARAM wp,LPARAM lp)
 void DHMainFrm::OnGenSin()
 {
 	m_targetWnd.GenSin();
+}
+
+void DHMainFrm::OnPSITransform()
+{
+	m_imgList.SelectImages();
+	m_targetWnd.PSITransform();
 }
 
 BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)

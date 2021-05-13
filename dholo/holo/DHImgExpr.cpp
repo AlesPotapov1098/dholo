@@ -78,6 +78,11 @@ namespace dholo
 			AdjustLayout();
 		}
 
+		PSISettings DHImgExpr::SelectImages()
+		{
+			return PSISettings();
+		}
+
 		void DHImgExpr::FillFileView()
 		{
 			BOOL validString;

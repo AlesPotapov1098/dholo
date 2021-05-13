@@ -7,6 +7,14 @@ namespace dholo
 {
 	namespace img
 	{
+		/// <summary>
+		/// Структура данных для PSI преобразования
+		/// </summary>
+		struct PSISettings
+		{
+
+		};
+
 		class DHImgExpr : public CDockablePane
 		{
 			// Создание
@@ -21,6 +29,11 @@ namespace dholo
 			afx_msg void OnLoadImage();
 			afx_msg void OnLoadIntoGp();
 			afx_msg void OnShowImage();
+
+			/// <summary>
+			/// Фиксация 4-х изображений для PSI преобразования
+			/// </summary>
+				PSISettings SelectImages();
 
 		protected:
 			void FillFileView();

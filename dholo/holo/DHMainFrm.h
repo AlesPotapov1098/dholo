@@ -47,6 +47,7 @@ protected:
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnGenSin();
+	afx_msg void OnPSITransform();
 	DECLARE_MESSAGE_MAP()
 
 public:

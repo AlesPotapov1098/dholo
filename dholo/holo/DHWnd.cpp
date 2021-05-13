@@ -138,6 +138,10 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
+void DHWnd::PSITransform()
+{
+}
+
 ImageFile DHWnd::OnSaveImg()
 {
 	CString filter = L"PNG File (*.png) || BMP File (*.bmp) || JPEG File (*.jpg)";

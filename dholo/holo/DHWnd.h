@@ -27,7 +27,16 @@ public:
 	void GenerateTest();
 	void LoadImg(const CStringA& imgPath);
 	void LoadImg(const std::vector<CStringA>& imgPaths);
-	void GenSin();
+
+	/// <summary>
+	/// Генерация синуса
+	/// </summary>
+		void GenSin();
+
+	/// <summary>
+	/// PSI преобразрвание
+	/// </summary>
+		void PSITransform();
 
 	ImageFile OnSaveImg();
 
