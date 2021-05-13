@@ -186,7 +186,9 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DHAppExp.h" />
     <ClInclude Include="DHGLGSinus.h" />
+    <ClInclude Include="DHGPGPUExp.h" />
     <ClInclude Include="DHGPGPUGenSinus.h" />
     <ClInclude Include="DHGPGPUPSITransform.h" />
     <ClInclude Include="DHImgExpr.h" />
@@ -206,7 +208,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DHAppExp.cpp" />
     <ClCompile Include="DHGLGSinus.cpp" />
+    <ClCompile Include="DHGPGPUExp.cpp" />
     <ClCompile Include="DHGPGPUGenSinus.cpp" />
     <ClCompile Include="DHGPGPUPSITransform.cpp" />
     <ClCompile Include="DHImgExpr.cpp" />

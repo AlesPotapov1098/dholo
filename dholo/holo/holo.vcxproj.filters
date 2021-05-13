@@ -34,6 +34,9 @@
     <Filter Include="src\gpgpu\programs">
       <UniqueIdentifier>{3640bf4b-42b1-4664-b8d1-9ec659939f9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\exp">
+      <UniqueIdentifier>{81680945-12ef-4d68-b8af-668287902599}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -90,6 +93,12 @@
     <ClInclude Include="DHOCLTransform.h">
       <Filter>src\gpgpu</Filter>
     </ClInclude>
+    <ClInclude Include="DHAppExp.h">
+      <Filter>src\exp</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUExp.h">
+      <Filter>src\exp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -133,6 +142,12 @@
     </ClCompile>
     <ClCompile Include="DHOCLTransform.cpp">
       <Filter>src\gpgpu</Filter>
+    </ClCompile>
+    <ClCompile Include="DHAppExp.cpp">
+      <Filter>src\exp</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUExp.cpp">
+      <Filter>src\exp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
