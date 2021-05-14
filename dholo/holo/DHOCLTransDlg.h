@@ -28,6 +28,9 @@ namespace dholo {
 		void FillInComboDevice();
 		void FillInDevicePanel();
 
+		void FillInPSIPanel();
+		void FillInComboPhase(int code);
+
 		gpgpu::PSIStruct GetPSISettings() const;
 
 		DECLARE_MESSAGE_MAP()

@@ -179,6 +179,24 @@ namespace dholo
 			gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
 	}
 
+	void DHOCLTransDlg::FillInPSIPanel()
+	{
+		FillInComboPhase(IDC_COMBO_PHASES1);
+		FillInComboPhase(IDC_COMBO_PHASES2);
+		FillInComboPhase(IDC_COMBO_PHASES3);
+		FillInComboPhase(IDC_COMBO_PHASES4);
+	}
+
+	void DHOCLTransDlg::FillInComboPhase(int code)
+	{
+		auto comboPhase = static_cast<CComboBox*>(this->GetDlgItem(code));
+
+		comboPhase->AddString(L"0");
+		comboPhase->AddString(L"pi/2");
+		comboPhase->AddString(L"pi");
+		comboPhase->AddString(L"3pi/2");
+	}
+
 	gpgpu::PSIStruct DHOCLTransDlg::GetPSISettings() const
 	{
 		return m_PSISettings;
