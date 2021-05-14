@@ -24,14 +24,6 @@ namespace dholo
 			ON_WM_CONTEXTMENU()
 			ON_WM_PAINT()
 			ON_WM_SETFOCUS()
-			// Обработка сообщений от всплывающего меню
-			ON_COMMAND(ID_MENU_ADD_IMAGE, &DHImgExpr::OnLoadImage)
-			ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
-			ON_COMMAND(ID_MENU_LOAD_GP, &DHImgExpr::OnLoadIntoGp)
-			// Обработка сообщения от toolbar
-			ON_COMMAND(ID_TOOLBAR_ADD_IMAGE, &DHImgExpr::OnLoadImage)
-			ON_COMMAND(ID_TOOLBAR_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
-			ON_COMMAND(ID_MENU_PSI_TRANS, &DHImgExpr::OnPSITransform)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -78,9 +70,40 @@ namespace dholo
 			AdjustLayout();
 		}
 
-		PSISettings DHImgExpr::SelectImages()
+		void DHImgExpr::SelectImages(dholo::gpgpu::PSIStruct* psi)
 		{
-			return PSISettings();
+			if (!m_dhImgList.GetItemCount())
+				return;
+
+			UINT count = m_dhImgList.GetSelectedCount();
+
+			if (count == 1)
+			{
+				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+				if (!pos)
+					/// TODO: обработка ошибок
+					return;
+
+				UINT selectedItem = m_dhImgList.GetNextSelectedItem(pos);
+				theApp.LoadImg(CStringA(m_dhImgList.GetItemText(selectedItem, 1)));
+				return;
+			}
+
+			if (count <= 0 || count > 4 || count < 4)
+				/// TODO : обработка ошибок!!!
+				return;
+
+			std::vector<CStringA> ImagePaths(count);
+			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+			if (!pos)
+				return;
+
+			for (int i = 0; i < count; i++)
+			{
+				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
+				ImagePaths[i] =
+					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
+			}
 		}
 
 		void DHImgExpr::FillFileView()
@@ -168,6 +191,16 @@ namespace dholo
 				rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 		}
 
+		void DHImgExpr::DeleteSelectedImg()
+		{
+			m_dhImgList.DeleteItem(GetSelecteIndex());
+		}
+
+		CString DHImgExpr::GetSelectedImg()
+		{
+			return m_dhImgList.GetItemText(GetSelecteIndex(), 1);
+		}
+
 		void DHImgExpr::OnPaint()
 		{
 			CPaintDC dc(this);
@@ -187,83 +220,24 @@ namespace dholo
 			m_dhImgList.SetFocus();
 		}
 
-		void DHImgExpr::OnPSITransform()
+		UINT DHImgExpr::GetSelecteIndex() const
 		{
-			dholo::DHOCLTransDlg dlg;
-			HRESULT resDlg = dlg.DoModal();
-			if (resDlg != IDOK)
-				return;
+			UINT selectedItem = m_dhImgList.GetSelectedCount();
+			if (selectedItem == 0)
+				throw dholo::exp::DHAppExp(L"Необходимо выбрать изображение!");
 
-			if (!m_dhImgList.GetItemCount())
-				return;
-
-			UINT count = m_dhImgList.GetSelectedCount();
-
-			if (count == 1)
-			{
-				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-				if (!pos)
-					/// TODO: обработка ошибок
-					return;
-
-				UINT selectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				theApp.LoadImg(CStringA(m_dhImgList.GetItemText(selectedItem, 1)));
-				return;
-			}
-
-			if (count <= 0 || count > 4 || count < 4)
-				/// TODO : обработка ошибок!!!
-				return;
-
-			std::vector<CStringA> ImagePaths(count);
-			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-			if (!pos)
-				return;
-
-			for (int i = 0; i < count; i++)
-			{
-				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				ImagePaths[i] =
-					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
-			}
-
-			theApp.LoadImg(ImagePaths);
+			return selectedItem;
 		}
 
-		void DHImgExpr::OnDeleteImage()
-		{
-			// TODO: добавьте свой код обработчика команд
-		}
-
-		void DHImgExpr::OnLoadImage()
-		{
-			try
-			{
-				CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
-
-				if (dlg.DoModal() != IDOK)
-					return;
-
-				POSITION ps = dlg.GetStartPosition();
-				while (ps)
-				{
-					CString fileName = dlg.GetFileName();
-					CString fileExt = dlg.GetFileExt();
-					CString pathName = dlg.GetNextPathName(ps);
-					AddImage(pathName, fileName, fileExt);
-				}
-			}
-			catch (const dholo::exp::DHAppExp& ex)
-			{
-				ex.what();
-			}
-			
-		}
-
-		void DHImgExpr::OnLoadIntoGp()
-		{
-			// TODO: добавьте свой код обработчика команд
-		}
+		//void DHImgExpr::OnDeleteImage()
+		//{
+		//	// TODO: добавьте свой код обработчика команд
+		//}
+		//
+		//void DHImgExpr::OnLoadIntoGp()
+		//{
+		//	// TODO: добавьте свой код обработчика команд
+		//}
 
 		void DHImgExpr::OnShowImage()
 		{

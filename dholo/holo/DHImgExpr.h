@@ -24,29 +24,29 @@ namespace dholo
 			virtual ~DHImgExpr();
 
 			void AdjustLayout();
+
+			void DeleteSelectedImg();
+			CString GetSelectedImg();
 			void AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt);
 
-			afx_msg void OnDeleteImage();
-			afx_msg void OnLoadImage();
-			afx_msg void OnLoadIntoGp();
 			afx_msg void OnShowImage();
-			void OnPSITransform();
 
 			/// <summary>
 			/// Фиксация 4-х изображений для PSI преобразования
 			/// </summary>
-				PSISettings SelectImages();
+				void SelectImages(dholo::gpgpu::PSIStruct*psi);
 
-		protected:
 			void FillFileView();
 			afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 			afx_msg void OnSize(UINT nType, int cx, int cy);
 			afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 			afx_msg void OnPaint();
 			afx_msg void OnSetFocus(CWnd* pOldWnd);
-			
 
 			DECLARE_MESSAGE_MAP()
+
+		private:
+			UINT GetSelecteIndex() const;
 
 		private:
 			toolbar::DHToolBar m_FunctionalToolBar;

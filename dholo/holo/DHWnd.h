@@ -7,6 +7,7 @@
 #include "DHGPGPUGenSinus.h"
 #include "DHGPGPUPSITransform.h"
 #include "DHAppExp.h"
+#include "DHGPGPUShowImg.h"
 
 struct ImageFile
 {

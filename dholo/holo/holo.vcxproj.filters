@@ -102,6 +102,9 @@
     <ClInclude Include="DHHelp.h">
       <Filter>src\etc</Filter>
     </ClInclude>
+    <ClInclude Include="DHGPGPUShowImg.h">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="DHGPGPUExp.cpp">
       <Filter>src\exp</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUShowImg.cpp">
+      <Filter>src\gpgpu\transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

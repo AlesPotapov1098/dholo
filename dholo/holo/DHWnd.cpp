@@ -107,6 +107,8 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 	m_ImgLoader.clear();
 	m_ImgLoader.resize(1);
 	m_ImgLoader[0].Load(imgPath);
+
+	m_Transform = new dholo::gpgpu::DHGPGPUShowImg(m_ImgLoader[0]);
 }
 
 void DHWnd::LoadImg(const std::vector<CStringA>& imgPaths)
@@ -140,6 +142,7 @@ void DHWnd::GenSin()
 
 void DHWnd::PSITransform()
 {
+	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform();
 }
 
 ImageFile DHWnd::OnSaveImg()

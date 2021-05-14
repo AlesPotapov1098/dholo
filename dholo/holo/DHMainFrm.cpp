@@ -23,6 +23,8 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_COMMAND(ID_TOOLBAR_GEN_SIN, &DHMainFrm::OnGenSin)
 	ON_COMMAND(ID_SAVE_IMG, &DHMainFrm::OnSaveImg)
 	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHMainFrm::OnSaveAndAddImg)
+
+	// Обработка сообщений от контекстного меню
 	ON_COMMAND(ID_MENU_ADD_IMAGE, &DHMainFrm::OnLoadImage)
 	ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHMainFrm::OnDeleteImage)
 	ON_COMMAND(ID_MENU_LOAD_GP, &DHMainFrm::OnLoadIntoGp)
@@ -244,8 +246,15 @@ void DHMainFrm::OnGenSin()
 
 void DHMainFrm::OnPSITransform()
 {
-	m_imgList.OnPSITransform();
-	m_imgList.SelectImages();
+	dholo::DHOCLTransDlg dlg;
+	HRESULT resDlg = dlg.DoModal();
+	if (resDlg != IDOK)
+		return;
+
+	dholo::gpgpu::PSIStruct psi;
+
+	m_imgList.SelectImages(&psi);
+
 	m_targetWnd.PSITransform();
 }
 
@@ -256,12 +265,38 @@ void DHMainFrm::OnContextMenu(CWnd* pWnd, CPoint point)
 
 void DHMainFrm::OnDeleteImage()
 {
-	int d = 0;
+	try
+	{
+		m_imgList.DeleteSelectedImg();
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
 
 void DHMainFrm::OnLoadImage()
 {
-	int d = 0;
+	try
+	{
+		CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
+	
+		if (dlg.DoModal() != IDOK)
+			return;
+	
+		POSITION ps = dlg.GetStartPosition();
+		while (ps)
+		{
+			CString fileName = dlg.GetFileName();
+			CString fileExt = dlg.GetFileExt();
+			CString pathName = dlg.GetNextPathName(ps);
+			m_imgList.AddImage(pathName, fileName, fileExt);
+		}
+	}
+	catch (const dholo::exp::DHAppExp& ex)
+	{
+		ex.what();
+	}
 }
 
 void DHMainFrm::OnLoadIntoGp()

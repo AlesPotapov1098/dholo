@@ -24,6 +24,7 @@ public:
 	afx_msg void OnDeleteImage();
 	afx_msg void OnLoadImage();
 	afx_msg void OnLoadIntoGp();
+	afx_msg void OnPSITransform();
 	
 	void OnMenu(CPoint point);
 	
@@ -54,7 +55,6 @@ protected:
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnGenSin();
-	afx_msg void OnPSITransform();
 	
 	DECLARE_MESSAGE_MAP()
 

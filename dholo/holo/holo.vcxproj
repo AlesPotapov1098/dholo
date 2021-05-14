@@ -191,6 +191,7 @@
     <ClInclude Include="DHGPGPUExp.h" />
     <ClInclude Include="DHGPGPUGenSinus.h" />
     <ClInclude Include="DHGPGPUPSITransform.h" />
+    <ClInclude Include="DHGPGPUShowImg.h" />
     <ClInclude Include="DHHelp.h" />
     <ClInclude Include="DHImgExpr.h" />
     <ClInclude Include="DHImgList.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="DHGPGPUExp.cpp" />
     <ClCompile Include="DHGPGPUGenSinus.cpp" />
     <ClCompile Include="DHGPGPUPSITransform.cpp" />
+    <ClCompile Include="DHGPGPUShowImg.cpp" />
     <ClCompile Include="DHImgExpr.cpp" />
     <ClCompile Include="DHImgList.cpp" />
     <ClCompile Include="DHImgLoader.cpp" />
