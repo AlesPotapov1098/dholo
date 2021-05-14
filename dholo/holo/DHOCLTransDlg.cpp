@@ -28,6 +28,10 @@ namespace dholo
 
 		ON_CBN_SELCHANGE(IDC_COMBO_DEVICE_NAME,
 			&DHOCLTransDlg::OnCbnSelchangeComboDeviceName)
+		ON_BN_CLICKED(IDC_CHECK_PHASE_RANDOM, &DHOCLTransDlg::OnBnClickedCheckPhaseRandom)
+		ON_BN_CLICKED(IDC_CHECK_PHASE_RANDOM2, &DHOCLTransDlg::OnBnClickedCheckPhaseRandom2)
+		ON_BN_CLICKED(IDC_CHECK_PHASE_RANDOM3, &DHOCLTransDlg::OnBnClickedCheckPhaseRandom3)
+		ON_BN_CLICKED(IDC_CHECK_PHASE_RANDOM4, &DHOCLTransDlg::OnBnClickedCheckPhaseRandom4)
 	END_MESSAGE_MAP()
 
 	BOOL DHOCLTransDlg::OnInitDialog()
@@ -45,6 +49,8 @@ namespace dholo
 
 			FillInComboDevice();
 			FillInDevicePanel();
+
+			FillInPSIPanel();
 		}
 		catch (const dholo::exp::DHGPGPUExp& ex)
 		{
@@ -64,6 +70,14 @@ namespace dholo
 		auto& hard = m_Init.GetHardware(nPlatform);
 		m_Host.SetPlatform(hard.GetPlatform());
 		m_Host.SetDevice(hard.GetDevice(nDevice));
+
+		m_Phase1 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM1, IDC_EDIT_SIN_PHASE1, IDC_COMBO_PHASES1);
+		m_Phase2 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM2, IDC_EDIT_SIN_PHASE2, IDC_COMBO_PHASES2);
+		m_Phase3 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM3, IDC_EDIT_SIN_PHASE3, IDC_COMBO_PHASES3);
+		m_Phase4 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM4, IDC_EDIT_SIN_PHASE4, IDC_COMBO_PHASES4);
+
+		auto editB = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_B));
+		m_B = GetNumberFromEdit<float>(editB);
 
 		CDialogEx::OnOK();
 	}
@@ -179,4 +193,93 @@ namespace dholo
 			gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
 	}
 
+	void DHOCLTransDlg::FillInPSIPanel()
+	{
+		FillInComboPhase(IDC_COMBO_PHASES1);
+		FillInComboPhase(IDC_COMBO_PHASES2);
+		FillInComboPhase(IDC_COMBO_PHASES3);
+		FillInComboPhase(IDC_COMBO_PHASES4);
+	}
+
+	void DHOCLTransDlg::FillInComboPhase(int code)
+	{
+		auto comboPhase = static_cast<CComboBox*>(this->GetDlgItem(code));
+
+		comboPhase->AddString(L"0");
+		comboPhase->AddString(L"pi/2");
+		comboPhase->AddString(L"pi");
+		comboPhase->AddString(L"3pi/2");
+	}
+
+	float DHOCLTransDlg::GetPhase1() const
+	{
+		return m_Phase1;
+	}
+
+	float DHOCLTransDlg::GetPhase2() const
+	{
+		return m_Phase2;
+	}
+
+	float DHOCLTransDlg::GetPhase3() const
+	{
+		return m_Phase3;
+	}
+
+	float DHOCLTransDlg::GetPhase4() const
+	{
+		return m_Phase4;
+	}
+
+	float DHOCLTransDlg::GetB() const
+	{
+		return m_B;
+	}
+
+	void DHOCLTransDlg::CheckRandomPahesBox(int check, int combo, int edit)
+	{
+		auto checkBoxMyPhase = static_cast<CButton*>(this->GetDlgItem(check));
+		int checked = checkBoxMyPhase->GetCheck();
+
+		auto comboPhase = static_cast<CComboBox*>(this->GetDlgItem(combo));
+		auto editPhase = static_cast<CEdit*>(this->GetDlgItem(edit));
+
+		editPhase->EnableWindow(checked == BST_CHECKED ? TRUE : FALSE);
+		comboPhase->EnableWindow(checked == BST_CHECKED ? FALSE : TRUE);
+	}
+
+	void DHOCLTransDlg::OnBnClickedCheckPhaseRandom()
+	{
+		CheckRandomPahesBox(
+			IDC_CHECK_PHASE_RANDOM1,
+			IDC_COMBO_PHASES1,
+			IDC_EDIT_SIN_PHASE1);
+	}
+
+
+	void DHOCLTransDlg::OnBnClickedCheckPhaseRandom2()
+	{
+		CheckRandomPahesBox(
+			IDC_CHECK_PHASE_RANDOM2,
+			IDC_COMBO_PHASES2,
+			IDC_EDIT_SIN_PHASE2);
+	}
+
+
+	void DHOCLTransDlg::OnBnClickedCheckPhaseRandom3()
+	{
+		CheckRandomPahesBox(
+			IDC_CHECK_PHASE_RANDOM3,
+			IDC_COMBO_PHASES3,
+			IDC_EDIT_SIN_PHASE3);
+	}
+
+
+	void DHOCLTransDlg::OnBnClickedCheckPhaseRandom4()
+	{
+		CheckRandomPahesBox(
+			IDC_CHECK_PHASE_RANDOM4,
+			IDC_COMBO_PHASES4,
+			IDC_EDIT_SIN_PHASE4);
+	}
 }

@@ -52,5 +52,13 @@ namespace dholo
 		{
 			return m_PixelsData;
 		}
+
+		void DHImgLoader::GenerateImage(int width, int height, int channels)
+		{
+			m_PixelsData = new float[width * height * channels];
+			for (int i = 0; i < width * height * channels;)
+				for (int j = 0; j < channels; j++)
+					m_PixelsData[i++] = 1.0f;
+		}
 	}
 }

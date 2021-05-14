@@ -7,26 +7,36 @@ namespace dholo
 	namespace gpgpu
 	{
 		/// <summary>
+		/// Структура для хранения параметров PSI преобразования
+		/// </summary>
+		struct PSIStruct
+		{
+			CString m_ImgNames[4];
+			float m_Phases[4];
+
+			float B;
+		};
+
+		/// <summary>
 		/// Реализация PSI преобразования
 		/// </summary>
 		class DHGPGPUPSITransform : public DHGPGPUTransform
 		{
 		public:
 			DHGPGPUPSITransform();
-			DHGPGPUPSITransform(const std::vector<dholo::img::DHImgLoader>& imgs, float phases[4], float B);
+			DHGPGPUPSITransform(const PSIStruct& psi);
 			virtual ~DHGPGPUPSITransform();
 
 			void Init(const CDC&, const DHOCLHost&) override;
-			void SetImages(const std::vector<dholo::img::DHImgLoader>&);
 			void GenerateTexture() override;
 			void Calculate() override;
 			void Release() override;
 			void RenderScene() override;
 
 		private:
-			std::vector<dholo::img::DHImgLoader> m_Images;
-			float m_Phases[4];
-			float m_B;
+			PSIStruct m_PSISettings;
+
+			dholo::img::DHImgLoader m_Images[5];
 			GLuint m_Textures[5];
 			cl_mem m_Mem[5];
 		};

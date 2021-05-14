@@ -10,15 +10,9 @@ namespace dholo
 			DHGPGPUTransform::DHGPGPUTransform();
 		}
 
-		DHGPGPUPSITransform::DHGPGPUPSITransform(const std::vector<dholo::img::DHImgLoader>& imgs, float phases[4], float B)
+		DHGPGPUPSITransform::DHGPGPUPSITransform(const PSIStruct& psi)
 		{
-			m_B = B;
-
-			for (int i = 0; i < 4; i++)
-			{
-				m_Images[i] = imgs[i];
-				m_Phases[i] = phases[i];
-			}
+			m_PSISettings = psi;
 		}
 
 		DHGPGPUPSITransform::~DHGPGPUPSITransform()
@@ -30,11 +24,22 @@ namespace dholo
 		{
 			DHGPGPUTransform::Init(dc, host);
 			InitOpenCL(host);
-		}
+			
+			for (int i = 0; i < 4; i++)
+				if (!m_Images[i].Load((CStringA)m_PSISettings.m_ImgNames[i]))
+					throw dholo::exp::DHAppExp("Can't load image");
 
-		void DHGPGPUPSITransform::SetImages(const std::vector<dholo::img::DHImgLoader>& imgs)
-		{
-			m_Images = imgs;
+			int width = m_Images[0].GetWidth();
+			int height = m_Images[0].GetHeight();
+			int channels = m_Images[0].GetChannels();
+
+			for (int i = 1; i < 4; i++)
+				if (width != m_Images[i].GetWidth() ||
+					height != m_Images[i].GetHeight() ||
+					channels != m_Images[i].GetChannels())
+					throw dholo::exp::DHAppExp("Some or any image parametrs not equal!!!");
+
+			m_Images[4].GenerateImage(width, height, channels);
 		}
 
 		void DHGPGPUPSITransform::GenerateTexture()
@@ -44,7 +49,7 @@ namespace dholo
 
 			cl_int error_code = CL_SUCCESS;
 
-			for (int i = 0; i < 5; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				glBindTexture(GL_TEXTURE_2D, m_Textures[i]);
 

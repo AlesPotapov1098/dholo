@@ -26,6 +26,8 @@ namespace dholo
 
 			float* GetPixelsData() const;
 
+			void GenerateImage(int width, int height, int channels);
+
 		private:
 			float* m_PixelsData;
 
