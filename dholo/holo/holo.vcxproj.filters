@@ -99,6 +99,9 @@
     <ClInclude Include="DHGPGPUExp.h">
       <Filter>src\exp</Filter>
     </ClInclude>
+    <ClInclude Include="DHHelp.h">
+      <Filter>src\etc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">

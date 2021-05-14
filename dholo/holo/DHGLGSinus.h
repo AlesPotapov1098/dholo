@@ -1,5 +1,9 @@
 ﻿#pragma once
 
+#include <iostream>
+
+#include "DHHelp.h"
+
 class DHGENSinus : public CDialogEx
 {
 	DECLARE_DYNAMIC(DHGENSinus)
@@ -24,9 +28,6 @@ protected:
 	afx_msg void OnOK();
 
 	DECLARE_MESSAGE_MAP()
-	
-	template<typename T = int>
-	T GetNumberFromEdit(CEdit*);
 
 private:
 	float m_Ampl;
@@ -36,11 +37,3 @@ private:
 	int m_Channels;
 	int m_T;
 };
-
-template<typename T>
-inline T DHGENSinus::GetNumberFromEdit(CEdit* edit)
-{
-	CString strNumber;
-	edit->GetWindowTextW(strNumber);
-	return static_cast<T>(std::atoi(static_cast<CStringA>(strNumber)));
-}

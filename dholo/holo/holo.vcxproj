@@ -191,6 +191,7 @@
     <ClInclude Include="DHGPGPUExp.h" />
     <ClInclude Include="DHGPGPUGenSinus.h" />
     <ClInclude Include="DHGPGPUPSITransform.h" />
+    <ClInclude Include="DHHelp.h" />
     <ClInclude Include="DHImgExpr.h" />
     <ClInclude Include="DHImgList.h" />
     <ClInclude Include="DHImgLoader.h" />
