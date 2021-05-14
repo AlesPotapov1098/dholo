@@ -28,10 +28,10 @@ namespace dholo
 			ON_COMMAND(ID_MENU_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 			ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_MENU_LOAD_GP, &DHImgExpr::OnLoadIntoGp)
-			ON_COMMAND(ID_MENU_PSI_TRANS, &DHImgExpr::OnPSITransform)
 			// ќбработка сообщени€ от toolbar
 			ON_COMMAND(ID_TOOLBAR_ADD_IMAGE, &DHImgExpr::OnLoadImage)
 			ON_COMMAND(ID_TOOLBAR_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
+			ON_COMMAND(ID_MENU_PSI_TRANS, &DHImgExpr::OnPSITransform)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -63,7 +63,7 @@ namespace dholo
 			m_FunctionalToolBar.SetOwner(this);
 
 			// ¬се команды будут перенаправлены через этот элемент управлени€, а не через родительскую рамку:
-			m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
+			//m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
 
 			// ¬ведите некоторые данные статического представлени€ в виде дерева (пустой код, ничего более)
 			FillFileView();
@@ -205,6 +205,11 @@ namespace dholo
 
 		void DHImgExpr::OnPSITransform()
 		{
+			dholo::DHOCLTransDlg dlg;
+			HRESULT resDlg = dlg.DoModal();
+			if (resDlg != IDOK)
+				return;
+
 			if (!m_dhImgList.GetItemCount())
 				return;
 

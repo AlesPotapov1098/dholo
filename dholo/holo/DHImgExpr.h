@@ -2,6 +2,7 @@
 
 #include "DHImgList.h"
 #include "DHToolbar.h"
+#include "DHOCLTransDlg.h"
 
 namespace dholo
 {
@@ -29,6 +30,7 @@ namespace dholo
 			afx_msg void OnLoadImage();
 			afx_msg void OnLoadIntoGp();
 			afx_msg void OnShowImage();
+			void OnPSITransform();
 
 			/// <summary>
 			/// Фиксация 4-х изображений для PSI преобразования
@@ -42,7 +44,7 @@ namespace dholo
 			afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 			afx_msg void OnPaint();
 			afx_msg void OnSetFocus(CWnd* pOldWnd);
-			afx_msg void OnPSITransform();
+			
 
 			DECLARE_MESSAGE_MAP()
 

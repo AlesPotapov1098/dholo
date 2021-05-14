@@ -49,6 +49,8 @@ namespace dholo
 
 			FillInComboDevice();
 			FillInDevicePanel();
+
+			FillInPSIPanel();
 		}
 		catch (const dholo::exp::DHGPGPUExp& ex)
 		{
@@ -73,6 +75,9 @@ namespace dholo
 		m_Phase2 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM2, IDC_EDIT_SIN_PHASE2, IDC_COMBO_PHASES2);
 		m_Phase3 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM3, IDC_EDIT_SIN_PHASE3, IDC_COMBO_PHASES3);
 		m_Phase4 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM4, IDC_EDIT_SIN_PHASE4, IDC_COMBO_PHASES4);
+
+		auto editB = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_B));
+		m_B = GetNumberFromEdit<float>(editB);
 
 		CDialogEx::OnOK();
 	}
@@ -236,8 +241,8 @@ namespace dholo
 		auto checkBoxMyPhase = static_cast<CButton*>(this->GetDlgItem(check));
 		int checked = checkBoxMyPhase->GetCheck();
 
-		auto editPhase = static_cast<CEdit*>(this->GetDlgItem(edit));
 		auto comboPhase = static_cast<CComboBox*>(this->GetDlgItem(combo));
+		auto editPhase = static_cast<CEdit*>(this->GetDlgItem(edit));
 
 		editPhase->EnableWindow(checked == BST_CHECKED ? TRUE : FALSE);
 		comboPhase->EnableWindow(checked == BST_CHECKED ? FALSE : TRUE);
