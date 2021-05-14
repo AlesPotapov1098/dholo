@@ -19,7 +19,14 @@ public:
 	void LoadImg(const CStringA& imgPath);
 	void LoadImg(const std::vector<CStringA>& imgPaths);
 	virtual ~DHMainFrm();
-protected: 
+
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void OnDeleteImage();
+	afx_msg void OnLoadImage();
+	afx_msg void OnLoadIntoGp();
+	
+	void OnMenu(CPoint point);
+	
 	DECLARE_DYNAMIC(DHMainFrm)
 
 public:
@@ -48,6 +55,7 @@ protected:
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnGenSin();
 	afx_msg void OnPSITransform();
+	
 	DECLARE_MESSAGE_MAP()
 
 public:

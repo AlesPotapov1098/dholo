@@ -17,12 +17,16 @@ const UINT uiLastUserToolBarId = uiFirstUserToolBarId + iMaxUserToolbars - 1;
 BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_WM_SETFOCUS()
+	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &DHMainFrm::OnViewCustomize)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &DHMainFrm::OnToolbarCreateNew)
 	ON_COMMAND(ID_TOOLBAR_GEN_SIN, &DHMainFrm::OnGenSin)
 	ON_COMMAND(ID_SAVE_IMG, &DHMainFrm::OnSaveImg)
 	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHMainFrm::OnSaveAndAddImg)
-	
+	ON_COMMAND(ID_MENU_ADD_IMAGE, &DHMainFrm::OnLoadImage)
+	ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHMainFrm::OnDeleteImage)
+	ON_COMMAND(ID_MENU_LOAD_GP, &DHMainFrm::OnLoadIntoGp)
+	ON_COMMAND(ID_MENU_PSI_TRANS, &DHMainFrm::OnPSITransform)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -243,6 +247,38 @@ void DHMainFrm::OnPSITransform()
 	m_imgList.OnPSITransform();
 	m_imgList.SelectImages();
 	m_targetWnd.PSITransform();
+}
+
+void DHMainFrm::OnContextMenu(CWnd* pWnd, CPoint point)
+{
+	
+}
+
+void DHMainFrm::OnDeleteImage()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnLoadImage()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnLoadIntoGp()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnMenu(CPoint point)
+{
+	if (point != CPoint(-1, -1))
+	{
+		CPoint ptTree = point;
+		m_targetWnd.ScreenToClient(&ptTree);
+	}
+
+	m_imgList.SetFocus();
+	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU2, point.x, point.y, this, TRUE);
 }
 
 BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext)

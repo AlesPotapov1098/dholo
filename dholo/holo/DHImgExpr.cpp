@@ -144,23 +144,7 @@ namespace dholo
 
 		void DHImgExpr::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
-			CListCtrl* pdhImgList = (CListCtrl*)&m_dhImgList;
-			ASSERT_VALID(pdhImgList);
-
-			if (pWnd != pdhImgList)
-			{
-				CDockablePane::OnContextMenu(pWnd, point);
-				return;
-			}
-
-			if (point != CPoint(-1, -1))
-			{
-				CPoint ptTree = point;
-				pdhImgList->ScreenToClient(&ptTree);
-			}
-
-			pdhImgList->SetFocus();
-			theApp.GetContextMenuManager()->ShowPopupMenu(IDR_MENU2, point.x, point.y, this, TRUE);
+			static_cast<DHMainFrm*>(this->GetParent())->OnMenu(point);
 		}
 
 		void DHImgExpr::AdjustLayout()
