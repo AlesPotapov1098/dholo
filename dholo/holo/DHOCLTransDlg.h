@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "DHOCLInit.h"
+#include "DHGPGPUPSITransform.h"
 
 namespace dholo {
 	class DHOCLTransDlg : public CDialogEx
@@ -27,11 +28,14 @@ namespace dholo {
 		void FillInComboDevice();
 		void FillInDevicePanel();
 
+		gpgpu::PSIStruct GetPSISettings() const;
+
 		DECLARE_MESSAGE_MAP()
 
 	private:
 		gpgpu::DHOCLInit m_Init;
 		gpgpu::DHOCLHost m_Host;
 
+		gpgpu::PSIStruct m_PSISettings;
 	};
 }

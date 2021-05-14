@@ -179,4 +179,9 @@ namespace dholo
 			gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
 	}
 
+	gpgpu::PSIStruct DHOCLTransDlg::GetPSISettings() const
+	{
+		return m_PSISettings;
+	}
+
 }
