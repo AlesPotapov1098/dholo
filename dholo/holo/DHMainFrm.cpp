@@ -246,16 +246,31 @@ void DHMainFrm::OnGenSin()
 
 void DHMainFrm::OnPSITransform()
 {
-	dholo::DHOCLTransDlg dlg;
-	HRESULT resDlg = dlg.DoModal();
-	if (resDlg != IDOK)
-		return;
+	try {
+		if (m_imgList.GetSelectedImageCount() != 4)
+			throw dholo::exp::DHAppExp("Необходимо выбрать 4 изображения");
 
-	dholo::gpgpu::PSIStruct psi;
+		dholo::DHOCLTransDlg dlg;
+		HRESULT resDlg = dlg.DoModal();
+		if (resDlg != IDOK)
+			return;
 
-	m_imgList.SelectImages(&psi);
+		dholo::gpgpu::PSIStruct psi;
 
-	m_targetWnd.PSITransform();
+		psi.m_Phases[0] = dlg.GetPhase1();
+		psi.m_Phases[1] = dlg.GetPhase2();
+		psi.m_Phases[2] = dlg.GetPhase3();
+		psi.m_Phases[3] = dlg.GetPhase4();
+		psi.B = dlg.GetB();
+
+		m_imgList.SelectImages(&psi);
+
+		m_targetWnd.PSITransform(psi);
+	}
+	catch (const dholo::exp::DHAppExp &ex)
+	{
+		ex.what();
+	}
 }
 
 void DHMainFrm::OnContextMenu(CWnd* pWnd, CPoint point)

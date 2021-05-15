@@ -72,37 +72,15 @@ namespace dholo
 
 		void DHImgExpr::SelectImages(dholo::gpgpu::PSIStruct* psi)
 		{
-			if (!m_dhImgList.GetItemCount())
-				return;
-
-			UINT count = m_dhImgList.GetSelectedCount();
-
-			if (count == 1)
-			{
-				POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-				if (!pos)
-					/// TODO: обработка ошибок
-					return;
-
-				UINT selectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				theApp.LoadImg(CStringA(m_dhImgList.GetItemText(selectedItem, 1)));
-				return;
-			}
-
-			if (count <= 0 || count > 4 || count < 4)
-				/// TODO : обработка ошибок!!!
-				return;
-
-			std::vector<CStringA> ImagePaths(count);
 			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+			
 			if (!pos)
-				return;
+				throw dholo::exp::DHAppExp("Ошибка при определении индекса");
 
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < 4; i++)
 			{
 				UINT SelectedItem = m_dhImgList.GetNextSelectedItem(pos);
-				ImagePaths[i] =
-					CStringA(m_dhImgList.GetItemText(SelectedItem, 1));
+				psi->m_ImgNames[i] = m_dhImgList.GetItemText(SelectedItem, 1);
 			}
 		}
 
@@ -189,6 +167,11 @@ namespace dholo
 			m_dhImgList.SetWindowPos(
 				nullptr, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2,
 				rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
+		}
+
+		UINT DHImgExpr::GetSelectedImageCount() const
+		{
+			return m_dhImgList.GetSelectedCount();
 		}
 
 		void DHImgExpr::DeleteSelectedImg()

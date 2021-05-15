@@ -37,7 +37,7 @@ public:
 	/// <summary>
 	/// PSI преобразрвание
 	/// </summary>
-		void PSITransform();
+		void PSITransform(const dholo::gpgpu::PSIStruct& psi);
 
 	ImageFile OnSaveImg();
 

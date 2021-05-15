@@ -8,14 +8,6 @@ namespace dholo
 {
 	namespace img
 	{
-		/// <summary>
-		/// Структура данных для PSI преобразования
-		/// </summary>
-		struct PSISettings
-		{
-
-		};
-
 		class DHImgExpr : public CDockablePane
 		{
 			// Создание
@@ -25,6 +17,8 @@ namespace dholo
 
 			void AdjustLayout();
 
+			UINT GetSelecteIndex() const;
+			UINT GetSelectedImageCount() const;
 			void DeleteSelectedImg();
 			CString GetSelectedImg();
 			void AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt);
@@ -34,7 +28,7 @@ namespace dholo
 			/// <summary>
 			/// Фиксация 4-х изображений для PSI преобразования
 			/// </summary>
-				void SelectImages(dholo::gpgpu::PSIStruct*psi);
+				void SelectImages(dholo::gpgpu::PSIStruct *psi);
 
 			void FillFileView();
 			afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -44,9 +38,6 @@ namespace dholo
 			afx_msg void OnSetFocus(CWnd* pOldWnd);
 
 			DECLARE_MESSAGE_MAP()
-
-		private:
-			UINT GetSelecteIndex() const;
 
 		private:
 			toolbar::DHToolBar m_FunctionalToolBar;
