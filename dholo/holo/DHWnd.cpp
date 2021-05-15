@@ -50,7 +50,7 @@ void DHWnd::OnPaint()
 	try 
 	{
 		m_pDC = BeginPaint(&m_Paint);
-		m_Transform->Init(*m_pDC, dholo::gpgpu::DHOCLHost());
+		m_Transform->Init(*m_pDC, m_Host);
 		m_Transform->GenerateTexture();
 		m_Transform->Calculate();
 		m_Transform->RenderScene();
@@ -59,7 +59,7 @@ void DHWnd::OnPaint()
 	}
 	catch (const dholo::exp::DHGPGPUExp &ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -87,7 +87,7 @@ void DHWnd::LoadTexture(const std::vector<CStringA>& path)
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -147,9 +147,10 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
-void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct& psi)
+void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct& psi, const dholo::gpgpu::DHOCLHost &host)
 {
 	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(psi);
+	m_Host = host;
 
 	Invalidate();
 	UpdateWindow();

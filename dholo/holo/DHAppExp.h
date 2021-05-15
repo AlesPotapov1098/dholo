@@ -15,7 +15,10 @@ namespace dholo
 			DHAppExp(const CString& mess);
 			~DHAppExp() = default;
 
-			virtual char const* what() const override;
+			void ShowError() const;
+
+		protected:
+			CString m_ErrorMessage;
 		};
 	}
 }

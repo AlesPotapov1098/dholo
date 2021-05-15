@@ -37,7 +37,7 @@ public:
 	/// <summary>
 	/// PSI преобразрвание
 	/// </summary>
-		void PSITransform(const dholo::gpgpu::PSIStruct& psi);
+		void PSITransform(const dholo::gpgpu::PSIStruct& psi, const dholo::gpgpu::DHOCLHost &host);
 
 	ImageFile OnSaveImg();
 
@@ -53,6 +53,8 @@ private:
 	int m_GlobalSizeX, m_GlobalSizeY;
 	int m_LocalSizeX, m_LocalSizeY;
 	dholo::gpgpu::DHGPGPUTransform *m_Transform;
+
+	dholo::gpgpu::DHOCLHost m_Host;
 
 	PAINTSTRUCT m_Paint;
 	CDC* m_pDC;

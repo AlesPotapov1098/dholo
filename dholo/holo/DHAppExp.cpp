@@ -7,18 +7,17 @@ namespace dholo
 	{
 		DHAppExp::DHAppExp(const std::string& mess)
 		{
-			exception::exception(mess.c_str());
+			m_ErrorMessage = CString(mess.c_str());
 		}
 
 		DHAppExp::DHAppExp(const CString& mess)
 		{
-			exception::exception(CStringA(mess).GetString());
+			m_ErrorMessage = mess;
 		}
 
-		char const* DHAppExp::what() const
+		void DHAppExp::ShowError() const
 		{
-			AfxMessageBox(CStringW(what()), MB_OK);
-			return exception::what();
+			AfxMessageBox(m_ErrorMessage, MB_OK);
 		}
 	}
 }

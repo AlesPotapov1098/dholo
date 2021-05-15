@@ -261,15 +261,14 @@ void DHMainFrm::OnPSITransform()
 		psi.m_Phases[1] = dlg.GetPhase2();
 		psi.m_Phases[2] = dlg.GetPhase3();
 		psi.m_Phases[3] = dlg.GetPhase4();
-		psi.B = dlg.GetB();
 
 		m_imgList.SelectImages(&psi);
 
-		m_targetWnd.PSITransform(psi);
+		m_targetWnd.PSITransform(psi, dlg.GetHost());
 	}
 	catch (const dholo::exp::DHAppExp &ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -286,7 +285,7 @@ void DHMainFrm::OnDeleteImage()
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -310,7 +309,7 @@ void DHMainFrm::OnLoadImage()
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -371,7 +370,7 @@ void DHMainFrm::SelectImage(const std::vector<CStringA>& imgPath)
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 void DHMainFrm::LoadImg(const CStringA& imgPath)
@@ -388,7 +387,7 @@ void DHMainFrm::LoadImg(const CStringA& imgPath)
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
@@ -404,7 +403,7 @@ void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -427,6 +426,6 @@ void DHMainFrm::OnSaveAndAddImg()
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }

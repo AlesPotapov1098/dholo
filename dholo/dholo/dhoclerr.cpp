@@ -16,8 +16,8 @@ dholo::gpgpu::err::DHOCLErr::~DHOCLErr()
 {
 }
 
-char const* dholo::gpgpu::err::DHOCLErr::what() const
+char const* dholo::gpgpu::err::DHOCLErr::ShowError() const
 {
-	AfxMessageBox(CStringW(exception::what()), MB_OK);
-	return exception::what();
+	AfxMessageBox(CStringW(exception::ShowError()), MB_OK);
+	return exception::ShowError();
 }
