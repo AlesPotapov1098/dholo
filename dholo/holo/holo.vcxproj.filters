@@ -230,5 +230,17 @@
     <None Include="Frenel.cl">
       <Filter>src\gpgpu\programs</Filter>
     </None>
+    <None Include="AMPL.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
+    <None Include="RE.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
+    <None Include="PHASE.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
+    <None Include="IM.cl">
+      <Filter>src\gpgpu\programs</Filter>
+    </None>
   </ItemGroup>
 </Project>
