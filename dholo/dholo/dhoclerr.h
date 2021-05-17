@@ -15,7 +15,7 @@ namespace dholo
 				DHOCLErr(cl_int error_code);
 				virtual ~DHOCLErr();
 				
-				virtual char const* what() const;
+				virtual char const* ShowError() const;
 			};
 		}
 	}

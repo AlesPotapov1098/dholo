@@ -42,7 +42,7 @@ namespace dholo {
 		float GetPhase3() const;
 		float GetPhase4() const;
 
-		float GetB() const;
+		dholo::gpgpu::DHOCLHost GetHost() const;
 
 		void CheckRandomPahesBox(int check, int combo, int edit);
 

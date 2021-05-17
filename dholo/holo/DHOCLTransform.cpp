@@ -244,10 +244,11 @@ namespace dholo
 			if (err != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(err);
 			
-			err = clBuildProgram(m_Program, 0, NULL, NULL, NULL, NULL);
+			err = clBuildProgram(m_Program, 1, &dev, NULL, NULL, NULL);
 			
 			if (err != CL_SUCCESS)
 			{
+				cl_int code = err;
 				std::size_t size_log = 0;
 				char* build_log;
 				err = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, 0, nullptr, &size_log);
@@ -259,11 +260,13 @@ namespace dholo
 
 				build_log = new char[size_log];
 				err = clGetProgramBuildInfo(m_Program, dev, CL_PROGRAM_BUILD_LOG, size_log, build_log, nullptr);
-				if (err != CL_SUCCESS)
-					throw dholo::exp::DHGPGPUExp(err, build_log);
+				if (err == CL_SUCCESS)
+					throw dholo::exp::DHGPGPUExp(code, build_log);
+				else
+					throw dholo::exp::DHGPGPUExp(err);
 			}
 
-			m_Kernel = clCreateKernel(m_Program, "psi4Kernel", &err);
+			m_Kernel = clCreateKernel(m_Program, m_KernelName.c_str(), &err);
 			if (err != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(err);
 			

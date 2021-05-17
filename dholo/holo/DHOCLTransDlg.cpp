@@ -54,7 +54,7 @@ namespace dholo
 		}
 		catch (const dholo::exp::DHGPGPUExp& ex)
 		{
-			ex.what();
+			ex.ShowError();
 		}
 
 		return TRUE;
@@ -76,9 +76,6 @@ namespace dholo
 		m_Phase3 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM3, IDC_EDIT_SIN_PHASE3, IDC_COMBO_PHASES3);
 		m_Phase4 = GetNumberFromControl<float>(IDC_CHECK_PHASE_RANDOM4, IDC_EDIT_SIN_PHASE4, IDC_COMBO_PHASES4);
 
-		auto editB = static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_B));
-		m_B = GetNumberFromEdit<float>(editB);
-
 		CDialogEx::OnOK();
 	}
 
@@ -96,7 +93,7 @@ namespace dholo
 		}
 		catch (const dholo::exp::DHGPGPUExp& ex)
 		{
-			ex.what();
+			ex.ShowError();
 		}
 	}
 
@@ -231,9 +228,9 @@ namespace dholo
 		return m_Phase4;
 	}
 
-	float DHOCLTransDlg::GetB() const
+	dholo::gpgpu::DHOCLHost DHOCLTransDlg::GetHost() const
 	{
-		return m_B;
+		return m_Host;
 	}
 
 	void DHOCLTransDlg::CheckRandomPahesBox(int check, int combo, int edit)

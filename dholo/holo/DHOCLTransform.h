@@ -63,6 +63,7 @@ namespace dholo
 			HDC m_hDC;
 			PIXELFORMATDESCRIPTOR m_Desc;
 			std::string m_ProgramPath;
+			std::string m_KernelName;
 		};
 
 		class test : public DHGPGPUTransform
