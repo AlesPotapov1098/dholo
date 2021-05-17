@@ -316,7 +316,7 @@ void DHMainFrm::OnAddImage()
 
 void DHMainFrm::OnLoadIntoGp()
 {
-	int d = 0;
+	m_targetWnd.LoadImg(static_cast<CStringA>(m_imgList.GetSelectedImg()));
 }
 
 void DHMainFrm::OnMenu(CPoint point)

@@ -25,8 +25,12 @@ public:
 	virtual ~DHWnd();
 	void OpenDlg();
 	void LoadTexture(const std::vector<CStringA>& path);
-	void GenerateTest();
-	void LoadImg(const CStringA& imgPath);
+
+	/// <summary>
+	/// Загрузка изображения в графический процессор
+	/// </summary>
+	/// <param name="imgPath">Целевое изображение</param>
+		void LoadImg(const CStringA& imgPath);
 	void LoadImg(const std::vector<CStringA>& imgPaths);
 
 	/// <summary>
@@ -37,6 +41,8 @@ public:
 	/// <summary>
 	/// PSI преобразрвание
 	/// </summary>
+	/// <param name="psi">Параметры для PSI преобразования</param>
+	/// <param name="host">Хост</param>
 		void PSITransform(const dholo::gpgpu::PSIStruct& psi, const dholo::gpgpu::DHOCLHost &host);
 
 	ImageFile OnSaveImg();

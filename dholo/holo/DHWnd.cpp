@@ -47,20 +47,22 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 
 void DHWnd::OnPaint() 
 {
+	m_pDC = BeginPaint(&m_Paint);
+	
 	try 
 	{
-		m_pDC = BeginPaint(&m_Paint);
 		m_Transform->Init(*m_pDC, m_Host);
 		m_Transform->GenerateTexture();
 		m_Transform->Calculate();
 		m_Transform->RenderScene();
 		m_Transform->Release();
-		EndPaint(&m_Paint);
 	}
 	catch (const dholo::exp::DHGPGPUExp &ex)
 	{
 		ex.ShowError();
 	}
+
+	EndPaint(&m_Paint);
 }
 
 void DHWnd::OnSize(UINT nType, int cx, int cy)
@@ -89,21 +91,6 @@ void DHWnd::LoadTexture(const std::vector<CStringA>& path)
 	{
 		ex.ShowError();
 	}
-}
-
-void DHWnd::GenerateTest()
-{
-	//dlg::DHOpenCLDlg dlg;
-	//if (dlg.DoModal() != IDOK)
-	//	return;
-	//
-	//m_Host = dlg.GetOpenCLHost();
-	//m_OperType = OperationType::DH_OPERATION_TEST;
-	//
-	//m_Test.GenerateTextExmpl();
-
-	Invalidate();
-	UpdateWindow();
 }
 
 void DHWnd::LoadImg(const CStringA& imgPath)
