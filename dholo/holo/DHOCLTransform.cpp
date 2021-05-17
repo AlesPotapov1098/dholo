@@ -175,6 +175,8 @@ namespace dholo
 
 			m_hDC = dc.m_hDC;
 
+			m_Host = host;
+
 			if (!SetPixelFormat(m_hDC,
 				ChoosePixelFormat(m_hDC, &m_Desc),
 				&m_Desc))

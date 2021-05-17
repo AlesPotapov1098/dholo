@@ -25,7 +25,7 @@ namespace dholo
 		void DHGPGPUPSITransform::Init(const CDC& dc, const DHOCLHost& host)
 		{
 			DHGPGPUTransform::Init(dc, host);
-			InitOpenCL(host);
+			InitOpenCL(m_Host);
 			
 			for (int i = 0; i < 4; i++)
 				if (!m_Images[i].Load((CStringA)m_PSISettings.m_ImgNames[i]))
@@ -66,10 +66,10 @@ namespace dholo
 					m_Images[i].GetWidth(),
 					m_Images[i].GetHeight(),
 					0,
-					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA, 
+					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA,
 					GL_FLOAT,
 					m_Images[i].GetPixelsData());
-
+			
 				m_Mem[i] = clCreateFromGLTexture(
 					m_Context,
 					CL_MEM_READ_WRITE,

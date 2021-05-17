@@ -15,14 +15,14 @@ float2 complexFromPolarCoordinates(
 }
 
 __kernel void PSI(
-	image2d_t img0, //0
-	image2d_t img1, //1
-	image2d_t img2, //2
-	image2d_t img3, //3
+	__read_only image2d_t img0, //0
+	__read_only image2d_t img1, //1
+	__read_only image2d_t img2, //2
+	__read_only image2d_t img3, //3
 	float4 k_sin,				//4
 	float4 k_cos,				//5
 	float znmt_abs,				//6
-	image2d_t output) //7
+	__write_only image2d_t output) //7
 {
     const sampler_t smp = CLK_NORMALIZED_COORDS_FALSE | //Natural coordinates
          CLK_ADDRESS_CLAMP | //Clamp to zeros
@@ -44,6 +44,8 @@ __kernel void PSI(
     float am = sqrt(IS * IS + IC * IC) / znmt_abs;
 
     float2 result = complexFromPolarCoordinates(am, a);
+    a += M_PI;
+	a /= 2 * M_PI;
 
 	write_imagef(output, coord, (float4)(a, a, a, 0));
 }

@@ -64,6 +64,7 @@ namespace dholo
 			PIXELFORMATDESCRIPTOR m_Desc;
 			std::string m_ProgramPath;
 			std::string m_KernelName;
+			dholo::gpgpu::DHOCLHost m_Host;
 		};
 
 		class test : public DHGPGPUTransform
