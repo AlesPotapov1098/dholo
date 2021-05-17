@@ -24,6 +24,9 @@ namespace dholo
 			ON_WM_CONTEXTMENU()
 			ON_WM_PAINT()
 			ON_WM_SETFOCUS()
+			ON_COMMAND(ID_PSI_TRANSFORM, &DHImgExpr::OnPSITransform)
+			ON_COMMAND(ID_TOOLBAR_ADD_IMAGE, &DHImgExpr::OnAddImage)
+			ON_COMMAND(ID_TOOLBAR_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 		END_MESSAGE_MAP()
 
 		int DHImgExpr::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -55,7 +58,7 @@ namespace dholo
 			m_FunctionalToolBar.SetOwner(this);
 
 			// Все команды будут перенаправлены через этот элемент управления, а не через родительскую рамку:
-			//m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
+			m_FunctionalToolBar.SetRouteCommandsViaFrame(FALSE);
 
 			// Введите некоторые данные статического представления в виде дерева (пустой код, ничего более)
 			FillFileView();
@@ -203,6 +206,16 @@ namespace dholo
 			m_dhImgList.SetFocus();
 		}
 
+		void DHImgExpr::OnPSITransform()
+		{
+			static_cast<DHMainFrm*>(this->GetParent())->OnPSITransform();
+		}
+
+		void DHImgExpr::OnAddImage()
+		{
+			static_cast<DHMainFrm*>(this->GetParent())->OnAddImage();
+		}
+
 		UINT DHImgExpr::GetSelecteIndex() const
 		{
 			UINT selectedItem = m_dhImgList.GetSelectedCount();
@@ -212,15 +225,10 @@ namespace dholo
 			return selectedItem;
 		}
 
-		//void DHImgExpr::OnDeleteImage()
-		//{
-		//	// TODO: добавьте свой код обработчика команд
-		//}
-		//
-		//void DHImgExpr::OnLoadIntoGp()
-		//{
-		//	// TODO: добавьте свой код обработчика команд
-		//}
+		void DHImgExpr::OnDeleteImage()
+		{
+			static_cast<DHMainFrm*>(this->GetParent())->OnDeleteImage();
+		}
 
 		void DHImgExpr::OnShowImage()
 		{

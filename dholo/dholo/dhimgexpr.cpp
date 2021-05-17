@@ -29,7 +29,7 @@ namespace dholo
 			ON_WM_CONTEXTMENU()
 			ON_WM_PAINT()
 			ON_WM_SETFOCUS()
-			ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnLoadImage)
+			ON_COMMAND(ID_ADD_IMAGE, &DHImgExpr::OnAddImage)
 			ON_COMMAND(ID_DELETE_IMAGE, &DHImgExpr::OnDeleteImage)
 			ON_COMMAND(ID_SELECT_IMAGE, &DHImgExpr::OnSelectImage)
 			ON_COMMAND(ID_CUT_IMAGE, &DHImgExpr::OnDeleteImage)
@@ -244,7 +244,7 @@ namespace dholo
 			// TODO: добавьте свой код обработчика команд
 		}
 
-		void DHImgExpr::OnLoadImage()
+		void DHImgExpr::OnAddImage()
 		{
 			CFileDialog dlg(TRUE, NULL, L"*.jpg; *.png", OFN_ALLOWMULTISELECT);
 

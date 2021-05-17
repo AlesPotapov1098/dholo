@@ -22,7 +22,7 @@ public:
 
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnDeleteImage();
-	afx_msg void OnLoadImage();
+	afx_msg void OnAddImage();
 	afx_msg void OnLoadIntoGp();
 	afx_msg void OnPSITransform();
 	

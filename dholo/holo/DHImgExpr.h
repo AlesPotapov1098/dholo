@@ -36,6 +36,9 @@ namespace dholo
 			afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 			afx_msg void OnPaint();
 			afx_msg void OnSetFocus(CWnd* pOldWnd);
+			afx_msg void OnPSITransform();
+			afx_msg void OnAddImage();
+			afx_msg void OnDeleteImage();
 
 			DECLARE_MESSAGE_MAP()
 

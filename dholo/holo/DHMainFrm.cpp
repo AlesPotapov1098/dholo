@@ -25,10 +25,11 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_COMMAND(ID_SAVE_AND_ADD_IMG, &DHMainFrm::OnSaveAndAddImg)
 
 	// Обработка сообщений от контекстного меню
-	ON_COMMAND(ID_MENU_ADD_IMAGE, &DHMainFrm::OnLoadImage)
+	ON_COMMAND(ID_MENU_ADD_IMAGE, &DHMainFrm::OnAddImage)
 	ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHMainFrm::OnDeleteImage)
 	ON_COMMAND(ID_MENU_LOAD_GP, &DHMainFrm::OnLoadIntoGp)
 	ON_COMMAND(ID_MENU_PSI_TRANS, &DHMainFrm::OnPSITransform)
+	
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -289,7 +290,7 @@ void DHMainFrm::OnDeleteImage()
 	}
 }
 
-void DHMainFrm::OnLoadImage()
+void DHMainFrm::OnAddImage()
 {
 	try
 	{

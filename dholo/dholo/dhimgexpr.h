@@ -39,7 +39,7 @@ namespace dholo
 			const int COLUMN_PATH_WIDTH = 90;
 		public:
 			afx_msg void OnDeleteImage();
-			afx_msg void OnLoadImage();
+			afx_msg void OnAddImage();
 			afx_msg void OnLoadIntoGp();
 			afx_msg void OnShowImage();
 		};
