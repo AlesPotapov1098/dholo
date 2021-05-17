@@ -119,7 +119,7 @@ namespace dholo
 				throw dholo::exp::DHGPGPUExp(error);
 
 			const std::size_t global_size[2] = { m_Images[0].GetWidth(), m_Images[0].GetHeight()};
-			const std::size_t local_size[2] = { 2,2 };
+			const std::size_t local_size[2] = { m_Images[0].GetWidth() / 10, m_Images[0].GetHeight() / 10 };
 
 			error = clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, global_size, local_size, 0, NULL, NULL);
 			if (error != CL_SUCCESS)

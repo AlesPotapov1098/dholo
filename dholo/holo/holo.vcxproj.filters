@@ -175,7 +175,9 @@
     <Image Include="res\userimages.bmp">
       <Filter>resources</Filter>
     </Image>
-    <Image Include="res\bmp00001.bmp" />
+    <Image Include="res\bmp00001.bmp">
+      <Filter>resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="holo.rc">
