@@ -25,6 +25,10 @@ public:
 	afx_msg void OnAddImage();
 	afx_msg void OnLoadIntoGp();
 	afx_msg void OnPSITransform();
+	afx_msg void OnGetAmplitude();
+	afx_msg void OnGetPhase();
+	afx_msg void OnGetRe();
+	afx_msg void OnGetIm();
 	
 	void OnMenu(CPoint point);
 	

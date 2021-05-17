@@ -29,6 +29,12 @@ BEGIN_MESSAGE_MAP(DHMainFrm, CFrameWndEx)
 	ON_COMMAND(ID_MENU_DELETE_IMAGE, &DHMainFrm::OnDeleteImage)
 	ON_COMMAND(ID_MENU_LOAD_GP, &DHMainFrm::OnLoadIntoGp)
 	ON_COMMAND(ID_MENU_PSI_TRANS, &DHMainFrm::OnPSITransform)
+
+	// Обработка сообщений от toolbar
+	ON_COMMAND(ID_TOOLBAR_GET_AMPL, &DHMainFrm::OnGetAmplitude)
+	ON_COMMAND(ID_TOOLBAR_GET_PHASE, &DHMainFrm::OnGetPhase)
+	ON_COMMAND(ID_TOOLBAR_GET_IM, &DHMainFrm::OnGetIm)
+	ON_COMMAND(ID_TOOLBAR_GET_RE, &DHMainFrm::OnGetRe)
 	
 END_MESSAGE_MAP()
 
@@ -271,6 +277,26 @@ void DHMainFrm::OnPSITransform()
 	{
 		ex.ShowError();
 	}
+}
+
+void DHMainFrm::OnGetAmplitude()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnGetPhase()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnGetRe()
+{
+	int d = 0;
+}
+
+void DHMainFrm::OnGetIm()
+{
+	int d = 0;
 }
 
 void DHMainFrm::OnContextMenu(CWnd* pWnd, CPoint point)
