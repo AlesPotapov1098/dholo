@@ -1,13 +1,7 @@
 #include "pch.h"
 #include "DHGPGPUGetIm.h"
 
-namespace dholo
+dholo::gpgpu::DHGPGPUGetIm::DHGPGPUGetIm(const dholo::img::DHImgLoader& img)
 {
-	namespace gpgpu
-	{
-		DHGPGPUGetIm::DHGPGPUGetIm(const dholo::img::DHImgLoader& img)
-		{
 
-		}
-	}
 }

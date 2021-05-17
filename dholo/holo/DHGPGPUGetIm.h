@@ -13,8 +13,6 @@ namespace dholo
 			DHGPGPUGetIm() = default;
 			DHGPGPUGetIm(const dholo::img::DHImgLoader& img);
 			~DHGPGPUGetIm() = default;
-
-			
 		};
 	}
 }
