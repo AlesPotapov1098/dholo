@@ -103,6 +103,9 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 	m_ImgLoader[0].Load(imgPath);
 
 	m_Transform = new dholo::gpgpu::DHGPGPUShowImg(m_ImgLoader[0]);
+
+	Invalidate();
+	UpdateWindow();
 }
 
 void DHWnd::LoadImg(const std::vector<CStringA>& imgPaths)

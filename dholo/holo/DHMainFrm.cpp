@@ -316,7 +316,14 @@ void DHMainFrm::OnAddImage()
 
 void DHMainFrm::OnLoadIntoGp()
 {
-	m_targetWnd.LoadImg(static_cast<CStringA>(m_imgList.GetSelectedImg()));
+	try
+	{
+		m_targetWnd.LoadImg(static_cast<CStringA>(m_imgList.GetSelectedImg()));
+	}
+	catch (const dholo::exp::DHAppExp &ex)
+	{
+		ex.ShowError();
+	}
 }
 
 void DHMainFrm::OnMenu(CPoint point)

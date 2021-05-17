@@ -222,7 +222,9 @@ namespace dholo
 			if (selectedItem == 0)
 				throw dholo::exp::DHAppExp(L"Необходимо выбрать изображение!");
 
-			return selectedItem;
+			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
+
+			return m_dhImgList.GetNextSelectedItem(pos);
 		}
 
 		void DHImgExpr::OnDeleteImage()
