@@ -20,7 +20,7 @@ namespace dholo
 			virtual void RenderScene() override;
 			virtual void Release() override;
 
-		protected:
+		private:
 			cl_mem m_Mem;
 		};
 	}
