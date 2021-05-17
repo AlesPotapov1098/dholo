@@ -105,6 +105,18 @@
     <ClInclude Include="DHGPGPUShowImg.h">
       <Filter>src\gpgpu\transform</Filter>
     </ClInclude>
+    <ClInclude Include="DHGPGPUGetAmpl.h">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUGetIm.h">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUGetPhase.h">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUGetRe.h">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DHImgExpr.cpp">
@@ -156,6 +168,18 @@
       <Filter>src\exp</Filter>
     </ClCompile>
     <ClCompile Include="DHGPGPUShowImg.cpp">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetAmpl.cpp">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetIm.cpp">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetPhase.cpp">
+      <Filter>src\gpgpu\transform</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetRe.cpp">
       <Filter>src\gpgpu\transform</Filter>
     </ClCompile>
   </ItemGroup>
