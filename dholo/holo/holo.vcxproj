@@ -193,6 +193,7 @@
     <ClInclude Include="DHGPGPUGetAmpl.h" />
     <ClInclude Include="DHGPGPUGetIm.h" />
     <ClInclude Include="DHGPGPUGetPhase.h" />
+    <ClInclude Include="DHGPGPUGetPrmtrs.h" />
     <ClInclude Include="DHGPGPUGetRe.h" />
     <ClInclude Include="DHGPGPUPSITransform.h" />
     <ClInclude Include="DHGPGPUShowImg.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="DHGPGPUGetAmpl.cpp" />
     <ClCompile Include="DHGPGPUGetIm.cpp" />
     <ClCompile Include="DHGPGPUGetPhase.cpp" />
+    <ClCompile Include="DHGPGPUGetPrmtrs.cpp" />
     <ClCompile Include="DHGPGPUGetRe.cpp" />
     <ClCompile Include="DHGPGPUPSITransform.cpp" />
     <ClCompile Include="DHGPGPUShowImg.cpp" />

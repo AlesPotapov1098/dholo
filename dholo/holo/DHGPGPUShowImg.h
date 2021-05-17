@@ -9,15 +9,18 @@ namespace dholo
 		class DHGPGPUShowImg : public DHGPGPUTransform
 		{
 		public:
+
+			DHGPGPUShowImg() = default;
 			DHGPGPUShowImg(const dholo::img::DHImgLoader& img);
 			~DHGPGPUShowImg();
 
 			virtual void GenerateTexture() override;
 			virtual void RenderScene() override;
 
-		private:
+		protected:
 			dholo::img::DHImgLoader m_ImgLdr;
 			GLuint m_Texture;
+
 		};
 	}
 }

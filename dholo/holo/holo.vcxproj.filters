@@ -37,6 +37,9 @@
     <Filter Include="src\exp">
       <UniqueIdentifier>{81680945-12ef-4d68-b8af-668287902599}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\gpgpu\transform\prmtrs">
+      <UniqueIdentifier>{0d0d25d1-3587-4e0d-b78d-29a29963fd8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DHImgExpr.h">
@@ -105,17 +108,20 @@
     <ClInclude Include="DHGPGPUShowImg.h">
       <Filter>src\gpgpu\transform</Filter>
     </ClInclude>
-    <ClInclude Include="DHGPGPUGetAmpl.h">
-      <Filter>src\gpgpu\transform</Filter>
-    </ClInclude>
-    <ClInclude Include="DHGPGPUGetIm.h">
-      <Filter>src\gpgpu\transform</Filter>
+    <ClInclude Include="DHGPGPUGetRe.h">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClInclude>
     <ClInclude Include="DHGPGPUGetPhase.h">
-      <Filter>src\gpgpu\transform</Filter>
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClInclude>
-    <ClInclude Include="DHGPGPUGetRe.h">
-      <Filter>src\gpgpu\transform</Filter>
+    <ClInclude Include="DHGPGPUGetIm.h">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUGetAmpl.h">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
+    </ClInclude>
+    <ClInclude Include="DHGPGPUGetPrmtrs.h">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,17 +176,20 @@
     <ClCompile Include="DHGPGPUShowImg.cpp">
       <Filter>src\gpgpu\transform</Filter>
     </ClCompile>
-    <ClCompile Include="DHGPGPUGetAmpl.cpp">
-      <Filter>src\gpgpu\transform</Filter>
-    </ClCompile>
-    <ClCompile Include="DHGPGPUGetIm.cpp">
-      <Filter>src\gpgpu\transform</Filter>
+    <ClCompile Include="DHGPGPUGetRe.cpp">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClCompile>
     <ClCompile Include="DHGPGPUGetPhase.cpp">
-      <Filter>src\gpgpu\transform</Filter>
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClCompile>
-    <ClCompile Include="DHGPGPUGetRe.cpp">
-      <Filter>src\gpgpu\transform</Filter>
+    <ClCompile Include="DHGPGPUGetIm.cpp">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetAmpl.cpp">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
+    </ClCompile>
+    <ClCompile Include="DHGPGPUGetPrmtrs.cpp">
+      <Filter>src\gpgpu\transform\prmtrs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
