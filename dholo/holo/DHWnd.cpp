@@ -47,13 +47,20 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 
 void DHWnd::OnPaint() 
 {
-	m_pDC = BeginPaint(&m_Paint);
-	m_Transform->Init(*m_pDC,dholo::gpgpu::DHOCLHost());
-	m_Transform->GenerateTexture();
-	m_Transform->Calculate();
-	m_Transform->RenderScene();
-	m_Transform->Release();
-	EndPaint(&m_Paint);
+	try 
+	{
+		m_pDC = BeginPaint(&m_Paint);
+		m_Transform->Init(*m_pDC, m_Host);
+		m_Transform->GenerateTexture();
+		m_Transform->Calculate();
+		m_Transform->RenderScene();
+		m_Transform->Release();
+		EndPaint(&m_Paint);
+	}
+	catch (const dholo::exp::DHGPGPUExp &ex)
+	{
+		ex.ShowError();
+	}
 }
 
 void DHWnd::OnSize(UINT nType, int cx, int cy)
@@ -80,7 +87,7 @@ void DHWnd::LoadTexture(const std::vector<CStringA>& path)
 	}
 	catch (const dholo::exp::DHAppExp& ex)
 	{
-		ex.what();
+		ex.ShowError();
 	}
 }
 
@@ -140,9 +147,13 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
-void DHWnd::PSITransform()
+void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct& psi, const dholo::gpgpu::DHOCLHost &host)
 {
-	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform();
+	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(psi);
+	m_Host = host;
+
+	Invalidate();
+	UpdateWindow();
 }
 
 ImageFile DHWnd::OnSaveImg()
