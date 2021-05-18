@@ -30,8 +30,6 @@ namespace dholo
 
 		void DHGPGPUGetPrmtrs::Calculate(int global_w, int global_h, int local_w, int local_h)
 		{
-			DHGPGPUTransform::Calculate(0, 0, 0, 0);
-
 			cl_int error = clEnqueueAcquireGLObjects(m_CommandQueue, 1, &m_Mem, 0, 0, NULL);
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);

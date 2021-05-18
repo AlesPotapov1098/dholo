@@ -15,6 +15,23 @@ namespace dholo
 
 			m_KernelName = "";
 			m_ProgramPath = "";
+
+			m_Tex = nullptr;
+		}
+
+		DHGPGPUTransform::DHGPGPUTransform(GLuint* tex, const dholo::img::DHImgLoader& img)
+		{
+			m_Tex = tex;
+			m_ImgLdr = img;
+
+			m_Program = nullptr;
+			m_Kernel = nullptr;
+			m_InOutMem = nullptr;
+			m_Context = nullptr;
+			m_CommandQueue = nullptr;
+
+			m_KernelName = "";
+			m_ProgramPath = "";
 		}
 
 		DHGPGPUTransform::~DHGPGPUTransform()
@@ -84,8 +101,28 @@ namespace dholo
 
 		void DHGPGPUTransform::Calculate(int global_w, int global_h, int local_w, int local_h) 
 		{
-			if (m_KernelName.empty() || m_ProgramPath.empty())
+			if (!m_Tex)
 				return;
+
+			glEnable(GL_TEXTURE_2D);
+			glGenTextures(1, m_Tex);
+
+			glBindTexture(GL_TEXTURE_2D, *m_Tex);
+
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+			glTexImage2D(
+				GL_TEXTURE_2D, 0,
+				m_ImgLdr.GetChannels() == 3 ? GL_RGB : GL_RGBA,
+				m_ImgLdr.GetWidth(),
+				m_ImgLdr.GetHeight(),
+				0,
+				m_ImgLdr.GetChannels() == 3 ? GL_RGB : GL_RGBA,
+				GL_FLOAT,
+				m_ImgLdr.GetPixelsData());
 		}
 
 		void DHGPGPUTransform::Release()

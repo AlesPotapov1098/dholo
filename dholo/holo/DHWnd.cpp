@@ -51,10 +51,7 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 	m_Desc.iLayerType = PFD_MAIN_PLANE;
 
 	m_Transform = new dholo::gpgpu::DHGPGPUTransform;
-
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &m_RenderTargetTexture);
-
+	
 	return 0;
 }
 
@@ -117,33 +114,13 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 	m_ImgLoader.resize(1);
 	m_ImgLoader[0].Load(imgPath);
 
-	glEnable(GL_TEXTURE_2D);
-	glGenTextures(1, &m_RenderTargetTexture);
-
-	glBindTexture(GL_TEXTURE_2D, m_RenderTargetTexture);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glTexImage2D(
-		GL_TEXTURE_2D, 0,
-		m_ImgLoader[0].GetChannels() == 3 ? GL_RGB : GL_RGBA,
-		m_ImgLoader[0].GetWidth(),
-		m_ImgLoader[0].GetHeight(),
-		0,
-		m_ImgLoader[0].GetChannels() == 3 ? GL_RGB : GL_RGBA,
-		GL_FLOAT,
-		m_ImgLoader[0].GetPixelsData());
-
 	m_GlobalSizeX = m_ImgLoader[0].GetWidth();
 	m_GlobalSizeY = m_ImgLoader[0].GetHeight();
 
 	m_LocalSizeX = 1;
 	m_LocalSizeY = 1;
 
-	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform;
+	m_Transform = new dholo::gpgpu::DHGPGPUTransform(&m_RenderTargetTexture, m_ImgLoader[0]);
 
 	Invalidate();
 	UpdateWindow();
@@ -250,13 +227,17 @@ void DHWnd::InitHandles()
 		return;
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+	if (f)
+	{
+		
+	}
 }
 
 void DHWnd::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, m_RenderTargetTexture);
 
 	glBegin(GL_QUADS);

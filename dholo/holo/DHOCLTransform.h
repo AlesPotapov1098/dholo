@@ -24,6 +24,7 @@ namespace dholo
 		{
 		public:
 			DHGPGPUTransform();
+			DHGPGPUTransform(GLuint* tex, const dholo::img::DHImgLoader& img);
 			virtual ~DHGPGPUTransform();
 
 			/// <summary>
@@ -62,6 +63,9 @@ namespace dholo
 			std::string m_ProgramPath;
 			std::string m_KernelName;
 			dholo::gpgpu::DHOCLHost m_Host;
+
+			GLuint* m_Tex;
+			dholo::img::DHImgLoader m_ImgLdr;
 		};
 	}
 }

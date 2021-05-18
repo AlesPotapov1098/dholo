@@ -81,8 +81,6 @@ namespace dholo
 
 		void DHGPGPUPSITransform::Calculate(int global_w, int global_h, int local_w, int local_h)
 		{
-			DHGPGPUTransform::Calculate(0, 0, 0, 0);
-
 			cl_float4 S, C;
 			cl_float B;
 

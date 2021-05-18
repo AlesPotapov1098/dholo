@@ -45,8 +45,6 @@ __kernel void PSI(
 
     float2 result = complexFromPolarCoordinates(am, a);
 
-	//a = 1.0f / a;
-
     //a += M_PI;
 	//a /= 2 * M_PI;
 
