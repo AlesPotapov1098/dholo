@@ -10,11 +10,12 @@ namespace dholo
 			DHGPGPUTransform::DHGPGPUTransform();
 		}
 
-		DHGPGPUPSITransform::DHGPGPUPSITransform(const PSIStruct& psi)
+		DHGPGPUPSITransform::DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi)
 		{
 			m_PSISettings = psi;
 			m_ProgramPath = "PSI.cl";
 			m_KernelName = "PSI";
+			m_RenderTex = tex;
 		}
 
 		DHGPGPUPSITransform::~DHGPGPUPSITransform()
@@ -22,10 +23,9 @@ namespace dholo
 			DHGPGPUTransform::~DHGPGPUTransform();
 		}
 
-		void DHGPGPUPSITransform::Init(const CDC& dc, const DHOCLHost& host)
+		void DHGPGPUPSITransform::Init(const DHOCLHost& host, HDC dc, HGLRC rc)
 		{
-			DHGPGPUTransform::Init(dc, host);
-			InitOpenCL();
+			DHGPGPUTransform::Init(host, dc, rc);
 			
 			for (int i = 0; i < 4; i++)
 				if (!m_Images[i].Load((CStringA)m_PSISettings.m_ImgNames[i]))
@@ -42,18 +42,15 @@ namespace dholo
 					throw dholo::exp::DHAppExp("Some or any image parametrs not equal!!!");
 
 			m_Images[4].GenerateImage(width, height, channels);
-		}
 
-		void DHGPGPUPSITransform::GenerateTexture()
-		{
 			glEnable(GL_TEXTURE_2D);
-			glGenTextures(5, m_Textures);
+			glGenTextures(4, m_Textures);
 
 			cl_int error_code = CL_SUCCESS;
 
 			for (int i = 0; i < 5; i++)
 			{
-				glBindTexture(GL_TEXTURE_2D, m_Textures[i]);
+				glBindTexture(GL_TEXTURE_2D, i == 4 ? *m_RenderTex : m_Textures[i]);
 
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -69,12 +66,12 @@ namespace dholo
 					m_Images[i].GetChannels() == 3 ? GL_RGB : GL_RGBA,
 					GL_FLOAT,
 					m_Images[i].GetPixelsData());
-			
+
 				m_Mem[i] = clCreateFromGLTexture(
 					m_Context,
 					CL_MEM_READ_WRITE,
 					GL_TEXTURE_2D,
-					0, m_Textures[i],
+					0, i == 4 ? *m_RenderTex : m_Textures[i],
 					&error_code);
 
 				if (error_code != CL_SUCCESS)
@@ -82,8 +79,10 @@ namespace dholo
 			}
 		}
 
-		void DHGPGPUPSITransform::Calculate()
+		void DHGPGPUPSITransform::Calculate(int global_w, int global_h, int local_w, int local_h)
 		{
+			DHGPGPUTransform::Calculate(0, 0, 0, 0);
+
 			cl_float4 S, C;
 			cl_float B;
 
@@ -137,30 +136,6 @@ namespace dholo
 		void DHGPGPUPSITransform::Release()
 		{
 			DHGPGPUTransform::Release();
-		}
-
-		void DHGPGPUPSITransform::RenderScene()
-		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_Textures[4]);
-
-			glBegin(GL_QUADS);
-				glTexCoord2f(0.0f, 0.0f);
-				glVertex2f(-1.0f, -1.0f);
-
-				glTexCoord2f(0.0f, 1.0f);
-				glVertex2f(-1.0f, 1.0f);
-
-				glTexCoord2f(1.0f, 1.0f);
-				glVertex2f(1.0f, 1.0f);
-
-				glTexCoord2f(1.0f, 0.0f);
-				glVertex2f(1.0f, -1.0f);
-			glEnd();
-
-			SwapBuffers(m_hDC);
 		}
 	}
 }

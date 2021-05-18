@@ -40,7 +40,20 @@ int DHWnd::OnCreate(LPCREATESTRUCT lpcst)
 	if (CWnd::OnCreate(lpcst) != 0)
 		return -1;
 		
+	ZeroMemory(&m_Desc, sizeof(m_Desc));
+
+	m_Desc.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+	m_Desc.nVersion = 1;
+	m_Desc.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+	m_Desc.iPixelType = PFD_TYPE_RGBA;
+	m_Desc.cColorBits = 32;
+	m_Desc.cDepthBits = 24;
+	m_Desc.iLayerType = PFD_MAIN_PLANE;
+
 	m_Transform = new dholo::gpgpu::DHGPGPUTransform;
+
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &m_RenderTargetTexture);
 
 	return 0;
 }
@@ -51,11 +64,13 @@ void DHWnd::OnPaint()
 	
 	try 
 	{
-		m_Transform->Init(*m_pDC, m_Host);
-		m_Transform->GenerateTexture();
-		m_Transform->Calculate();
-		m_Transform->RenderScene();
+		InitHandles();
+
+		m_Transform->Init(m_Host, m_pDC->m_hDC, m_hRC);
+		m_Transform->Calculate(m_GlobalSizeX, m_GlobalSizeY, m_LocalSizeX, m_LocalSizeY);
 		m_Transform->Release();
+
+		Render();
 	}
 	catch (const dholo::exp::DHGPGPUExp &ex)
 	{
@@ -102,7 +117,33 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 	m_ImgLoader.resize(1);
 	m_ImgLoader[0].Load(imgPath);
 
-	m_Transform = new dholo::gpgpu::DHGPGPUShowImg(m_ImgLoader[0]);
+	glEnable(GL_TEXTURE_2D);
+	glGenTextures(1, &m_RenderTargetTexture);
+
+	glBindTexture(GL_TEXTURE_2D, m_RenderTargetTexture);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(
+		GL_TEXTURE_2D, 0,
+		m_ImgLoader[0].GetChannels() == 3 ? GL_RGB : GL_RGBA,
+		m_ImgLoader[0].GetWidth(),
+		m_ImgLoader[0].GetHeight(),
+		0,
+		m_ImgLoader[0].GetChannels() == 3 ? GL_RGB : GL_RGBA,
+		GL_FLOAT,
+		m_ImgLoader[0].GetPixelsData());
+
+	m_GlobalSizeX = m_ImgLoader[0].GetWidth();
+	m_GlobalSizeY = m_ImgLoader[0].GetHeight();
+
+	m_LocalSizeX = 1;
+	m_LocalSizeY = 1;
+
+	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform;
 
 	Invalidate();
 	UpdateWindow();
@@ -127,6 +168,7 @@ void DHWnd::GenSin()
 		return;
 
 	m_Transform = new dholo::gpgpu::DHGPGPUGenSinus(
+		&m_RenderTargetTexture,
 		dlg.GetWidth(),
 		dlg.GetHeight(),
 		dlg.GetAmpl(),
@@ -137,9 +179,9 @@ void DHWnd::GenSin()
 	UpdateWindow();
 }
 
-void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct& psi, const dholo::gpgpu::DHOCLHost &host)
+void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct &psi, const dholo::gpgpu::DHOCLHost &host)
 {
-	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(psi);
+	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(&m_RenderTargetTexture, psi);
 	m_Host = host;
 
 	Invalidate();
@@ -164,4 +206,72 @@ ImageFile DHWnd::OnSaveImg()
 	image.Destroy();
 
 	return { true, openFileDlg.GetPathName(), openFileDlg.GetFileExt(), openFileDlg.GetFileName() };
+}
+
+void DHWnd::OnGetAmplitude()
+{
+	Invalidate();
+	UpdateWindow();
+}
+
+void DHWnd::OnGetPhase()
+{
+	Invalidate();
+	UpdateWindow();
+}
+
+void DHWnd::OnGetRe()
+{
+	Invalidate();
+	UpdateWindow();
+}
+
+void DHWnd::OnGetIm()
+{
+	Invalidate();
+	UpdateWindow();
+}
+
+void DHWnd::InitHandles()
+{
+	if (m_pDC == nullptr)
+		return;
+
+	if (!SetPixelFormat(m_pDC->m_hDC,
+		ChoosePixelFormat(m_pDC->m_hDC, &m_Desc),
+		&m_Desc))
+		return;
+
+	m_hRC = wglCreateContext(m_pDC->m_hDC);
+	if (!m_hRC)
+		return;
+
+	if (!wglMakeCurrent(m_pDC->m_hDC, m_hRC))
+		return;
+
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+void DHWnd::Render()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, m_RenderTargetTexture);
+
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2f(-1.0f, -1.0f);
+
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2f(-1.0f, 1.0f);
+
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2f(1.0f, 1.0f);
+
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2f(1.0f, -1.0f);
+	glEnd();
+
+	SwapBuffers(m_pDC->m_hDC);
 }

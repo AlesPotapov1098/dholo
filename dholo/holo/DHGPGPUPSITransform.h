@@ -24,20 +24,19 @@ namespace dholo
 		{
 		public:
 			DHGPGPUPSITransform();
-			DHGPGPUPSITransform(const PSIStruct& psi);
+			DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi);
 			virtual ~DHGPGPUPSITransform();
 
-			void Init(const CDC&, const DHOCLHost&) override;
-			void GenerateTexture() override;
-			void Calculate() override;
+			void Init(const DHOCLHost&, HDC dc, HGLRC rc) override;
+			void Calculate(int global_w, int global_h, int local_w, int local_h) override;
 			void Release() override;
-			void RenderScene() override;
 
 		private:
 			PSIStruct m_PSISettings;
 
 			dholo::img::DHImgLoader m_Images[5];
 			GLuint m_Textures[5];
+			GLuint* m_RenderTex;
 			cl_mem m_Mem[5];
 		};
 	}

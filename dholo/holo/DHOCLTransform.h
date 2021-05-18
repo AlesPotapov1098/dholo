@@ -29,17 +29,12 @@ namespace dholo
 			/// <summary>
 			/// Инициализация OpenGL и OpenCL
 			/// </summary>
-				virtual void Init(const CDC&, const DHOCLHost&);
-			
-			/// <summary>
-			/// Генерация текстур
-			/// </summary>
-				virtual void GenerateTexture();
+				virtual void Init(const DHOCLHost&, HDC, HGLRC);
 
 			/// <summary>
 			/// Преобразование
 			/// </summary>
-				virtual void Calculate();
+				virtual void Calculate(int global_w, int global_h, int local_w, int local_h);
 
 			/// <summary>
 			/// Освобождение ресурсов
@@ -47,11 +42,16 @@ namespace dholo
 				virtual void Release();
 
 			/// <summary>
-			/// Отрисовка сцены
+			/// Задаем путь к файлу программы
 			/// </summary>
-				virtual void RenderScene();
-		protected:
-			void InitOpenCL();
+			/// <param name="">Путь к файлу</param>
+			void SetProgramName(const std::string&);
+
+			/// <summary>
+			/// Задаем название ядра
+			/// </summary>
+			/// <param name="">Название ядра</param>
+			void SetKernelName(const std::string&);
 
 		protected:
 			cl_program m_Program;
@@ -59,28 +59,9 @@ namespace dholo
 			cl_context m_Context;
 			cl_mem m_InOutMem;
 			cl_command_queue m_CommandQueue;
-			HGLRC m_hRC;
-			HDC m_hDC;
-			PIXELFORMATDESCRIPTOR m_Desc;
 			std::string m_ProgramPath;
 			std::string m_KernelName;
 			dholo::gpgpu::DHOCLHost m_Host;
 		};
-
-		class test : public DHGPGPUTransform
-		{
-		public:
-			test() = default;
-			~test() = default;
-			void RenderScene() override
-			{
-				glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-				DHGPGPUTransform::RenderScene();
-			}
-		};
-
-		
-
-		
 	}
 }

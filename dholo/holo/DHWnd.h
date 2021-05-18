@@ -7,7 +7,8 @@
 #include "DHGPGPUGenSinus.h"
 #include "DHGPGPUPSITransform.h"
 #include "DHAppExp.h"
-#include "DHGPGPUShowImg.h"
+#include "DHGPGPUGetPrmtrs.h"
+#include "DHOCLTransDlg.h"
 
 struct ImageFile
 {
@@ -47,6 +48,14 @@ public:
 
 	ImageFile OnSaveImg();
 
+	void OnGetAmplitude();
+	void OnGetPhase();
+	void OnGetRe();
+	void OnGetIm();
+
+	void InitHandles();
+	void Render();
+
 	afx_msg int OnCreate(LPCREATESTRUCT lpcst);
 	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -64,7 +73,11 @@ private:
 
 	PAINTSTRUCT m_Paint;
 	CDC* m_pDC;
+	HGLRC m_hRC;
+	PIXELFORMATDESCRIPTOR m_Desc;
 	RECT m_Rect;
 	CRect m_CRect;
+
+	GLuint m_RenderTargetTexture;
 };
 

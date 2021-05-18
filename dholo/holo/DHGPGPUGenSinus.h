@@ -12,13 +12,10 @@ namespace dholo
 		class DHGPGPUGenSinus : public DHGPGPUTransform
 		{
 		public:
-			DHGPGPUGenSinus(int width, int height, float ampl, float phi, int T);
+			DHGPGPUGenSinus(GLuint *tex, int width, int height, float ampl, float phi, int T);
 			virtual ~DHGPGPUGenSinus();
 
-			void GenerateTexture() override;
-			void Calculate() override;
-			void Release() override;
-			void RenderScene() override;
+			void Calculate(int global_w, int global_h, int local_w, int local_h) override;
 
 		private:
 			float m_amp;
@@ -27,7 +24,7 @@ namespace dholo
 			int m_height;
 			int m_T;
 
-			GLuint m_SinTexture;
+			GLuint* m_SinTexture;
 		};
 	}
 }

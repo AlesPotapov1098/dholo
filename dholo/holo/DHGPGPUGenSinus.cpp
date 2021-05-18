@@ -5,7 +5,7 @@ namespace dholo
 {
 	namespace gpgpu
 	{
-		DHGPGPUGenSinus::DHGPGPUGenSinus(int width, int height, float ampl, float phi, int T)
+		DHGPGPUGenSinus::DHGPGPUGenSinus(GLuint* tex, int width, int height, float ampl, float phi, int T)
 		{
 			DHGPGPUTransform::DHGPGPUTransform();
 
@@ -14,6 +14,7 @@ namespace dholo
 			m_amp = ampl;
 			m_phase = phi;
 			m_T = T;
+			m_SinTexture = tex;
 		}
 
 		DHGPGPUGenSinus::~DHGPGPUGenSinus()
@@ -21,7 +22,7 @@ namespace dholo
 			DHGPGPUTransform::~DHGPGPUTransform();
 		}
 
-		void DHGPGPUGenSinus::GenerateTexture()
+		void DHGPGPUGenSinus::Calculate(int global_w, int global_h, int local_w, int local_h)
 		{
 			float* sinus = new float[m_height];
 			float coeff = 2 * CL_M_PI * m_T / m_height;
@@ -39,47 +40,14 @@ namespace dholo
 				}
 
 			glEnable(GL_TEXTURE_2D);
-			glGenTextures(1, &m_SinTexture);
-			glBindTexture(GL_TEXTURE_2D, m_SinTexture);
+			glGenTextures(1, m_SinTexture);
+			glBindTexture(GL_TEXTURE_2D, *m_SinTexture);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_FLOAT, pixels);
 
 			delete[] pixels;
 			delete[] sinus;
-		}
-
-		void DHGPGPUGenSinus::Calculate()
-		{
-		}
-
-		void DHGPGPUGenSinus::Release()
-		{
-			//DHGPGPUTransform::~DHGPGPUTransform();
-		}
-
-		void DHGPGPUGenSinus::RenderScene()
-		{
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_SinTexture);
-
-			glBegin(GL_QUADS);
-			glTexCoord2f(0.0f, 0.0f);
-			glVertex2f(-1.0f, -1.0f);
-
-			glTexCoord2f(0.0f, 1.0f);
-			glVertex2f(-1.0f, 1.0f);
-
-			glTexCoord2f(1.0f, 1.0f);
-			glVertex2f(1.0f, 1.0f);
-
-			glTexCoord2f(1.0f, 0.0f);
-			glVertex2f(1.0f, -1.0f);
-			glEnd();
-
-			SwapBuffers(m_hDC);
 		}
 	}
 }

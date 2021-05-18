@@ -1,27 +1,26 @@
 #pragma once
 
-#include "DHGPGPUShowImg.h"
+#include "DHOCLTransform.h"
 
 namespace dholo
 {
 	namespace gpgpu
 	{
-		class DHGPGPUGetPrmtrs : public DHGPGPUShowImg
+		class DHGPGPUGetPrmtrs : public DHGPGPUTransform
 		{
 		public:
 
 			DHGPGPUGetPrmtrs() = default;
-			DHGPGPUGetPrmtrs(const dholo::img::DHImgLoader& img);
+			DHGPGPUGetPrmtrs(GLuint* tex);
 			~DHGPGPUGetPrmtrs() = default;
 			
-			virtual void Init(const CDC&, const DHOCLHost&) override;
-			virtual void GenerateTexture() override;
-			virtual void Calculate() override;
-			virtual void RenderScene() override;
+			void Init(const DHOCLHost&, HDC dc, HGLRC rc) override;
+			virtual void Calculate(int global_w, int global_h, int local_w, int local_h) override;
 			virtual void Release() override;
 
 		private:
 			cl_mem m_Mem;
+			GLuint* m_Tex;
 		};
 	}
 }
