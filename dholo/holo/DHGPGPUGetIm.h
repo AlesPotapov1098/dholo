@@ -1,12 +1,12 @@
 #pragma once
 
-#include "DHGPGPUShowImg.h"
+#include "DHGPGPUGetPrmtrs.h"
 
 namespace dholo
 {
 	namespace gpgpu
 	{
-		class DHGPGPUGetIm : public DHGPGPUShowImg
+		class DHGPGPUGetIm : public DHGPGPUGetPrmtrs
 		{
 		public:
 

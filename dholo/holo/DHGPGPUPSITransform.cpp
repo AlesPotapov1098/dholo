@@ -25,7 +25,7 @@ namespace dholo
 		void DHGPGPUPSITransform::Init(const CDC& dc, const DHOCLHost& host)
 		{
 			DHGPGPUTransform::Init(dc, host);
-			InitOpenCL(m_Host);
+			InitOpenCL();
 			
 			for (int i = 0; i < 4; i++)
 				if (!m_Images[i].Load((CStringA)m_PSISettings.m_ImgNames[i]))

@@ -3,4 +3,7 @@
 
 dholo::gpgpu::DHGPGPUGetRe::DHGPGPUGetRe(const img::DHImgLoader& img)
 {
+	DHGPGPUGetPrmtrs::DHGPGPUGetPrmtrs(img);
+	m_ProgramPath = "RE.cl";
+	m_KernelName = "RE";
 }

@@ -220,16 +220,16 @@ namespace dholo
 			SwapBuffers(m_hDC);
 		}
 
-		void DHGPGPUTransform::InitOpenCL(const DHOCLHost& host)
+		void DHGPGPUTransform::InitOpenCL()
 		{
 			cl_int err = CL_SUCCESS;
 			cl_context_properties prop[] = {
-				CL_CONTEXT_PLATFORM, (cl_context_properties)host.GetPlatform(),
+				CL_CONTEXT_PLATFORM, (cl_context_properties)m_Host.GetPlatform(),
 				CL_GL_CONTEXT_KHR, (cl_context_properties)m_hRC,
 				CL_WGL_HDC_KHR, (cl_context_properties)m_hDC,
 				0 };
 			
-			cl_device_id dev = host.GetDevice();
+			cl_device_id dev = m_Host.GetDevice();
 			m_Context = clCreateContext(prop, 1, &dev, NULL, NULL, &err);
 			
 			if (err != CL_SUCCESS)

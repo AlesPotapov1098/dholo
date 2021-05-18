@@ -51,7 +51,7 @@ namespace dholo
 			/// </summary>
 				virtual void RenderScene();
 		protected:
-			void InitOpenCL(const DHOCLHost&);
+			void InitOpenCL();
 
 		protected:
 			cl_program m_Program;
