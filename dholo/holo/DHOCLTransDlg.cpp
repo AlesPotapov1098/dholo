@@ -139,13 +139,8 @@ namespace dholo
 		int CurSell = comboBox->GetCurSel();
 		gpgpu::DHOCLHard hard = m_Init.GetHardware(CurSell);
 
-		auto editPlatformVendor =
-			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VENDOR));
-		editPlatformVendor->SetWindowTextW(gpgpu::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()).c_str());
-
-		auto editPlatformVersion =
-			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VERSION));
-		editPlatformVersion->SetWindowTextW(gpgpu::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()).c_str());
+		FillEdit(IDC_EDIT_PLATFORM_VENDOR, gpgpu::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()));
+		FillEdit(IDC_EDIT_PLATFORM_VERSION, gpgpu::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()));
 	}
 
 	void DHOCLTransDlg::FillInComboDevice()

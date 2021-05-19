@@ -68,18 +68,76 @@ namespace dholo
 			DHOCLInfo() = default;
 			~DHOCLInfo() = default;
 
+			/// <summary>
+			/// Определяем и выводим имя платформы
+			/// </summary>
+			/// <param name="pl">Указатель на платформу OpenCL</param>
 			static std::wstring GetPlatformName(cl_platform_id pl);
+
+			/// <summary>
+			/// Определяем и выводим производителя платформы
+			/// </summary>
+			/// <param name="pl">Указатель на платформу OpenCL</param>
 			static std::wstring GetPlatformVendor(cl_platform_id pl);
+
+			/// <summary>
+			/// Определяем и выводим версию платформы
+			/// </summary>
+			/// <param name="pl">Указатель на платформу OpenCL</param>
 			static std::wstring GetPlatformVersion(cl_platform_id pl);
+
+			/// <summary>
+			/// Определяем и выводим расширения платформы
+			/// </summary>
+			/// <param name="pl">Указатель на платформу OpenCL</param>
 			static std::wstring GetPlatformExtensions(cl_platform_id pl);
 			
+			/// <summary>
+			/// Определяем и выводим имя устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceName(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим имя устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceVendor(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим производителя устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceVersion(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим расширения устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceExtensions(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим тип устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceType(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим частоту устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceFrequency(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим размер глобальной памяти устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceGlobalSize(cl_device_id dev);
+
+			/// <summary>
+			/// Определяем и выводим размер локальной памяти устройства
+			/// </summary>
+			/// <param name="dev">Указатель на устройство OpenCL</param>
 			static std::wstring GetDeviceLocalSize(cl_device_id dev);
 			 
 			static std::wstring GetPlatformInfo(cl_platform_id pl, cl_platform_info inf);
