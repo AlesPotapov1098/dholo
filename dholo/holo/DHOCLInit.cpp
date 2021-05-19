@@ -196,6 +196,61 @@ namespace dholo
 			}
 		}
 
+		std::wstring DHOCLInfo::GetDeviceFrequency(cl_device_id dev)
+		{
+			std::size_t size = 0;
+
+			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_MAX_CLOCK_FREQUENCY, 0, nullptr, &size);
+			if (err != CL_SUCCESS || size == 0)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			cl_uint freq;
+
+			err = clGetDeviceInfo(dev, CL_DEVICE_MAX_CLOCK_FREQUENCY, size, &freq, nullptr);
+			if (err != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			return std::to_wstring(freq) + L" ฬร๖";
+		}
+
+		std::wstring DHOCLInfo::GetDeviceGlobalSize(cl_device_id dev)
+		{
+			std::size_t size = 0;
+
+			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_GLOBAL_MEM_SIZE, 0, nullptr, &size);
+			if (err != CL_SUCCESS || size == 0)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			cl_ulong global_mem;
+
+			err = clGetDeviceInfo(dev, CL_DEVICE_GLOBAL_MEM_SIZE, size, &global_mem, nullptr);
+			if (err != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			global_mem /= (1024 * 1024 * 1024);
+
+			return std::to_wstring(global_mem) + L" รม";
+		}
+
+		std::wstring DHOCLInfo::GetDeviceLocalSize(cl_device_id dev)
+		{
+			std::size_t size = 0;
+
+			cl_int err = clGetDeviceInfo(dev, CL_DEVICE_LOCAL_MEM_SIZE, 0, nullptr, &size);
+			if (err != CL_SUCCESS || size == 0)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			cl_ulong local_mem;
+
+			err = clGetDeviceInfo(dev, CL_DEVICE_LOCAL_MEM_SIZE, size, &local_mem, nullptr);
+			if (err != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(err);
+
+			local_mem /= 1024;
+
+			return std::to_wstring(local_mem) + L" สม";
+		}
+
 		std::wstring DHOCLInfo::GetPlatformInfo(cl_platform_id pl, cl_platform_info inf)
 		{
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> conv;

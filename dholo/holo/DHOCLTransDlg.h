@@ -37,6 +37,8 @@ namespace dholo {
 		void FillInPSIPanel();
 		void FillInComboPhase(int code);
 
+		void FillEdit(int id, const std::wstring& str);
+
 		float GetPhase1() const;
 		float GetPhase2() const;
 		float GetPhase3() const;

@@ -56,15 +56,19 @@ namespace dholo
 		{
 			ex.ShowError();
 		}
+		catch (const dholo::exp::DHAppExp& ex)
+		{
+			ex.ShowError();
+		}
 
 		return TRUE;
 	}
 
 	void DHOCLTransDlg::OnOK()
 	{
-		int nPlatform = \
+		int nPlatform =
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_PLATFORM_NAME))->GetCurSel();
-		int nDevice = \
+		int nDevice =
 			static_cast<CComboBox*>(this->GetDlgItem(IDC_COMBO_DEVICE_NAME))->GetCurSel();
 
 		auto& hard = m_Init.GetHardware(nPlatform);
@@ -92,6 +96,10 @@ namespace dholo
 			FillInDevicePanel();
 		}
 		catch (const dholo::exp::DHGPGPUExp& ex)
+		{
+			ex.ShowError();
+		}
+		catch (const dholo::exp::DHAppExp& ex)
 		{
 			ex.ShowError();
 		}
@@ -133,13 +141,11 @@ namespace dholo
 
 		auto editPlatformVendor =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VENDOR));
-		editPlatformVendor->SetWindowTextW(
-			gpgpu::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()).c_str());
+		editPlatformVendor->SetWindowTextW(gpgpu::DHOCLInfo::GetPlatformVendor(hard.GetPlatform()).c_str());
 
 		auto editPlatformVersion =
 			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_PLATFORM_VERSION));
-		editPlatformVersion->SetWindowTextW(
-			gpgpu::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()).c_str());
+		editPlatformVersion->SetWindowTextW(gpgpu::DHOCLInfo::GetPlatformVersion(hard.GetPlatform()).c_str());
 	}
 
 	void DHOCLTransDlg::FillInComboDevice()
@@ -174,20 +180,12 @@ namespace dholo
 
 		int curSellComboDevices = comboDevice->GetCurSel();
 
-		auto editDeviceVendor =
-			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VENDOR));
-		editDeviceVendor->SetWindowTextW(
-			gpgpu::DHOCLInfo::GetDeviceVendor(hard[curSellComboDevices]).c_str());
-
-		auto editDeviceVersion =
-			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_VERSION));
-		editDeviceVersion->SetWindowTextW(
-			gpgpu::DHOCLInfo::GetDeviceVersion(hard[curSellComboDevices]).c_str());
-
-		auto editDeviceType =
-			static_cast<CEdit*>(this->GetDlgItem(IDC_EDIT_DEVICE_TYPE));
-		editDeviceType->SetWindowTextW(
-			gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]).c_str());
+		FillEdit(IDC_EDIT_DEVICE_VENDOR, gpgpu::DHOCLInfo::GetDeviceVendor(hard[curSellComboDevices]));
+		FillEdit(IDC_EDIT_DEVICE_VERSION, gpgpu::DHOCLInfo::GetDeviceVersion(hard[curSellComboDevices]));
+		FillEdit(IDC_EDIT_DEVICE_TYPE, gpgpu::DHOCLInfo::GetDeviceType(hard[curSellComboDevices]));
+		FillEdit(IDC_EDIT_DEVICE_FREQ, gpgpu::DHOCLInfo::GetDeviceFrequency(hard[curSellComboDevices]));
+		FillEdit(IDC_EDIT_GLOBAL_MEM, gpgpu::DHOCLInfo::GetDeviceGlobalSize(hard[curSellComboDevices]));
+		FillEdit(IDC_EDIT_LOCAL_MEM, gpgpu::DHOCLInfo::GetDeviceLocalSize(hard[curSellComboDevices]));
 	}
 
 	void DHOCLTransDlg::FillInPSIPanel()
@@ -206,6 +204,17 @@ namespace dholo
 		comboPhase->AddString(L"pi/2");
 		comboPhase->AddString(L"pi");
 		comboPhase->AddString(L"3pi/2");
+	}
+
+	void DHOCLTransDlg::FillEdit(int id, const std::wstring & str)
+	{
+		auto editByID =
+			static_cast<CEdit*>(this->GetDlgItem(id));
+
+		if (editByID == nullptr)
+			throw dholo::exp::DHAppExp("Проблемы с edit box");
+
+		editByID->SetWindowTextW(str.c_str());
 	}
 
 	float DHOCLTransDlg::GetPhase1() const

@@ -68,19 +68,22 @@ namespace dholo
 			DHOCLInfo() = default;
 			~DHOCLInfo() = default;
 
-			static std::wstring GetPlatformName(cl_platform_id);
-			static std::wstring GetPlatformVendor(cl_platform_id);
-			static std::wstring GetPlatformVersion(cl_platform_id);
-			static std::wstring GetPlatformExtensions(cl_platform_id);
+			static std::wstring GetPlatformName(cl_platform_id pl);
+			static std::wstring GetPlatformVendor(cl_platform_id pl);
+			static std::wstring GetPlatformVersion(cl_platform_id pl);
+			static std::wstring GetPlatformExtensions(cl_platform_id pl);
 			
-			static std::wstring GetDeviceName(cl_device_id);
-			static std::wstring GetDeviceVendor(cl_device_id);
-			static std::wstring GetDeviceVersion(cl_device_id);
-			static std::wstring GetDeviceExtensions(cl_device_id);
-			static std::wstring GetDeviceType(cl_device_id);
+			static std::wstring GetDeviceName(cl_device_id dev);
+			static std::wstring GetDeviceVendor(cl_device_id dev);
+			static std::wstring GetDeviceVersion(cl_device_id dev);
+			static std::wstring GetDeviceExtensions(cl_device_id dev);
+			static std::wstring GetDeviceType(cl_device_id dev);
+			static std::wstring GetDeviceFrequency(cl_device_id dev);
+			static std::wstring GetDeviceGlobalSize(cl_device_id dev);
+			static std::wstring GetDeviceLocalSize(cl_device_id dev);
 			 
-			static std::wstring GetPlatformInfo(cl_platform_id, cl_platform_info);
-			static std::wstring GetDeviceInfo(cl_device_id, cl_device_info);
+			static std::wstring GetPlatformInfo(cl_platform_id pl, cl_platform_info inf);
+			static std::wstring GetDeviceInfo(cl_device_id dev, cl_device_info inf);
 		};
 	}
 }
