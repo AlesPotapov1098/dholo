@@ -227,7 +227,7 @@ namespace dholo
 			if (err != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(err);
 
-			global_mem /= (1024 * 1024 * 1024);
+			global_mem >>= 30;
 
 			return std::to_wstring(global_mem) + L" รม";
 		}
@@ -246,7 +246,7 @@ namespace dholo
 			if (err != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(err);
 
-			local_mem /= 1024;
+			local_mem >>= 10;
 
 			return std::to_wstring(local_mem) + L" สม";
 		}
