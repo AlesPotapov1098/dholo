@@ -404,7 +404,7 @@ void DHMainFrm::OnSaveAndAddImg()
 	{
 		ImageFile imgFile = m_targetWnd.OnSaveImg();
 		if (!imgFile.isOK)
-			return;
+			throw dholo::exp::DHAppExp("Ошибка при сохранении изображения");
 
 		m_imgList.AddImage(imgFile.path, imgFile.name, imgFile.ext);
 	}
