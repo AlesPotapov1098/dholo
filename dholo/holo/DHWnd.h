@@ -77,6 +77,5 @@ private:
 	CRect m_CRect;
 
 	GLuint m_RenderTargetTexture;
-	bool f = false;
 };
 

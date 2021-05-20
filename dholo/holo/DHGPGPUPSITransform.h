@@ -24,7 +24,7 @@ namespace dholo
 		{
 		public:
 			DHGPGPUPSITransform();
-			DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi);
+			DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi, img::DHImgLoader * img);
 			virtual ~DHGPGPUPSITransform();
 
 			void Init(const DHOCLHost&, HDC dc, HGLRC rc) override;
@@ -33,6 +33,8 @@ namespace dholo
 
 		private:
 			PSIStruct m_PSISettings;
+
+			img::DHImgLoader* m_img;
 
 			dholo::img::DHImgLoader m_Images[5];
 			GLuint m_Textures[5];

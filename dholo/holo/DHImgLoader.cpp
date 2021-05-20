@@ -64,5 +64,21 @@ namespace dholo
 				for (int j = 0; j < channels; j++)
 					m_PixelsData[i++] = 1.0f;
 		}
+		void DHImgLoader::SetPixels(int width, int height, int channles, float * pxls)
+		{
+			if (m_PixelsData)
+				delete[] m_PixelsData;
+
+			m_width = width;
+			m_height = height;
+			m_nrChannels = channles;
+
+			std::size_t size = m_width * m_height * m_nrChannels;
+
+			m_PixelsData = new float[size];
+			
+			for (int i = 0; i < size; i++)
+				m_PixelsData[i] = pxls[i];
+		}
 	}
 }

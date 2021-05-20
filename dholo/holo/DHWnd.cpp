@@ -122,7 +122,7 @@ void DHWnd::GenSin()
 
 void DHWnd::PSITransform(const dholo::gpgpu::PSIStruct &psi, const dholo::gpgpu::DHOCLHost &host)
 {
-	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(&m_RenderTargetTexture, psi);
+	m_Transform = new dholo::gpgpu::DHGPGPUPSITransform(&m_RenderTargetTexture, psi, &m_ImgLoader);
 	m_Host = host;
 
 	Invalidate();
@@ -191,11 +191,6 @@ void DHWnd::InitHandles()
 		return;
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-	if (f)
-	{
-		
-	}
 }
 
 void DHWnd::Render()
@@ -217,6 +212,8 @@ void DHWnd::Render()
 		glTexCoord2f(1.0f, 0.0f);
 		glVertex2f(1.0f, -1.0f);
 	glEnd();
+
+
 
 	SwapBuffers(m_pDC->m_hDC);
 }

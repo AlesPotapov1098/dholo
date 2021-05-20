@@ -11,7 +11,7 @@ namespace dholo
 		public:
 
 			DHGPGPUGetPrmtrs() = default;
-			DHGPGPUGetPrmtrs(GLuint* tex, const img::DHImgLoader& imgLdr);
+			DHGPGPUGetPrmtrs(GLuint* tex);
 			~DHGPGPUGetPrmtrs() = default;
 			
 			void Init(const DHOCLHost&, HDC dc, HGLRC rc) override;

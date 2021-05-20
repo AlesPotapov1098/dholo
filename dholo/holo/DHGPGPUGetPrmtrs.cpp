@@ -5,17 +5,17 @@ namespace dholo
 {
 	namespace gpgpu
 	{
-		DHGPGPUGetPrmtrs::DHGPGPUGetPrmtrs(GLuint* tex, const img::DHImgLoader& imgLdr)
+		DHGPGPUGetPrmtrs::DHGPGPUGetPrmtrs(GLuint* tex)
 		{
 			m_Tex = tex;
 			m_InputImg = nullptr;
-			m_ImgLdr = imgLdr;
 		}
 
 		void DHGPGPUGetPrmtrs::Init(const DHOCLHost& host, HDC dc, HGLRC rc)
 		{
 			DHGPGPUTransform::Init(host,dc, rc);
 
+			
 			glEnable(GL_TEXTURE_2D);
 			glGenTextures(1, &m_InputTexture);
 			glBindTexture(1, m_InputTexture);

@@ -10,12 +10,13 @@ namespace dholo
 			DHGPGPUTransform::DHGPGPUTransform();
 		}
 
-		DHGPGPUPSITransform::DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi)
+		DHGPGPUPSITransform::DHGPGPUPSITransform(GLuint* tex, const PSIStruct& psi, img::DHImgLoader *img)
 		{
 			m_PSISettings = psi;
 			m_ProgramPath = "PSI.cl";
 			m_KernelName = "PSI";
 			m_RenderTex = tex;
+			m_img = img;
 		}
 
 		DHGPGPUPSITransform::~DHGPGPUPSITransform()
@@ -115,7 +116,7 @@ namespace dholo
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
 
-			const std::size_t global_size[2] = { m_Images[0].GetWidth(), m_Images[0].GetHeight()};
+			const std::size_t global_size[2] = { m_Images[0].GetWidth(), m_Images[0].GetHeight() };
 			const std::size_t local_size[2] = { 1, 1 };
 
 			error = clEnqueueNDRangeKernel(m_CommandQueue, m_Kernel, 2, 0, global_size, local_size, 0, NULL, NULL);

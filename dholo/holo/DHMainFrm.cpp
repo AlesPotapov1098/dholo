@@ -286,7 +286,7 @@ void DHMainFrm::OnGetAmplitude()
 
 void DHMainFrm::OnGetPhase()
 {
-	int d = 0;
+	m_targetWnd.OnGetPhase();
 }
 
 void DHMainFrm::OnGetRe()
