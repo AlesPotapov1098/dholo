@@ -11,7 +11,7 @@ namespace dholo
 		public:
 
 			DHGPGPUGetPrmtrs() = default;
-			DHGPGPUGetPrmtrs(GLuint* tex);
+			DHGPGPUGetPrmtrs(GLuint* tex, const img::DHImgLoader& imgLdr);
 			~DHGPGPUGetPrmtrs() = default;
 			
 			void Init(const DHOCLHost&, HDC dc, HGLRC rc) override;
@@ -19,8 +19,11 @@ namespace dholo
 			virtual void Release() override;
 
 		private:
-			cl_mem m_Mem;
+			cl_mem m_InputImg;
+			cl_mem m_OutputImg;
 			GLuint* m_Tex;
+			GLuint m_InputTexture;
+			img::DHImgLoader m_ImgLdr;
 		};
 	}
 }

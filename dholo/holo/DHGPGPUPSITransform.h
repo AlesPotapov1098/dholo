@@ -37,7 +37,7 @@ namespace dholo
 			dholo::img::DHImgLoader m_Images[5];
 			GLuint m_Textures[5];
 			GLuint* m_RenderTex;
-			cl_mem m_Mem[5];
+			cl_mem m_InputImg[5];
 		};
 	}
 }

@@ -67,7 +67,7 @@ namespace dholo
 					GL_FLOAT,
 					m_Images[i].GetPixelsData());
 
-				m_Mem[i] = clCreateFromGLTexture(
+				m_InputImg[i] = clCreateFromGLTexture(
 					m_Context,
 					CL_MEM_READ_WRITE,
 					GL_TEXTURE_2D,
@@ -99,18 +99,18 @@ namespace dholo
 
 			B = std::fabs(B);
 
-			cl_int error = clEnqueueAcquireGLObjects(m_CommandQueue, 5, m_Mem, 0, 0, NULL);
+			cl_int error = clEnqueueAcquireGLObjects(m_CommandQueue, 5, m_InputImg, 0, 0, NULL);
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
 
-			error |= clSetKernelArg(m_Kernel, 0, sizeof(m_Mem[0]), &m_Mem[0]);
-			error |= clSetKernelArg(m_Kernel, 1, sizeof(m_Mem[1]), &m_Mem[1]);
-			error |= clSetKernelArg(m_Kernel, 2, sizeof(m_Mem[2]), &m_Mem[2]);
-			error |= clSetKernelArg(m_Kernel, 3, sizeof(m_Mem[3]), &m_Mem[3]);
+			error |= clSetKernelArg(m_Kernel, 0, sizeof(m_InputImg[0]), &m_InputImg[0]);
+			error |= clSetKernelArg(m_Kernel, 1, sizeof(m_InputImg[1]), &m_InputImg[1]);
+			error |= clSetKernelArg(m_Kernel, 2, sizeof(m_InputImg[2]), &m_InputImg[2]);
+			error |= clSetKernelArg(m_Kernel, 3, sizeof(m_InputImg[3]), &m_InputImg[3]);
 			error |= clSetKernelArg(m_Kernel, 4, sizeof(cl_float4), &S);
 			error |= clSetKernelArg(m_Kernel, 5, sizeof(cl_float4), &C);
 			error |= clSetKernelArg(m_Kernel, 6, sizeof(cl_float), &B);
-			error |= clSetKernelArg(m_Kernel, 7, sizeof(m_Mem[4]), &m_Mem[4]);
+			error |= clSetKernelArg(m_Kernel, 7, sizeof(m_InputImg[4]), &m_InputImg[4]);
 
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
@@ -122,7 +122,7 @@ namespace dholo
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
 
-			error = clEnqueueReleaseGLObjects(m_CommandQueue, 5, m_Mem, 0, 0, NULL);
+			error = clEnqueueReleaseGLObjects(m_CommandQueue, 5, m_InputImg, 0, 0, NULL);
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
 
