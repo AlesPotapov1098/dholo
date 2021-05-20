@@ -395,7 +395,7 @@ void DHMainFrm::OnSaveImg()
 {
 	ImageFile imgFile = m_targetWnd.OnSaveImg();
 	if (!imgFile.isOK)
-		return;
+		AfxMessageBox(L"Изображение не может быть сохранено", MB_OK);
 }
 
 void DHMainFrm::OnSaveAndAddImg()
