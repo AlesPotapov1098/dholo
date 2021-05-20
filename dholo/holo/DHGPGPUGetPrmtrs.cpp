@@ -83,6 +83,10 @@ namespace dholo
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
 
+			error = clEnqueueReleaseGLObjects(m_CommandQueue, 1, &m_OutputImg, 0, 0, NULL);
+			if (error != CL_SUCCESS)
+				throw dholo::exp::DHGPGPUExp(error);
+
 			error = clFinish(m_CommandQueue);
 			if (error != CL_SUCCESS)
 				throw dholo::exp::DHGPGPUExp(error);
