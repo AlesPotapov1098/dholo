@@ -83,44 +83,20 @@ void DHWnd::OnSize(UINT nType, int cx, int cy)
 	m_CRect.CopyRect(&m_Rect);
 }
 
-void DHWnd::LoadTexture(const std::vector<CStringA>& path)
-{
-	try {
-		if (!m_ImgLoader.empty())
-			m_ImgLoader.clear();
-
-		if (path.empty())
-			throw dholo::exp::DHAppExp("Not such filenames");
-
-		int len = path.size();
-
-		m_ImgLoader.resize(len);
-
-		for (int i = 0; i < len; i++)
-			m_ImgLoader[i].Load(path[i]);
-	}
-	catch (const dholo::exp::DHAppExp& ex)
-	{
-		ex.ShowError();
-	}
-}
-
 void DHWnd::LoadImg(const CStringA& imgPath)
 {
 	if (imgPath.IsEmpty())
 		throw dholo::exp::DHAppExp("Invalid filename");
 
-	m_ImgLoader.clear();
-	m_ImgLoader.resize(1);
-	m_ImgLoader[0].Load(imgPath);
+	m_ImgLoader.Load(imgPath);
 
-	m_GlobalSizeX = m_ImgLoader[0].GetWidth();
-	m_GlobalSizeY = m_ImgLoader[0].GetHeight();
+	m_GlobalSizeX = m_ImgLoader.GetWidth();
+	m_GlobalSizeY = m_ImgLoader.GetHeight();
 
 	m_LocalSizeX = 1;
 	m_LocalSizeY = 1;
 
-	m_Transform = new dholo::gpgpu::DHGPGPUTransform(&m_RenderTargetTexture, m_ImgLoader[0]);
+	m_Transform = new dholo::gpgpu::DHGPGPUTransform(&m_RenderTargetTexture, m_ImgLoader);
 
 	Invalidate();
 	UpdateWindow();

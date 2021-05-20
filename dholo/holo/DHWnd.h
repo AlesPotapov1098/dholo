@@ -25,7 +25,6 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual ~DHWnd();
 	void OpenDlg();
-	void LoadTexture(const std::vector<CStringA>& path);
 
 	/// <summary>
 	/// Загрузка изображения в графический процессор
@@ -62,7 +61,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	std::vector<dholo::img::DHImgLoader> m_ImgLoader;
+	dholo::img::DHImgLoader m_ImgLoader;
 
 	int m_GlobalSizeX, m_GlobalSizeY;
 	int m_LocalSizeX, m_LocalSizeY;

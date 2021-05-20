@@ -391,40 +391,6 @@ BOOL DHMainFrm::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentW
 	return TRUE;
 }
 
-void DHMainFrm::SelectImage(const std::vector<CStringA>& imgPath)
-{
-	try
-	{
-		if (!m_targetWnd)
-			return;
-
-		m_targetWnd.LoadTexture(imgPath);
-		m_targetWnd.Invalidate();
-		m_targetWnd.UpdateWindow();
-	}
-	catch (const dholo::exp::DHAppExp& ex)
-	{
-		ex.ShowError();
-	}
-}
-void DHMainFrm::LoadImg(const CStringA& imgPath)
-{
-	try 
-	{
-		if (!m_targetWnd)
-			/// TODO : обработка ошибок
-			return;
-
-		m_targetWnd.LoadImg(imgPath);
-		m_targetWnd.Invalidate();
-		m_targetWnd.UpdateWindow();
-	}
-	catch (const dholo::exp::DHAppExp& ex)
-	{
-		ex.ShowError();
-	}
-}
-
 void DHMainFrm::OnSaveImg()
 {
 	ImageFile imgFile = m_targetWnd.OnSaveImg();

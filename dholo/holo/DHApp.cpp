@@ -174,13 +174,4 @@ void DHApp::LoadCustomState()
 void DHApp::SaveCustomState()
 {
 }
-
-void DHApp::SelectImage(const std::vector<CStringA>& imgPath)
-{
-	DHMainFrm* pMainFrame = static_cast<DHMainFrm*>(m_pMainWnd);
-	if (!pMainFrame->IsKindOf(RUNTIME_CLASS(DHMainFrm)))
-		return;
-
-	pMainFrame->SelectImage(imgPath);
-}
 // Обработчики сообщений DHApp
