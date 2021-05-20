@@ -344,7 +344,7 @@ void DHMainFrm::OnLoadIntoGp()
 {
 	try
 	{
-		m_targetWnd.LoadImg(static_cast<CStringA>(m_imgList.GetSelectedImg()));
+		m_targetWnd.LoadImg(m_imgList.GetSelectedImg());
 	}
 	catch (const dholo::exp::DHAppExp &ex)
 	{
@@ -416,22 +416,6 @@ void DHMainFrm::LoadImg(const CStringA& imgPath)
 			return;
 
 		m_targetWnd.LoadImg(imgPath);
-		m_targetWnd.Invalidate();
-		m_targetWnd.UpdateWindow();
-	}
-	catch (const dholo::exp::DHAppExp& ex)
-	{
-		ex.ShowError();
-	}
-}
-void DHMainFrm::LoadImg(const std::vector<CStringA>& imgPaths)
-{
-	try
-	{
-		if (!m_targetWnd)
-			throw dholo::exp::DHAppExp("Not created a m_targetWnd");
-
-		m_targetWnd.LoadImg(imgPaths);
 		m_targetWnd.Invalidate();
 		m_targetWnd.UpdateWindow();
 	}

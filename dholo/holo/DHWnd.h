@@ -32,7 +32,6 @@ public:
 	/// </summary>
 	/// <param name="imgPath">Целевое изображение</param>
 		void LoadImg(const CStringA& imgPath);
-	void LoadImg(const std::vector<CStringA>& imgPaths);
 
 	/// <summary>
 	/// Генерация синуса

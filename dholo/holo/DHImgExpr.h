@@ -20,10 +20,8 @@ namespace dholo
 			UINT GetSelecteIndex() const;
 			UINT GetSelectedImageCount() const;
 			void DeleteSelectedImg();
-			CString GetSelectedImg();
+			CStringA GetSelectedImg();
 			void AddImage(const CStringW& pathImage, const CStringW& imageName, const CStringW& imageExt);
-
-			afx_msg void OnShowImage();
 
 			/// <summary>
 			/// Фиксация 4-х изображений для PSI преобразования

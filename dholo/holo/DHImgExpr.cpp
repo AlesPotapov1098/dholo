@@ -182,9 +182,9 @@ namespace dholo
 			m_dhImgList.DeleteItem(GetSelecteIndex());
 		}
 
-		CString DHImgExpr::GetSelectedImg()
+		CStringA DHImgExpr::GetSelectedImg()
 		{
-			return m_dhImgList.GetItemText(GetSelecteIndex(), 1);
+			return static_cast<CStringA>(m_dhImgList.GetItemText(GetSelecteIndex(), 1));
 		}
 
 		void DHImgExpr::OnPaint()
@@ -230,28 +230,6 @@ namespace dholo
 		void DHImgExpr::OnDeleteImage()
 		{
 			static_cast<DHMainFrm*>(this->GetParent())->OnDeleteImage();
-		}
-
-		void DHImgExpr::OnShowImage()
-		{
-			if (!m_dhImgList.GetItemCount())
-				return;
-
-			UINT count = m_dhImgList.GetSelectedCount();
-
-			if (count > 1)
-				/// TODO : обработка ошибок
-				return;
-
-			POSITION pos = m_dhImgList.GetFirstSelectedItemPosition();
-			if (!pos)
-				/// TODO : обработка ошибок
-				return;
-
-			UINT item = m_dhImgList.GetNextSelectedItem(pos);
-
-			CString path = m_dhImgList.GetItemText(item, 1);
-			theApp.LoadImg(CStringA(path));
 		}
 	}
 }

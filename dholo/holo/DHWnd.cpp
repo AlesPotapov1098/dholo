@@ -126,18 +126,6 @@ void DHWnd::LoadImg(const CStringA& imgPath)
 	UpdateWindow();
 }
 
-void DHWnd::LoadImg(const std::vector<CStringA>& imgPaths)
-{
-	if (imgPaths.empty())
-		throw dholo::exp::DHAppExp("Invalid filename");
-
-	m_ImgLoader.clear();
-	m_ImgLoader.resize(4);
-
-	for (int i = 0; i < 4; i++)
-		m_ImgLoader[i].Load(imgPaths[i]);
-}
-
 void DHWnd::GenSin()
 {
 	DHGENSinus dlg;

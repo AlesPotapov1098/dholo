@@ -183,25 +183,4 @@ void DHApp::SelectImage(const std::vector<CStringA>& imgPath)
 
 	pMainFrame->SelectImage(imgPath);
 }
-
-void DHApp::LoadImg(const CStringA& imgPath)
-{
-	DHMainFrm* pMainFrame = static_cast<DHMainFrm*>(m_pMainWnd);
-	if (!pMainFrame->IsKindOf(RUNTIME_CLASS(DHMainFrm)))
-		return;
-
-	pMainFrame->LoadImg(imgPath);
-}
-
-void DHApp::LoadImg(const std::vector<CStringA>& imgPaths)
-{
-	DHMainFrm* pMainFrame = static_cast<DHMainFrm*>(m_pMainWnd);
-	if (!pMainFrame->IsKindOf(RUNTIME_CLASS(DHMainFrm)))
-		return;
-
-	pMainFrame->LoadImg(imgPaths);
-}
 // Обработчики сообщений DHApp
-
-
-

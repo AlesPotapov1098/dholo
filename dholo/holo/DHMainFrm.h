@@ -17,7 +17,6 @@ public:
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr);
 	void SelectImage(const std::vector<CStringA>& imgPath);
 	void LoadImg(const CStringA& imgPath);
-	void LoadImg(const std::vector<CStringA>& imgPaths);
 	virtual ~DHMainFrm();
 
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);

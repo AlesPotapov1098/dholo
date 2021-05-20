@@ -36,8 +36,6 @@ public:
 	virtual void SaveCustomState();
 
 	void SelectImage(const std::vector<CStringA>& imgPath);
-	void LoadImg(const CStringA& imgPath);
-	void LoadImg(const std::vector<CStringA>& imgPaths);
 
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
